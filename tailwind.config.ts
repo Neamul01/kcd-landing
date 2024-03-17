@@ -14,6 +14,11 @@ const config: Config = {
         secondary: "#ff9900",
         accent: "#ff0000",
       },
+      textColor: {
+        primary: "#1516d6",
+        secondary: "#ff9900",
+        accent: "#ff0000",
+      },
       backgroundColor: {
         primary: "#1516d6",
         secondary: "#ff9900",
