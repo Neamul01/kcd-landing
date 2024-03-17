@@ -200,7 +200,7 @@ const Community = [
   {
     id: "6",
     name: "kube_bir",
-    icon: "/sponsors/kube_bir.png",
+    icon: "/sponsors/kube_blr.png",
   },
 ];
 
