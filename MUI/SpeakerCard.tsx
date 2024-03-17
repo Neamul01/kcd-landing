@@ -14,7 +14,10 @@ type Speaker = {
 };
 export default function SpeakerCard({ speaker }: { speaker: Speaker }) {
   return (
-    <Card sx={{ maxWidth: 345 }} className="bg-transparent shadow-none">
+    <Card
+      sx={{ maxWidth: 345 }}
+      className="bg-transparent shadow-none hover:bg-transparent"
+    >
       <CardActionArea>
         <CardMedia
           component="img"

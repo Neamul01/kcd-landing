@@ -23,7 +23,7 @@ function SectionLayout({
           <span className="w-1/2 h-[5px] rounded-xl bg-secondary" />
         </h2>
       </div>
-      <div className="">{children}</div>
+      <div className="w-full">{children}</div>
     </div>
   );
 }
