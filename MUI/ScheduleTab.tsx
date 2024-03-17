@@ -4,8 +4,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import DataTable from "./DataTable";
 import ListItem from "@/components/Shared/ListItem";
+import { styled } from "@mui/material";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -33,6 +33,45 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
+const AntTab = styled((props: any) => <Tab disableRipple {...props} />)(
+  ({ theme }) => ({
+    textTransform: "none",
+    minWidth: 0,
+    [theme.breakpoints.up("sm")]: {
+      minWidth: 0,
+    },
+    fontWeight: theme.typography.fontWeightRegular,
+    marginRight: theme.spacing(1),
+    color: "rgba(0, 0, 0, 0.85)",
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    "&:hover": {
+      color: "#40a9ff",
+      opacity: 1,
+    },
+    "&.Mui-selected": {
+      color: "#fff",
+      background: theme.palette.primary.main,
+      borderRadius: 6,
+      borderBottom: 0,
+      fontWeight: theme.typography.fontWeightMedium,
+    },
+    "&.Mui-focusVisible": {
+      backgroundColor: "#d1eaff",
+    },
+  })
+);
+
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
@@ -49,16 +88,40 @@ export default function ScheduleTab() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box>
+      <Box className="mb-6">
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Keynote Track" {...a11yProps(0)} />
-          <Tab label="DevOps Track" {...a11yProps(1)} />
-          <Tab label="Security Track" {...a11yProps(2)} />
-          <Tab label="Startup/Community Hub" {...a11yProps(3)} />
+          <AntTab
+            label="Keynote Track"
+            {...a11yProps(0)}
+            // className={`border-0 capitalize font-bold text-base rounded-lg ${
+            //   value === 0 ? "bg-primary text-white" : ""
+            // }`}
+          />
+          <AntTab
+            label="DevOps Track"
+            {...a11yProps(1)}
+            // className={`border-0 capitalize font-bold text-base rounded-lg ${
+            //   value === 1 ? "bg-primary text-white" : ""
+            // }`}
+          />
+          <AntTab
+            label="Security Track"
+            {...a11yProps(2)}
+            // className={`border-0 capitalize font-bold text-base rounded-lg ${
+            //   value === 2 ? "bg-primary text-white" : ""
+            // }`}
+          />
+          <AntTab
+            label="Startup/Community Hub"
+            {...a11yProps(3)}
+            // className={`border-0 capitalize font-bold text-base rounded-lg ${
+            //   value === 3 ? "bg-primary text-white" : ""
+            // }`}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
