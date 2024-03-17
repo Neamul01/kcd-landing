@@ -5,7 +5,7 @@ function Welcome() {
   return (
     <div>
       <SectionLayout paddingBottom title={"Welcome to KCD Kerala"}>
-        <p className="max-w-sectionLayout text-center text-black/90">
+        <p className="max-w-sectionLayout text-center text-black/90 mx-auto">
           We&apos;re thrilled to announce the first-ever KCD Kerala event, set
           to take place in Kochi on 3rd February 2024! This groundbreaking
           gathering brings together the vibrant Kubernetes and cloud-native
