@@ -19,6 +19,8 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
+  const [backgroundColor, setBackgroundColor] =
+    React.useState<string>("transparent");
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -28,8 +30,33 @@ function Navbar() {
     setAnchorElNav(null);
   };
 
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > 50) {
+        setBackgroundColor("#ffffff"); // Change to white when scrolled
+      } else {
+        setBackgroundColor("transparent"); // Back to transparent when at top
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <AppBar position="static" sx={{ bgcolor: "#fff", color: "#000" }}>
+    <AppBar
+      position="static"
+      sx={{ color: "#000" }}
+      className={`${
+        backgroundColor === "transparent"
+          ? `bg-transparent shadow-none !text-white`
+          : "bg-white"
+      } sticky top-0 z-50`}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
@@ -81,7 +108,16 @@ function Navbar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography
+                    textAlign="center"
+                    className={`${
+                      backgroundColor === "transparent"
+                        ? `!text-white`
+                        : "text-black"
+                    }`}
+                  >
+                    {page}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -108,7 +144,12 @@ function Navbar() {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "black", display: "block" }}
+                sx={{ my: 2, display: "block" }}
+                className={`${
+                  backgroundColor === "transparent"
+                    ? `!text-white`
+                    : "text-black"
+                }`}
               >
                 {page}
               </Button>
