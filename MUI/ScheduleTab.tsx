@@ -88,39 +88,34 @@ export default function ScheduleTab() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box className="mb-6">
+      <Box className="mb-6 max-w-[350px] md:max-w-full mx-auto lg:w-sectionLayout ">
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label="basic tabs example"
+          variant="scrollable"
+          scrollButtons="auto"
+          aria-label="scrollable auto tabs example"
+          // aria-label="basic tabs example"
         >
           <AntTab
+            className="text-sm md:text-base"
             label="Keynote Track"
             {...a11yProps(0)}
-            // className={`border-0 capitalize font-bold text-base rounded-lg ${
-            //   value === 0 ? "bg-primary text-white" : ""
-            // }`}
           />
           <AntTab
+            className="text-sm md:text-base"
             label="DevOps Track"
             {...a11yProps(1)}
-            // className={`border-0 capitalize font-bold text-base rounded-lg ${
-            //   value === 1 ? "bg-primary text-white" : ""
-            // }`}
           />
           <AntTab
+            className="text-sm md:text-base"
             label="Security Track"
             {...a11yProps(2)}
-            // className={`border-0 capitalize font-bold text-base rounded-lg ${
-            //   value === 2 ? "bg-primary text-white" : ""
-            // }`}
           />
           <AntTab
+            className="text-sm md:text-base"
             label="Startup/Community Hub"
             {...a11yProps(3)}
-            // className={`border-0 capitalize font-bold text-base rounded-lg ${
-            //   value === 3 ? "bg-primary text-white" : ""
-            // }`}
           />
         </Tabs>
       </Box>
