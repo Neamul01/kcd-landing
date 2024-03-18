@@ -16,7 +16,7 @@ export default function SpeakerCard({ speaker }: { speaker: Speaker }) {
   return (
     <Card
       sx={{ maxWidth: 345 }}
-      className="bg-transparent shadow-none hover:bg-transparent"
+      className="bg-transparent shadow-none hover:bg-transparent mx-auto"
     >
       <CardActionArea>
         <CardMedia
