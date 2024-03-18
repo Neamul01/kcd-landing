@@ -12,8 +12,42 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { IoLogoWhatsapp } from "react-icons/io5";
 import Image from "next/image";
+import Link from "next/link";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = [
+  {
+    name: "About us",
+    link: "#about-us",
+  },
+  {
+    name: "Speakers",
+    link: "#speakers",
+  },
+  {
+    name: "Schedule",
+    link: "#schedule",
+  },
+  {
+    name: "Venue",
+    link: "#venue",
+  },
+  {
+    name: "Sponsors & Partners",
+    link: "#sponsors",
+  },
+  {
+    name: "Organizers & Volunteers",
+    link: "#organizers",
+  },
+  {
+    name: "Buy Ticket",
+    link: "#buy-ticket",
+  },
+  {
+    name: "FAQ",
+    link: "#faq",
+  },
+];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -107,16 +141,16 @@ function Navbar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                   <Typography
                     textAlign="center"
                     className={`${
                       backgroundColor === "transparent"
                         ? `!text-white`
                         : "text-black"
-                    }`}
+                    } capitalize`}
                   >
-                    {page}
+                    {page.name}
                   </Typography>
                 </MenuItem>
               ))}
@@ -139,20 +173,27 @@ function Navbar() {
               alt="Navbar Icon"
             />
           </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              paddingLeft: 10,
+            }}
+          >
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, display: "block" }}
+              <Link
+                href={page.link}
+                key={page.link}
+                // onClick={handleCloseNavMenu}
+                // sx={{ my: 2, display: "block" }}
                 className={`${
                   backgroundColor === "transparent"
                     ? `!text-white`
                     : "text-black"
-                }`}
+                } capitalize my-1 px-3`}
               >
-                {page}
-              </Button>
+                {page.name}
+              </Link>
             ))}
           </Box>
 

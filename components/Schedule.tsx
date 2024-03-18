@@ -4,7 +4,7 @@ import SectionLayout from "./layout/SectionLayout";
 
 export default function Schedule() {
   return (
-    <div>
+    <div id="schedule">
       <SectionLayout paddingBottom title={"Schedule"}>
         <div className="flex justify-start items-start w-full">
           <ScheduleTab />

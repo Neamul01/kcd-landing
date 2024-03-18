@@ -3,7 +3,7 @@ import SectionLayout from "./layout/SectionLayout";
 
 function Welcome() {
   return (
-    <div>
+    <div id="about-us">
       <SectionLayout paddingBottom title={"Welcome to KCD Kerala"}>
         <p className="max-w-sectionLayout text-center text-black/90 mx-auto">
           We&apos;re thrilled to announce the first-ever KCD Kerala event, set

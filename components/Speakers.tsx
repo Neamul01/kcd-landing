@@ -4,7 +4,7 @@ import SpeakerCard from "@/MUI/SpeakerCard";
 
 export default function Speakers() {
   return (
-    <div>
+    <div id="speakers">
       <SectionLayout title={"Keynote Speakers"} className="bg-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-10 lg:gap-16 max-w-sectionLayout mx-auto ">
           {keynoteSpeakers.map((speaker) => (

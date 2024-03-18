@@ -1,4 +1,7 @@
 import Hero from "@/components/Hero";
+import BuyTicket from "@/components/Home/BuyTicket";
+import FAQSection from "@/components/Home/FAQSection";
+import Organizers from "@/components/Organizers";
 import Schedule from "@/components/Schedule";
 import Speakers from "@/components/Speakers";
 import Sponsors from "@/components/Sponsors";
@@ -19,6 +22,9 @@ export default function Home() {
       </MainLayout>
       <Venue />
       <Sponsors />
+      <Organizers />
+      <BuyTicket />
+      <FAQSection />
     </main>
   );
 }
