@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import FAQSection from "@/components/Home/FAQSection";
 import Organizers from "@/components/Organizers";
 import Schedule from "@/components/Schedule";
 import Speakers from "@/components/Speakers";
@@ -21,6 +22,7 @@ export default function Home() {
       <Venue />
       <Sponsors />
       <Organizers />
+      <FAQSection />
     </main>
   );
 }
