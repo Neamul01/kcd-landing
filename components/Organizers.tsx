@@ -5,7 +5,7 @@ import { FaLinkedinIn, FaTwitter } from "react-icons/fa";
 
 export default function Organizers() {
   return (
-    <div>
+    <div id="organizers">
       <SectionLayout paddingBottom title={"Organizers"}>
         <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-10 md:gap-y-5">

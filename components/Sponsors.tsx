@@ -5,7 +5,10 @@ import Image from "next/image";
 
 export default function Sponsors() {
   return (
-    <div className="bg-[url('/b3.jpg')] bg-cover bg-no-repeat bg-center  ">
+    <div
+      id="sponsors"
+      className="bg-[url('/b3.jpg')] bg-cover bg-no-repeat bg-center  "
+    >
       <div className="h-full bg-gradient-to-t from-black/50 to-black/50 text-white">
         <SectionLayout title={"Sponsors & Partners"}>
           <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
