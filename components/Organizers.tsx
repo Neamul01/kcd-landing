@@ -8,7 +8,7 @@ export default function Organizers() {
     <div>
       <SectionLayout paddingBottom title={"Organizers"}>
         <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-10 md:gap-y-5">
             {OrganizersList.map((sponsor) => (
               <div
                 className="bg-transparent h-[354px] px-4 flex items-center justify-between flex-col"
@@ -35,7 +35,7 @@ export default function Organizers() {
       </SectionLayout>
       <SectionLayout paddingBottom title={"Event Team"}>
         <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-10  gap-y-10 md:gap-y-5">
             {Event.map((sponsor) => (
               <div
                 className="bg-transparent h-[354px] px-4 flex items-center justify-between flex-col"
