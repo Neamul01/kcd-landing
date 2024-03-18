@@ -11,12 +11,12 @@ import {
 export default function Footer() {
   return (
     <div className="bg-black text-white">
-      <div className="max-w-sectionLayout mx-auto py-12 flex justify-between">
-        <div className="flex flex-col max-w-[45%]">
+      <div className="max-w-sectionLayout mx-auto py-12 flex flex-col md:flex-row justify-between gap-8 px-2">
+        <div className="flex flex-col items-center md:items-start justify-center max-w-full md:max-w-[45%]">
           <p className="font-bold border-b-[1px] border-gray-500 mb-4 pb-2">
             About us
           </p>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 text-center md:text-left">
             <p className="text-white/80 text-sm">
               Kubernetes Community Days Kerala (KCD Kerala) is a
               community-organized event supported by the Cloud Native Computing
@@ -37,7 +37,7 @@ export default function Footer() {
             </p>
           </div>
         </div>
-        <div className="flex flex-col max-w-[30%] ">
+        <div className="flex flex-col items-center md:items-start max-w-full md:max-w-[30%] ">
           <p className="font-bold border-b-[1px] border-gray-500 mb-4 pb-2">
             Connect with us
           </p>
