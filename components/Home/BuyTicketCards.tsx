@@ -2,7 +2,7 @@ import React from "react";
 
 export default function BuyTicketCards() {
   return (
-    <div className="p-4">
+    <div className="">
       <div className="flex flex-col gap-6">
         {[1, 2, 3, 4].map((i) => (
           <div

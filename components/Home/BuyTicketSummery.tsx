@@ -10,7 +10,11 @@ export default function BuyTicketSummery({
   tab: number;
 }) {
   const handleProceed = () => {
-    setTab(tab + 1);
+    if (tab < 3) {
+      setTab(tab + 1);
+    } else {
+      setTab(tab);
+    }
   };
   return (
     <div className="bg-gray-100 w-full h-full p-4">
