@@ -1,10 +1,12 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import SectionLayout from "../layout/SectionLayout";
 import BuyTicketSideTracker from "./BuyTicketSideTracker";
 import BuyTicketCards from "./BuyTicketCards";
 import BuyTicketSummery from "./BuyTicketSummery";
 
 export default function BuyTicket() {
+  const [tab, setTab] = useState(1);
   return (
     <div id="buy-ticket">
       <SectionLayout
@@ -16,14 +18,14 @@ export default function BuyTicket() {
           <div className="col-span-8 border-gray-400 border-2 rounded-lg grid grid-cols-12">
             {/* <TimelineComponent /> */}
             <div className="col-span-3 ">
-              <BuyTicketSideTracker />
+              <BuyTicketSideTracker tab={tab} />
             </div>
             <div className="col-span-9">
               <BuyTicketCards />
             </div>
           </div>
           <div className="col-span-4 border-gray-200 border-2 rounded-lg">
-            <BuyTicketSummery />
+            <BuyTicketSummery setTab={setTab} tab={tab} />
           </div>
         </div>
       </SectionLayout>

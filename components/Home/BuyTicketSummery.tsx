@@ -1,8 +1,17 @@
 import { Button, TextField } from "@mui/material";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 
-export default function BuyTicketSummery() {
+export default function BuyTicketSummery({
+  setTab,
+  tab,
+}: {
+  setTab: Dispatch<SetStateAction<number>>;
+  tab: number;
+}) {
+  const handleProceed = () => {
+    setTab(tab + 1);
+  };
   return (
     <div className="bg-gray-100 w-full h-full p-4">
       <div className="h-full w-full flex flex-col justify-between">
@@ -37,7 +46,8 @@ export default function BuyTicketSummery() {
         </div>
         <div className="w-full mb-6">
           <Button
-            disabled
+            onClick={handleProceed}
+            // disabled
             variant="contained"
             size="large"
             className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"
