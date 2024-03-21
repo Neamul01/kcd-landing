@@ -18,10 +18,10 @@ export default function SpeakerCard({ speaker }: { speaker: Speaker }) {
       sx={{ maxWidth: 345 }}
       className="bg-transparent shadow-none hover:bg-transparent mx-auto"
     >
-      <CardActionArea>
+      <CardActionArea className="hover:bg-transparent">
         <CardMedia
           component="img"
-          className="rounded-xl bg-transparent w-[200px] h-[216px] "
+          className="rounded-xl bg-transparent w-[160px] h-[216px] mx-auto "
           image={speaker.imageUrl}
           alt="green iguana"
         />
