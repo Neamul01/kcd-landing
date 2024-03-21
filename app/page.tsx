@@ -22,9 +22,13 @@ export default function Home() {
       </MainLayout>
       <Venue />
       <Sponsors />
-      <Organizers />
+      <MainLayout>
+        <Organizers />
+      </MainLayout>
       <BuyTicket />
-      <FAQSection />
+      <MainLayout>
+        <FAQSection />
+      </MainLayout>
     </main>
   );
 }
