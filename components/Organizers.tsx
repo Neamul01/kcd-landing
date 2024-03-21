@@ -33,7 +33,7 @@ export default function Organizers() {
           </div>
         </div>
       </SectionLayout>
-      <SectionLayout paddingBottom title={"Event Team"}>
+      {/* <SectionLayout paddingBottom title={"Event Team"}>
         <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
           <div className="flex flex-wrap items-center justify-center gap-x-10  gap-y-10 md:gap-y-5">
             {Event.map((sponsor) => (
@@ -59,7 +59,7 @@ export default function Organizers() {
             ))}
           </div>
         </div>
-      </SectionLayout>
+      </SectionLayout> */}
       <SectionLayout paddingBottom title={"Volunteers"}>
         <div className="max-w-sectionLayout text-center text-black/90 mx-auto gap-2 flex flex-col">
           <p>
@@ -77,25 +77,6 @@ export default function Organizers() {
     </div>
   );
 }
-
-const Event = [
-  {
-    id: 1,
-    title: "Student",
-    name: "Sudheesh C Sudhakaran",
-    designation: "VMware by Broadcom",
-    position: "Engineering Leader",
-    imageUrl: "/sponsors/sudheesh.jpg",
-  },
-  {
-    id: 2,
-    title: "Diversity",
-    name: "Kiran Mova",
-    designation: "Independent",
-    position: "Open Source Advocate",
-    imageUrl: "/sponsors/kiran.jpg",
-  },
-];
 
 const OrganizersList = [
   {
