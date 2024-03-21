@@ -18,7 +18,7 @@ export default function BuyTicketSummery({
   };
   return (
     <div className="bg-gray-100 w-full h-full p-4">
-      <div className="h-full w-full flex flex-col justify-between">
+      <div className="h-full w-full flex flex-col justify-between gap-3">
         <div className="w-full h-72 bg-white flex gap-4 flex-col items-center justify-center rounded-xl">
           <HiMiniShoppingCart size={80} className="text-accent/20" />
           <p className="text-center px-6">
