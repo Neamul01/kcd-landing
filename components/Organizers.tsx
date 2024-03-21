@@ -21,11 +21,13 @@ export default function Organizers() {
                   width={160}
                   className="rounded-full"
                 />
-                <p className="font-bold text-sm">{sponsor.name} </p>
-                <p className="text-base">{sponsor.designation} </p>
-                <p className="text-xs">{sponsor.position} </p>
+                <div className="flex flex-col items-center justify-center gap-3">
+                  <p className="font-bold text-sm">{sponsor.name} </p>
+                  <p className="text-base">{sponsor.designation} </p>
+                  <p className="text-xs">{sponsor.position} </p>
+                </div>
                 <p className="text-blue-600 flex items-center justify-center gap-2">
-                  <FaTwitter size={25} />
+                  {/* <FaTwitter size={25} /> */}
                   <FaLinkedinIn size={25} />
                 </p>
               </div>
@@ -85,7 +87,7 @@ const OrganizersList = [
     name: "Sudheesh C Sudhakaran",
     designation: "VMware by Broadcom",
     position: "Engineering Leader",
-    imageUrl: "/sponsors/sudheesh.jpg",
+    imageUrl: "/download.jpeg",
   },
   {
     id: 2,
@@ -93,7 +95,7 @@ const OrganizersList = [
     name: "Kiran Mova",
     designation: "Independent",
     position: "Open Source Advocate",
-    imageUrl: "/sponsors/kiran.jpg",
+    imageUrl: "/download.jpeg",
   },
   {
     id: 3,
@@ -101,7 +103,7 @@ const OrganizersList = [
     name: "Sudheesh C Sudhakaran",
     designation: "VMware by Broadcom",
     position: "Engineering Leader",
-    imageUrl: "/sponsors/sudheesh.jpg",
+    imageUrl: "/download.jpeg",
   },
   {
     id: 4,
@@ -109,6 +111,6 @@ const OrganizersList = [
     name: "Kiran Mova",
     designation: "Independent",
     position: "Open Source Advocate",
-    imageUrl: "/sponsors/kiran.jpg",
+    imageUrl: "/download.jpeg",
   },
 ];
