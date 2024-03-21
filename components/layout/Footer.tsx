@@ -3,6 +3,7 @@ import {
   FaFacebookF,
   FaInstagram,
   FaLinkedinIn,
+  FaSlack,
   FaTwitter,
   FaWhatsapp,
   FaYoutube,
@@ -34,41 +35,42 @@ export default function Footer() {
             Connect with us
           </p>
           <div className="flex items-center gap-3">
-            <a href="#">
+            <a
+              href="https://www.linkedin.com/company/kcd-dhaka/"
+              target="_blank"
+              rel="noreferrer"
+            >
               <FaLinkedinIn
                 size={25}
                 className="text-[#007bff] hover:text-white"
               />
             </a>
-            <a href="#">
+            <a
+              href="https://www.facebook.com/kcddhaka/"
+              target="_blank"
+              rel="noreferrer"
+            >
               <FaFacebookF
                 size={25}
                 className="text-[#007bff] hover:text-white"
               />
             </a>
-            <a href="#">
-              <FaWhatsapp
-                size={25}
-                className="text-[#007bff] hover:text-white"
-              />
-            </a>
-            <a href="#">
-              <FaInstagram
-                size={25}
-                className="text-[#007bff] hover:text-white"
-              />
-            </a>
-            <a href="#">
+            <a
+              href="https://twitter.com/i/flow/login?redirect_after_login=%2Fkcddhaka"
+              target="_blank"
+              rel="noreferrer"
+            >
               <FaTwitter
                 size={25}
                 className="text-[#007bff] hover:text-white"
               />
             </a>
-            <a href="#">
-              <FaYoutube
-                size={25}
-                className="text-[#007bff] hover:text-white"
-              />
+            <a
+              href="https://cloud-native.slack.com/?redir=%2Farchives%2FC06KC3Z9V16%3Fname%3DC06KC3Z9V16"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaSlack size={25} className="text-[#007bff] hover:text-white" />
             </a>
           </div>
         </div>
