@@ -13,6 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { IoLogoWhatsapp } from "react-icons/io5";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const pages = [
   {
@@ -55,6 +56,7 @@ function Navbar() {
   );
   const [backgroundColor, setBackgroundColor] =
     React.useState<string>("transparent");
+  const router = useRouter();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -98,15 +100,27 @@ function Navbar() {
             className="items-center gap-8"
           >
             <Image
+              className="cursor-pointer"
+              onClick={() => router.push("/")}
               height={84}
               width={120}
-              src={"/KCDLogoB.png"}
+              src={
+                backgroundColor === "transparent"
+                  ? "/KCDLogoW.png"
+                  : "/KCDLogoB.png"
+              }
               alt="Navbar Icon"
             />
             <Image
+              className="cursor-pointer"
+              onClick={() => router.push("/")}
               height={70}
               width={144}
-              src={"/CloudNativeLogoB.png"}
+              src={
+                backgroundColor === "transparent"
+                  ? "/CloudNativeLogoW.png"
+                  : "/CloudNativeLogoB.png"
+              }
               alt="Navbar Icon"
             />
           </Box>
