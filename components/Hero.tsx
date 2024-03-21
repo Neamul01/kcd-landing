@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 function Hero() {
@@ -16,9 +17,12 @@ function Hero() {
           {/* <p className="text-[35px] uppercase font-semibold text-secondary ">
             TODAY..
           </p> */}
-          <button className="text-white bg-primary px-8 py-4 rounded-lg mt-16">
+          <Link
+            href={"#buy-ticket"}
+            className="text-white bg-primary px-8 py-4 rounded-lg mt-16"
+          >
             Register Now
-          </button>
+          </Link>
         </div>
       </div>
     </div>

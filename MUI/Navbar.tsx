@@ -142,16 +142,17 @@ function Navbar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <Typography
-                    textAlign="center"
+                  <Link
+                    href={page.link}
+                    key={page.link}
                     className={`${
                       backgroundColor === "transparent"
                         ? `!text-white`
                         : "text-black"
-                    } capitalize`}
+                    } capitalize text-center`}
                   >
                     {page.name}
-                  </Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
