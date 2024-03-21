@@ -4,6 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
+import { FaLinkedinIn, FaTwitter } from "react-icons/fa";
 
 type Speaker = {
   id: number;
@@ -18,10 +19,10 @@ export default function SpeakerCard({ speaker }: { speaker: Speaker }) {
       sx={{ maxWidth: 345 }}
       className="bg-transparent shadow-none hover:bg-transparent mx-auto"
     >
-      <CardActionArea>
+      <CardActionArea className="hover:bg-transparent pt-3">
         <CardMedia
           component="img"
-          className="rounded-xl bg-transparent w-[200px] h-[216px] "
+          className="rounded-xl bg-transparent w-[160px] h-[216px] mx-auto "
           image={speaker.imageUrl}
           alt="green iguana"
         />
@@ -48,6 +49,12 @@ export default function SpeakerCard({ speaker }: { speaker: Speaker }) {
           >
             {speaker.position}
           </Typography>
+          <a
+            href="#"
+            className="text-blue-600 flex items-center justify-center mt-2"
+          >
+            <FaLinkedinIn size={25} />
+          </a>
         </CardContent>
       </CardActionArea>
     </Card>

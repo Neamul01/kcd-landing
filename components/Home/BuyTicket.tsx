@@ -25,7 +25,7 @@ export default function BuyTicket() {
         title={"Buy Tickets"}
         className="bg-gray-200"
       >
-        <div className="w-layout  mx-auto p-16 pt-8 rounded-lg bg-white flex flex-col gap-3">
+        <div className="md:w-layout  mx-auto md:p-16 p-2 pt-8 rounded-lg bg-white flex flex-col gap-3">
           <div className="">
             <Button
               variant="text"
@@ -42,17 +42,17 @@ export default function BuyTicket() {
               </span>
             </Button>
           </div>
-          <div className="grid grid-cols-12 gap-3">
-            <div className="col-span-8 border-gray-400 border-2 rounded-lg grid grid-cols-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+            <div className="col-span-1 md:col-span-8 border-gray-400 border-2 rounded-lg grid grid-cols-1 md:grid-cols-12">
               {/* <TimelineComponent /> */}
-              <div className="col-span-3 ">
+              <div className="md:col-span-3 ">
                 <BuyTicketSideTracker tab={tab} />
               </div>
               <div className="col-span-9 p-4">
                 {tab === 2 ? <BuyTicketDetails /> : <BuyTicketCards />}
               </div>
             </div>
-            <div className="col-span-4 border-gray-200 border-2 rounded-lg">
+            <div className="col-span-1 md:col-span-4 border-gray-200 border-2 rounded-lg">
               <BuyTicketSummery setTab={setTab} tab={tab} />
             </div>
           </div>

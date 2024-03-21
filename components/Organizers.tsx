@@ -21,11 +21,13 @@ export default function Organizers() {
                   width={160}
                   className="rounded-full"
                 />
-                <p className="font-bold text-sm">{sponsor.name} </p>
-                <p className="text-base">{sponsor.designation} </p>
-                <p className="text-xs">{sponsor.position} </p>
+                <div className="flex flex-col items-center justify-center gap-3">
+                  <p className="font-bold text-sm">{sponsor.name} </p>
+                  <p className="text-base">{sponsor.designation} </p>
+                  <p className="text-xs">{sponsor.position} </p>
+                </div>
                 <p className="text-blue-600 flex items-center justify-center gap-2">
-                  <FaTwitter size={25} />
+                  {/* <FaTwitter size={25} /> */}
                   <FaLinkedinIn size={25} />
                 </p>
               </div>
@@ -33,7 +35,7 @@ export default function Organizers() {
           </div>
         </div>
       </SectionLayout>
-      <SectionLayout paddingBottom title={"Event Team"}>
+      {/* <SectionLayout paddingBottom title={"Event Team"}>
         <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
           <div className="flex flex-wrap items-center justify-center gap-x-10  gap-y-10 md:gap-y-5">
             {Event.map((sponsor) => (
@@ -59,7 +61,7 @@ export default function Organizers() {
             ))}
           </div>
         </div>
-      </SectionLayout>
+      </SectionLayout> */}
       <SectionLayout paddingBottom title={"Volunteers"}>
         <div className="max-w-sectionLayout text-center text-black/90 mx-auto gap-2 flex flex-col">
           <p>
@@ -78,25 +80,6 @@ export default function Organizers() {
   );
 }
 
-const Event = [
-  {
-    id: 1,
-    title: "Student",
-    name: "Sudheesh C Sudhakaran",
-    designation: "VMware by Broadcom",
-    position: "Engineering Leader",
-    imageUrl: "/sponsors/sudheesh.jpg",
-  },
-  {
-    id: 2,
-    title: "Diversity",
-    name: "Kiran Mova",
-    designation: "Independent",
-    position: "Open Source Advocate",
-    imageUrl: "/sponsors/kiran.jpg",
-  },
-];
-
 const OrganizersList = [
   {
     id: 1,
@@ -104,7 +87,7 @@ const OrganizersList = [
     name: "Sudheesh C Sudhakaran",
     designation: "VMware by Broadcom",
     position: "Engineering Leader",
-    imageUrl: "/sponsors/sudheesh.jpg",
+    imageUrl: "/download.jpeg",
   },
   {
     id: 2,
@@ -112,7 +95,7 @@ const OrganizersList = [
     name: "Kiran Mova",
     designation: "Independent",
     position: "Open Source Advocate",
-    imageUrl: "/sponsors/kiran.jpg",
+    imageUrl: "/download.jpeg",
   },
   {
     id: 3,
@@ -120,7 +103,7 @@ const OrganizersList = [
     name: "Sudheesh C Sudhakaran",
     designation: "VMware by Broadcom",
     position: "Engineering Leader",
-    imageUrl: "/sponsors/sudheesh.jpg",
+    imageUrl: "/download.jpeg",
   },
   {
     id: 4,
@@ -128,6 +111,6 @@ const OrganizersList = [
     name: "Kiran Mova",
     designation: "Independent",
     position: "Open Source Advocate",
-    imageUrl: "/sponsors/kiran.jpg",
+    imageUrl: "/download.jpeg",
   },
 ];

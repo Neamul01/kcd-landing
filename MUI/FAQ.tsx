@@ -61,14 +61,20 @@ export default function FAQ() {
         onChange={handleChange("panel1")}
       >
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>Collapsible Group Item #1</Typography>
+          <Typography>
+            Are Kubernetes Community Days limited to Kubernetes?
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
+            No! The Presentations in KCDs cover a wide variety of topics around
+            open source and cloud-native technologies. A very basic awareness of
+            Cloud and Containers is sufficient to benefit from attending KCD
+            Kerala. Cloud native technologies empower organizations to build and
+            run scalable applications in modern, dynamic environments such as
+            public, private, and hybrid clouds. Containers, service meshes,
+            microservices, immutable infrastructure, and declarative APIs
+            exemplify this approach.
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -77,14 +83,55 @@ export default function FAQ() {
         onChange={handleChange("panel2")}
       >
         <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <Typography>Collapsible Group Item #2</Typography>
+          <Typography>
+            Can I transfer my registration to another person if I can’t attend?
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Yes. Please write to us</Typography>
+          <a
+            href="mailto:organizers@kcddhaka.org"
+            className="text-primary underline"
+          >
+            organizers@kcddhaka.org
+          </a>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === "panel4"}
+        onChange={handleChange("panel4")}
+      >
+        <AccordionSummary aria-controls="panel4d-content" id="panel4d-header">
+          <Typography>Why should attendees pay for the ticket?</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
+            Kubernetes Community Days (KCDs) are community-organized,
+            not-for-profit events. Organizing a large-scale, in-person event
+            like KCD Dhaka involves considerable cost. Sponsors provide partial
+            financial support for the event. The remaining cost is covered by
+            tickets.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === "panel5"}
+        onChange={handleChange("panel5")}
+      >
+        <AccordionSummary aria-controls="panel5d-content" id="panel5d-header">
+          <Typography>What are the benefits of attending KCD Dhaka?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            KCDs are the second favorite event from CNCF, just behind KubeCon.
+            In 2022, CNCF supported 16 KCDs across 14 countries, with more than
+            6500 attendees. The Speakers cover business issues, tools,
+            processes, automation and cloud strategy. Many talks will be about
+            how companies relied on open source technologies to modernize Apps
+            and Infrastructure. As an attendee you get to connect and
+            collaborate with Software Engineers, DevOps Professionals, SREs,
+            Cloud Developers, End-users, Vendors, Industry experts and Thought
+            leaders.
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -93,14 +140,13 @@ export default function FAQ() {
         onChange={handleChange("panel3")}
       >
         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-          <Typography>Collapsible Group Item #3</Typography>
+          <Typography>Is there any cancellation or refund policy?</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
+            No, unfortunately we don&apos;t have a cancellation or refund
+            policy! Once you book your ticket, we are sure you won&apos;t regret
+            it!
           </Typography>
         </AccordionDetails>
       </Accordion>

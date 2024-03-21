@@ -19,17 +19,8 @@ export default function Sponsors() {
             </div>
           </div>
         </SectionLayout>
-        <SectionLayout title={"Innovation Catalysts"}>
-          <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
-            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
-              {Innovation.map((sponsor) => (
-                <IconCard key={sponsor.id} sponsor={sponsor} />
-              ))}
-            </div>
-          </div>
-        </SectionLayout>
 
-        <SectionLayout title={"Scholarship Sponsors"}>
+        {/* <SectionLayout title={"Scholarship Sponsors"}>
           <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
               {Scholarship.map((sponsor) => (
@@ -54,7 +45,7 @@ export default function Sponsors() {
               ))}
             </div>
           </div>
-        </SectionLayout>
+        </SectionLayout> */}
 
         <SectionLayout title={"Community Partners"}>
           <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
@@ -78,25 +69,6 @@ export default function Sponsors() {
     </div>
   );
 }
-
-const Scholarship = [
-  {
-    id: 1,
-    title: "Student",
-    name: "Sudheesh C Sudhakaran",
-    designation: "VMware by Broadcom",
-    position: "Engineering Leader",
-    imageUrl: "/sponsors/sudheesh.jpg",
-  },
-  {
-    id: 2,
-    title: "Diversity",
-    name: "Kiran Mova",
-    designation: "Independent",
-    position: "Open Source Advocate",
-    imageUrl: "/sponsors/kiran.jpg",
-  },
-];
 
 const sponsors = [
   {
@@ -133,44 +105,6 @@ const sponsors = [
     id: "7",
     name: "rezoomex",
     icon: "/sponsors/rezoomex.png",
-  },
-];
-
-const Innovation = [
-  {
-    id: "1",
-    name: "accuknox",
-    icon: "/sponsors/accuknox.png",
-  },
-  {
-    id: "2",
-    name: "harness",
-    icon: "/sponsors/harness.png",
-  },
-  {
-    id: "3",
-    name: "cloudera",
-    icon: "/sponsors/cloudera.png",
-  },
-  {
-    id: "4",
-    name: "siglens",
-    icon: "/sponsors/siglens.png",
-  },
-  {
-    id: "5",
-    name: "cazelabs",
-    icon: "/sponsors/cazelabs.png",
-  },
-  {
-    id: "6",
-    name: "knownhost",
-    icon: "/sponsors/knownhost.png",
-  },
-  {
-    id: "7",
-    name: "ambersand",
-    icon: "/sponsors/ambersand.png",
   },
 ];
 

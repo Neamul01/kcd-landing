@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "kcdkerala.in",
+        hostname: "www.bracinn.com",
         port: "",
       },
     ],

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 function Hero() {
@@ -7,18 +8,21 @@ function Hero() {
         <div className="w-sectionLayout mx-auto">
           <div className="flex flex-col mb-8">
             <h2 className="text-[65px] text-secondary font-semibold ">
-              KCD Kerala 2024
+              Dhaka Welcomes the Future of Tech KCD 2024!
             </h2>
             <p className="font-semibold text-[25px] text-white">
-              3rd Feb, Le Meridien Kochi
+              11th May, Brac Centre Inn.
             </p>
           </div>
-          <p className="text-[35px] uppercase font-semibold text-secondary ">
+          {/* <p className="text-[35px] uppercase font-semibold text-secondary ">
             TODAY..
-          </p>
-          <button className="text-white bg-primary px-8 py-4 rounded-lg mt-16">
+          </p> */}
+          <Link
+            href={"#buy-ticket"}
+            className="text-white bg-primary px-8 py-4 rounded-lg mt-16"
+          >
             Register Now
-          </button>
+          </Link>
         </div>
       </div>
     </div>

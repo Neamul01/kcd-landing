@@ -3,6 +3,7 @@ import {
   FaFacebookF,
   FaInstagram,
   FaLinkedinIn,
+  FaSlack,
   FaTwitter,
   FaWhatsapp,
   FaYoutube,
@@ -18,22 +19,14 @@ export default function Footer() {
           </p>
           <div className="flex flex-col gap-2 text-center md:text-left">
             <p className="text-white/80 text-sm">
-              Kubernetes Community Days Kerala (KCD Kerala) is a
-              community-organized event supported by the Cloud Native Computing
-              Foundation (CNCF) to help grow and sustain the Kubernetes and
-              cloud-native community. It gathers adopters and technologists from
-              open source and cloud-native communities for education,
-              collaboration and networking.
+              Join us at KCD Dhaka on May 11th, 2024, for a day of cutting-edge
+              talks and networking. Whether you&apos;re a developer, operations
+              expert, or IT professional, this is your chance to shape the
+              future of cloud-native technology.
             </p>
             <p className="text-white/80 text-sm">
-              Kerala has a growing group of Cloud Native enthusiasts, students,
-              professionals and technology leaders. KCD Kerala offers a platform
-              for this community to come together and connect with other Cloud
-              Native communities in India and neighbouring countries. It
-              provides an opportunity to experience conferences like KubeCon /
-              CloudNativeCon together with the rich cultural heritage of Kerala.
-              We are excited and looking forward to building a thriving Cloud
-              Native hub in Kerala.
+              Supported by the CNCF, mark your calendars and let&apos;s innovate
+              together in Dhaka, Bangladesh!
             </p>
           </div>
         </div>
@@ -42,41 +35,42 @@ export default function Footer() {
             Connect with us
           </p>
           <div className="flex items-center gap-3">
-            <a href="#">
+            <a
+              href="https://www.linkedin.com/company/kcd-dhaka/"
+              target="_blank"
+              rel="noreferrer"
+            >
               <FaLinkedinIn
                 size={25}
                 className="text-[#007bff] hover:text-white"
               />
             </a>
-            <a href="#">
+            <a
+              href="https://www.facebook.com/kcddhaka/"
+              target="_blank"
+              rel="noreferrer"
+            >
               <FaFacebookF
                 size={25}
                 className="text-[#007bff] hover:text-white"
               />
             </a>
-            <a href="#">
-              <FaWhatsapp
-                size={25}
-                className="text-[#007bff] hover:text-white"
-              />
-            </a>
-            <a href="#">
-              <FaInstagram
-                size={25}
-                className="text-[#007bff] hover:text-white"
-              />
-            </a>
-            <a href="#">
+            <a
+              href="https://twitter.com/i/flow/login?redirect_after_login=%2Fkcddhaka"
+              target="_blank"
+              rel="noreferrer"
+            >
               <FaTwitter
                 size={25}
                 className="text-[#007bff] hover:text-white"
               />
             </a>
-            <a href="#">
-              <FaYoutube
-                size={25}
-                className="text-[#007bff] hover:text-white"
-              />
+            <a
+              href="https://cloud-native.slack.com/?redir=%2Farchives%2FC06KC3Z9V16%3Fname%3DC06KC3Z9V16"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaSlack size={25} className="text-[#007bff] hover:text-white" />
             </a>
           </div>
         </div>
