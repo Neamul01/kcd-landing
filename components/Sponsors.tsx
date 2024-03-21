@@ -151,32 +151,22 @@ const Community = [
   {
     id: "1",
     name: "woman",
-    icon: "/sponsors/woman.png",
+    icon: "/community/AWS.png",
   },
   {
     id: "2",
     name: "kong",
-    icon: "/sponsors/kong.png",
+    icon: "/community/CNCF.png",
   },
   {
     id: "3",
     name: "soda",
-    icon: "/sponsors/soda.png",
+    icon: "/community/DCM.png",
   },
   {
     id: "4",
     name: "ccici",
-    icon: "/sponsors/ccici.png",
-  },
-  {
-    id: "5",
-    name: "libre",
-    icon: "/sponsors/libre.png",
-  },
-  {
-    id: "6",
-    name: "kube_bir",
-    icon: "/sponsors/kube_blr.png",
+    icon: "/community/TFUG.png",
   },
 ];
 
@@ -184,16 +174,11 @@ const Media = [
   {
     id: "1",
     name: "kube_events",
-    icon: "/sponsors/kube_events.png",
+    icon: "/media/kube.svg",
   },
   {
     id: "2",
     name: "kube_careers",
-    icon: "/sponsors/kube_careers.png",
-  },
-  {
-    id: "3",
-    name: "kappiri",
-    icon: "/sponsors/kappiri.png",
+    icon: "/media/kube-event.svg",
   },
 ];
