@@ -54,13 +54,6 @@ function Navbar() {
   );
   const pathname = usePathname();
 
-  React.useEffect(() => {
-    console.log("pathname", pathname);
-    if (pathname.includes("/dashboard")) {
-      return;
-    }
-  }, [pathname]);
-
   const [backgroundColor, setBackgroundColor] =
     React.useState<string>("transparent");
   const router = useRouter();
