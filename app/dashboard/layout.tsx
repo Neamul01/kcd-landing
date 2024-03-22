@@ -24,12 +24,13 @@ export default function Layout({ children }: LayoutProps): React.JSX.Element {
             "--SideNav-zIndex": 1100,
             "--MobileNav-width": "320px",
             "--MobileNav-zIndex": 1100,
+            "--MainNav-bgColor": "white",
           },
         }}
       />
       <Box
         sx={{
-          bgcolor: "var(--mui-palette-background-default)",
+          bgcolor: "white",
           display: "flex",
           flexDirection: "column",
           position: "relative",
@@ -43,11 +44,12 @@ export default function Layout({ children }: LayoutProps): React.JSX.Element {
             flex: "1 1 auto",
             flexDirection: "column",
             pl: { lg: "var(--SideNav-width)" },
+            bgcolor: "white",
           }}
         >
           <MainNav />
           <main>
-            <Container maxWidth="xl" sx={{ py: "64px" }}>
+            <Container maxWidth="xl" sx={{ py: "64px", bgcolor: "white" }}>
               {children}
             </Container>
           </main>

@@ -47,22 +47,20 @@ export function Logo({
     // />
     <Box
       sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-      className="items-center gap-8"
+      className="items-center gap-2"
     >
       <Image
         className="cursor-pointer"
         height={84}
         width={100}
-        src={color === "dark" ? "/KCDLogoW.png" : "/KCDLogoB.png"}
+        src={"/KCDLogoW.png"}
         alt="Navbar Icon"
       />
       <Image
         className="cursor-pointer"
         height={70}
         width={124}
-        src={
-          color === "dark" ? "/CloudNativeLogoW.png" : "/CloudNativeLogoB.png"
-        }
+        src={"/CloudNativeLogoW.png"}
         alt="Navbar Icon"
       />
     </Box>
