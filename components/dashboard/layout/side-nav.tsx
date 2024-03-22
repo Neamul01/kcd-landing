@@ -26,7 +26,7 @@ export function SideNav(): React.JSX.Element {
         "--SideNav-background": "#121621",
         "--SideNav-color": "#ffffff",
         "--NavItem-color": "#ffffff",
-        "--NavItem-hover-background": "rgba(255, 255, 255, 0.04)",
+        "--NavItem-hover-background": "#1516d6",
         "--NavItem-active-background": "#1516d6",
         "--NavItem-active-color": "#ffffff",
         "--NavItem-disabled-color": "var(--mui-palette-neutral-500)",
