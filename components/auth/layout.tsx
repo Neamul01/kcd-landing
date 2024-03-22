@@ -49,8 +49,7 @@ export function Layout({ children }: LayoutProps): React.JSX.Element {
       <Box
         sx={{
           alignItems: "center",
-          background:
-            "radial-gradient(50% 50% at 50% 50%, #122647 0%, #090E23 100%)",
+          background: "white",
           color: "var(--mui-palette-common-white)",
           display: { xs: "none", lg: "flex" },
           justifyContent: "center",
@@ -65,13 +64,12 @@ export function Layout({ children }: LayoutProps): React.JSX.Element {
               variant="h1"
             >
               Welcome to{" "}
-              <Box component="span" sx={{ color: "#15b79e" }}>
+              <Box
+                component="span"
+                sx={{ color: "#15b79e", fontWeight: "500" }}
+              >
                 KCD Dhaka
               </Box>
-            </Typography>
-            <Typography align="center" variant="subtitle1">
-              A professional template that comes with ready-to-use MUI
-              components.
             </Typography>
           </Stack>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
