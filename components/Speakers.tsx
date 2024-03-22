@@ -1,8 +1,28 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import SectionLayout from "./layout/SectionLayout";
 import SpeakerCard from "@/MUI/SpeakerCard";
+import Axios from "@/lib/Axios";
 
 export default function Speakers() {
+  const [speakers, setSpeakers] = useState();
+
+  const getData = async () => {
+    try {
+      const response = await Axios.get("/participants?limit=10");
+
+      // Handle the response data here
+      console.log(response.data);
+    } catch (error) {
+      // Handle the error here
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <div id="speakers">
       <SectionLayout title={"Keynote Speakers"} className="bg-gray-200">
