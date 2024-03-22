@@ -11,7 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { IoLogoWhatsapp } from "react-icons/io5";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const pages = [
   {
