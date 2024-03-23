@@ -1,40 +1,44 @@
-// axiosInterceptorInstance.js
+// axiosInterceptorInstance.ts
 
-import axios from "axios";
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+} from "axios";
 
-const Axios = axios.create({
+const axiosInstance: AxiosInstance = axios.create({
   baseURL: "https://dev2.kcddhaka.org/api/v1/", // Replace with your API base URL
 });
 
-// Request interceptor
-Axios.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    // Modify the request config here (add headers, authentication tokens)
+axiosInstance.interceptors.request.use(
+  // @ts-ignore
+  (config: AxiosRequestConfig) => {
+    const token: string | null = localStorage.getItem("token");
 
-    // If token is present, add it to request's Authorization Header
     if (token) {
-      const accessToken = JSON.parse(token);
-      if (config.headers) config.headers.token = accessToken;
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${token}`,
+      };
     }
+
     return config;
   },
-  (error) => {
-    // Handle request errors here
+  (error: AxiosError) => {
     return Promise.reject(error);
   }
 );
 
-// Response interceptor
-Axios.interceptors.response.use(
-  (response) => {
-    // Modify the response data here
+axiosInstance.interceptors.response.use(
+  (response: AxiosResponse) => {
+    // Modify the response data here if needed
     return response;
   },
-  (error) => {
+  (error: AxiosError) => {
     // Handle response errors here
     return Promise.reject(error);
   }
 );
 
-export default Axios;
+export default axiosInstance;
