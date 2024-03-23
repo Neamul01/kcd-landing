@@ -9,6 +9,7 @@ import { Button } from "@mui/material";
 import { IoIosArrowBack } from "react-icons/io";
 import { Ticket } from "@/types/types";
 import axiosInstance from "@/lib/Axios";
+import Loader from "../Shared/Loader";
 
 export default function BuyTicket() {
   const [tab, setTab] = useState(1);
@@ -40,7 +41,13 @@ export default function BuyTicket() {
         title={"Buy Tickets"}
         className="bg-gray-200"
       >
-        {!tickets ? null : (
+        {!tickets ? (
+          <>
+            <div className="flex items-center justify-center">
+              <Loader />
+            </div>
+          </>
+        ) : (
           <div className="md:w-layout  mx-auto md:p-16 p-2 pt-8 rounded-lg bg-white flex flex-col gap-3">
             <div className="">
               <Button
