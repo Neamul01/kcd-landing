@@ -13,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@mui/material";
+import { useUser } from "@/hooks/use-user";
 
 const pages = [
   {
@@ -53,6 +54,10 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
+  const { data: user } = useUser();
+
+  console.log("user", user);
+  // const [user, setUser] = React.useState<User>();
   const pathname = usePathname();
 
   const [backgroundColor, setBackgroundColor] =
@@ -213,35 +218,49 @@ function Navbar() {
                 ))}
               </Box>
 
-              <Box
-                sx={{
-                  flexGrow: 0,
-                  display: { xs: "none", md: "flex", gap: 6 },
-                }}
-              >
-                {/* <IoLogoWhatsapp size={35} color="blue" /> */}
+              {user ? (
                 <Button
                   className="border-secondary border"
                   variant="outlined"
-                  onClick={() => router.push("/auth/sign-in")}
+                  onClick={() => router.push("/dashboard")}
                 >
                   <span
                     className={`capitalize ${isTransparent() ? "text-white" : "text-black"} font-medium text-lg`}
                   >
-                    Sign In
+                    Dashboard
                   </span>
                 </Button>
-
-                <Button
-                  className="border-secondary border bg-secondary/80 "
-                  variant="outlined"
-                  onClick={() => router.push("/auth/sign-up")}
+              ) : (
+                <Box
+                  sx={{
+                    flexGrow: 0,
+                    display: { xs: "none", md: "flex", gap: 6 },
+                  }}
                 >
-                  <span className="capitalize text-white font-medium text-lg">
-                    Sign Up
-                  </span>
-                </Button>
-              </Box>
+                  {/* <IoLogoWhatsapp size={35} color="blue" /> */}
+                  <Button
+                    className="border-secondary border"
+                    variant="outlined"
+                    onClick={() => router.push("/auth/sign-in")}
+                  >
+                    <span
+                      className={`capitalize ${isTransparent() ? "text-white" : "text-black"} font-medium text-lg`}
+                    >
+                      Sign In
+                    </span>
+                  </Button>
+
+                  <Button
+                    className="border-secondary border bg-secondary/80 "
+                    variant="outlined"
+                    onClick={() => router.push("/auth/sign-up")}
+                  >
+                    <span className="capitalize text-white font-medium text-lg">
+                      Sign Up
+                    </span>
+                  </Button>
+                </Box>
+              )}
             </Toolbar>
           </Container>
         </AppBar>
