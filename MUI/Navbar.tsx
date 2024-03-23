@@ -12,6 +12,7 @@ import { IoLogoWhatsapp } from "react-icons/io5";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { Button } from "@mui/material";
 
 const pages = [
   {
@@ -66,6 +67,12 @@ function Navbar() {
     setAnchorElNav(null);
   };
 
+  const isTransparent = () => {
+    return backgroundColor === "transparent" && !pathname.includes("/auth")
+      ? true
+      : false;
+  };
+
   React.useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -85,14 +92,12 @@ function Navbar() {
 
   return (
     <>
-      {pathname.includes("/dashboard") ? (
-        ""
-      ) : (
+      {pathname.includes("/dashboard") ? null : (
         <AppBar
           position="static"
           sx={{ color: "#000" }}
           className={`${
-            backgroundColor === "transparent"
+            isTransparent()
               ? `bg-transparent shadow-none !text-white`
               : "bg-white"
           } sticky top-0 z-50`}
@@ -108,11 +113,7 @@ function Navbar() {
                   onClick={() => router.push("/")}
                   height={84}
                   width={120}
-                  src={
-                    backgroundColor === "transparent"
-                      ? "/KCDLogoW.png"
-                      : "/KCDLogoB.png"
-                  }
+                  src={isTransparent() ? "/KCDLogoW.png" : "/KCDLogoB.png"}
                   alt="Navbar Icon"
                 />
                 <Image
@@ -121,7 +122,7 @@ function Navbar() {
                   height={70}
                   width={144}
                   src={
-                    backgroundColor === "transparent"
+                    isTransparent()
                       ? "/CloudNativeLogoW.png"
                       : "/CloudNativeLogoB.png"
                   }
@@ -164,9 +165,7 @@ function Navbar() {
                         href={page.link}
                         key={page.link}
                         className={`${
-                          backgroundColor === "transparent"
-                            ? `!text-white`
-                            : "text-black"
+                          isTransparent() ? `!text-white` : "text-black"
                         } capitalize text-center`}
                       >
                         {page.name}
@@ -206,9 +205,7 @@ function Navbar() {
                     // onClick={handleCloseNavMenu}
                     // sx={{ my: 2, display: "block" }}
                     className={`${
-                      backgroundColor === "transparent"
-                        ? `!text-white`
-                        : "text-black"
+                      isTransparent() ? `!text-white` : "text-black"
                     } capitalize my-1 px-3`}
                   >
                     {page.name}
@@ -216,8 +213,34 @@ function Navbar() {
                 ))}
               </Box>
 
-              <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
-                <IoLogoWhatsapp size={35} color="blue" />
+              <Box
+                sx={{
+                  flexGrow: 0,
+                  display: { xs: "none", md: "flex", gap: 6 },
+                }}
+              >
+                {/* <IoLogoWhatsapp size={35} color="blue" /> */}
+                <Button
+                  className="border-secondary border"
+                  variant="outlined"
+                  onClick={() => router.push("/auth/sign-in")}
+                >
+                  <span
+                    className={`capitalize ${isTransparent() ? "text-white" : "text-black"} font-medium text-lg`}
+                  >
+                    Sign In
+                  </span>
+                </Button>
+
+                <Button
+                  className="border-secondary border bg-secondary/80 "
+                  variant="outlined"
+                  onClick={() => router.push("/auth/sign-up")}
+                >
+                  <span className="capitalize text-white font-medium text-lg">
+                    Sign Up
+                  </span>
+                </Button>
               </Box>
             </Toolbar>
           </Container>

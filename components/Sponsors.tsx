@@ -125,7 +125,7 @@ const bronzeSponsors = [
   {
     id: "1",
     name: "redhat",
-    icon: "/sponsors/placeholder.png",
+    icon: "/sponsors/BrilliantClound.png",
   },
 ];
 
@@ -144,6 +144,11 @@ const platinumSponsors = [
     id: "3",
     name: "prodevans",
     icon: "/sponsors/klover.png",
+  },
+  {
+    id: "4",
+    name: "prodevans",
+    icon: "/sponsors/f5.png",
   },
 ];
 
