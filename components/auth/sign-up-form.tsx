@@ -21,16 +21,20 @@ import { z as zod } from "zod";
 import { paths } from "@/paths";
 import { authClient } from "@/lib/auth/client";
 import { MenuItem, Select } from "@mui/material";
+import Axios from "@/lib/Axios";
 // import { useUser } from '@/hooks/use-user';
 
 const schema = zod.object({
   name: zod.string().min(1, { message: "Name is required" }),
   email: zod.string().min(1, { message: "Email is required" }).email(),
-  mobile: zod.string().min(1, { message: "Last name is required" }),
-  gender: zod.string().min(1, { message: "Last name is required" }),
-  organization: zod.string().min(1, { message: "Last name is required" }),
-  designation: zod.string().min(1, { message: "Last name is required" }),
-  role: zod.string().min(1, { message: "Last name is required" }),
+  mobile: zod
+    .string()
+    .min(11, { message: "Please enter a valid phone number." })
+    .max(12, { message: "Please enter a valid phone number." }),
+  gender: zod.string().min(1, { message: "Gender is required" }),
+  organization: zod.string().min(1, { message: "Organization is required" }),
+  designation: zod.string().min(1, { message: "Designation is required" }),
+  role: zod.string().min(1, { message: "Role is required" }),
   password: zod
     .string()
     .min(6, { message: "Password should be at least 6 characters" }),
@@ -60,15 +64,23 @@ export function SignUpForm(): React.JSX.Element {
     control,
     handleSubmit,
     setError,
+    reset,
     formState: { errors },
   } = useForm<Values>({ defaultValues, resolver: zodResolver(schema) });
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      setIsPending(true);
+      // setIsPending(true);
 
-      console.log("values", values);
+      // console.log("values", values);
 
+      const res = await Axios.post("/auth/register", values);
+
+      console.log("res", res);
+      const token = res.data.token;
+      localStorage.setItem("token", token);
+      reset();
+      router.push("/dashboard");
       // const { error } = await authClient.signUp(values);
 
       // if (error) {

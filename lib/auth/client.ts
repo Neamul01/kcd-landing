@@ -17,9 +17,13 @@ const user = {
 } satisfies User;
 
 export interface SignUpParams {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
+  mobile: string;
+  gender: string;
+  organization: string;
+  designation: string;
+  role: string;
   password: string;
 }
 
