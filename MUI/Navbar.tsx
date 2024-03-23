@@ -8,7 +8,6 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";
-import { IoLogoWhatsapp } from "react-icons/io5";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -55,9 +54,6 @@ function Navbar() {
     null
   );
   const { data: user } = useUser();
-
-  console.log("user", user);
-  // const [user, setUser] = React.useState<User>();
   const pathname = usePathname();
 
   const [backgroundColor, setBackgroundColor] =

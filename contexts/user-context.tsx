@@ -49,12 +49,12 @@ export function UserProvider({
         return;
       }
 
-      setState((prev) => ({
-        ...prev,
-        user: data ?? null,
-        error: null,
-        isLoading: false,
-      }));
+      // setState((prev) => ({
+      //   ...prev,
+      //   user: data ?? null,
+      //   error: null,
+      //   isLoading: false,
+      // }));
     } catch (err) {
       logger.error(err);
       setState((prev) => ({
