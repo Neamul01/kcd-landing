@@ -21,6 +21,8 @@ import { z as zod } from "zod";
 
 import { paths } from "@/paths";
 import { authClient } from "@/lib/auth/client";
+import Axios from "@/lib/Axios";
+import axios from "axios";
 // import { useUser } from "@/hooks/use-user";
 
 const schema = zod.object({
@@ -31,8 +33,8 @@ const schema = zod.object({
 type Values = zod.infer<typeof schema>;
 
 const defaultValues = {
-  email: "sofia@devias.io",
-  password: "Secret1",
+  email: "",
+  password: "",
 } satisfies Values;
 
 export function SignInForm(): React.JSX.Element {
@@ -41,6 +43,7 @@ export function SignInForm(): React.JSX.Element {
   // const { checkSession } = useUser();
 
   const [showPassword, setShowPassword] = React.useState<boolean>();
+  const [apiError, setAPIError] = React.useState("");
 
   const [isPending, setIsPending] = React.useState<boolean>(false);
 
@@ -48,29 +51,43 @@ export function SignInForm(): React.JSX.Element {
     control,
     handleSubmit,
     setError,
+    reset,
     formState: { errors },
   } = useForm<Values>({ defaultValues, resolver: zodResolver(schema) });
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      setIsPending(true);
+      // setIsPending(true);
+      // setAPIError("");
 
-      const { error } = await authClient.signInWithPassword(values);
-
-      if (error) {
-        setError("root", { type: "server", message: error });
-        setIsPending(false);
-        return;
-      }
-
-      // Refresh the auth state
-      // await checkSession?.();
-
-      // UserProvider, for this case, will not refresh the router
-      // After refresh, GuestGuard will handle the redirect
-      router.refresh();
+      // const res = await axios.post(
+      //   "https://dev2.kcddhaka.org/api/v1/auth/login",
+      //   {
+      //     ...values,
+      //   }
+      // );
+      // });
+      // console.log("res", res);
+      await Axios.post("/auth/login", values)
+        .then((res) => {
+          console.log("res", res);
+          if (!res) {
+            console.log("error happended");
+          }
+          const token = res.data.token;
+          localStorage.setItem("token", token);
+          reset();
+          router.replace("/dashboard");
+        })
+        .catch((err) => {
+          console.log("err", err);
+          setAPIError(err?.response?.data?.error);
+        })
+        .finally(() => {
+          setIsPending(false);
+        });
     },
-    [router, setError]
+    [router, setError, reset]
   );
 
   return (
@@ -162,16 +179,7 @@ export function SignInForm(): React.JSX.Element {
           </Button>
         </Stack>
       </form>
-      <Alert color="warning">
-        Use{" "}
-        <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
-          sofia@devias.io
-        </Typography>{" "}
-        with password{" "}
-        <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
-          Secret1
-        </Typography>
-      </Alert>
+      {apiError && <Alert color="warning">{apiError}</Alert>}
     </Stack>
   );
 }
