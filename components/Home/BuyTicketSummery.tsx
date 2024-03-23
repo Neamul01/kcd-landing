@@ -1,13 +1,17 @@
+import { Ticket } from "@/types/types";
 import { Button, TextField } from "@mui/material";
 import React, { Dispatch, SetStateAction } from "react";
 import { HiMiniShoppingCart } from "react-icons/hi2";
+import { TbCurrencyTaka } from "react-icons/tb";
 
 export default function BuyTicketSummery({
   setTab,
   tab,
+  selectedTickets,
 }: {
   setTab: Dispatch<SetStateAction<number>>;
   tab: number;
+  selectedTickets: Ticket | undefined;
 }) {
   const handleProceed = () => {
     if (tab < 3) {
@@ -19,13 +23,50 @@ export default function BuyTicketSummery({
   return (
     <div className="bg-gray-100 w-full h-full p-4">
       <div className="h-full w-full flex flex-col justify-between gap-3">
-        <div className="w-full h-72 bg-white flex gap-4 flex-col items-center justify-center rounded-xl">
-          <HiMiniShoppingCart size={80} className="text-accent/20" />
-          <p className="text-center px-6">
-            You haven&apos;t selected any ticket. Select a ticket to see the
-            ticket summary.
-          </p>
-        </div>
+        {selectedTickets ? (
+          <div className="w-full  bg-white flex gap-4 flex-col rounded-xl p-4">
+            <h3 className="font-semibold text-xl tracking-wide">
+              Ticket Summary
+            </h3>
+            <div className="flex flex-col gap-2 pb-2">
+              <div className="flex justify-between text-black/60">
+                <p className="font-medium">
+                  {selectedTickets.title.length > 20
+                    ? selectedTickets.title.slice(0, 20) + "..."
+                    : selectedTickets.title}
+                </p>
+                <p className="font-medium flex items-center justify-center">
+                  <TbCurrencyTaka /> {selectedTickets.price}{" "}
+                </p>
+              </div>
+              <div className="flex justify-between text-black/60">
+                <p className="">Sub Total</p>
+                <p className="font-medium flex items-center justify-center">
+                  <TbCurrencyTaka /> {selectedTickets.price}{" "}
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-between text-black text-xl font-semibold py-3 border-y border-gray-200">
+              <p className="">Total</p>
+              <p className="font-medium flex items-center justify-center">
+                <TbCurrencyTaka /> {selectedTickets.price}{" "}
+              </p>
+            </div>
+            <div className="flex items-center justify-center">
+              <p className="text-accent/80 text-center text-xs font-[300] tracking-wide px-5">
+                Processing Fee will be added on selecting payment method*
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="w-full h-72 bg-white flex gap-4 flex-col items-center justify-center rounded-xl">
+            <HiMiniShoppingCart size={80} className="text-accent/20" />
+            <p className="text-center px-6">
+              You haven&apos;t selected any ticket. Select a ticket to see the
+              ticket summary.
+            </p>
+          </div>
+        )}
         <div className="flex items-center">
           <div className="flex items-center gap-1">
             <div className="flex flex-col justify-center gap-1">
