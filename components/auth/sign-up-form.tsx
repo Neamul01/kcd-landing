@@ -59,6 +59,7 @@ export function SignUpForm(): React.JSX.Element {
   // const { checkSession } = useUser();
 
   const [isPending, setIsPending] = React.useState<boolean>(false);
+  const [apiError, setAPIError] = React.useState("");
 
   const {
     control,
@@ -70,31 +71,25 @@ export function SignUpForm(): React.JSX.Element {
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      // setIsPending(true);
+      setIsPending(true);
 
-      // console.log("values", values);
+      console.log("values", values);
 
-      const res = await Axios.post("/auth/register", values);
-
-      console.log("res", res);
-      const token = res.data.token;
-      localStorage.setItem("token", token);
-      reset();
-      router.push("/dashboard");
-      // const { error } = await authClient.signUp(values);
-
-      // if (error) {
-      //   setError("root", { type: "server", message: error });
-      //   setIsPending(false);
-      //   return;
-      // }
-
-      // Refresh the auth state
-      // await checkSession?.();
-
-      // UserProvider, for this case, will not refresh the router
-      // After refresh, GuestGuard will handle the redirect
-      router.refresh();
+      await Axios.post("/auth/register", values)
+        .then((res) => {
+          console.log("res", res);
+          const token = res.data.token;
+          localStorage.setItem("token", token);
+          reset();
+          router.replace("/dashboard");
+        })
+        .catch((err) => {
+          console.log("err", err);
+          setAPIError(err?.response?.data?.error);
+        })
+        .finally(() => {
+          setIsPending(false);
+        });
     },
     [router, setError]
   );
@@ -204,19 +199,6 @@ export function SignUpForm(): React.JSX.Element {
               </FormControl>
             )}
           />
-          {/* <Controller
-            control={control}
-            name="role"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.role)}>
-                <InputLabel>role</InputLabel>
-                <OutlinedInput {...field} label="role" />
-                {errors.role ? (
-                  <FormHelperText>{errors.role.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          /> */}
           <Controller
             control={control}
             name="password"
@@ -262,7 +244,7 @@ export function SignUpForm(): React.JSX.Element {
           </Button>
         </Stack>
       </form>
-      {/* <Alert color="warning">Created users are not persisted</Alert> */}
+      {apiError && <Alert color="warning">{apiError}</Alert>}
     </Stack>
   );
 }
