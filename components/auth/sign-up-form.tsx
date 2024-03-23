@@ -20,28 +20,33 @@ import { z as zod } from "zod";
 
 import { paths } from "@/paths";
 import { authClient } from "@/lib/auth/client";
+import { MenuItem, Select } from "@mui/material";
 // import { useUser } from '@/hooks/use-user';
 
 const schema = zod.object({
-  firstName: zod.string().min(1, { message: "First name is required" }),
-  lastName: zod.string().min(1, { message: "Last name is required" }),
+  name: zod.string().min(1, { message: "Name is required" }),
   email: zod.string().min(1, { message: "Email is required" }).email(),
+  mobile: zod.string().min(1, { message: "Last name is required" }),
+  gender: zod.string().min(1, { message: "Last name is required" }),
+  organization: zod.string().min(1, { message: "Last name is required" }),
+  designation: zod.string().min(1, { message: "Last name is required" }),
+  role: zod.string().min(1, { message: "Last name is required" }),
   password: zod
     .string()
     .min(6, { message: "Password should be at least 6 characters" }),
-  terms: zod
-    .boolean()
-    .refine((value) => value, "You must accept the terms and conditions"),
 });
 
 type Values = zod.infer<typeof schema>;
 
 const defaultValues = {
-  firstName: "",
-  lastName: "",
+  name: "",
   email: "",
+  mobile: "",
+  gender: "",
+  organization: "",
+  designation: "",
+  role: "user",
   password: "",
-  terms: false,
 } satisfies Values;
 
 export function SignUpForm(): React.JSX.Element {
@@ -62,13 +67,15 @@ export function SignUpForm(): React.JSX.Element {
     async (values: Values): Promise<void> => {
       setIsPending(true);
 
-      const { error } = await authClient.signUp(values);
+      console.log("values", values);
 
-      if (error) {
-        setError("root", { type: "server", message: error });
-        setIsPending(false);
-        return;
-      }
+      // const { error } = await authClient.signUp(values);
+
+      // if (error) {
+      //   setError("root", { type: "server", message: error });
+      //   setIsPending(false);
+      //   return;
+      // }
 
       // Refresh the auth state
       // await checkSession?.();
@@ -100,26 +107,13 @@ export function SignUpForm(): React.JSX.Element {
         <Stack spacing={2}>
           <Controller
             control={control}
-            name="firstName"
+            name="name"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.firstName)}>
-                <InputLabel>First name</InputLabel>
-                <OutlinedInput {...field} label="First name" />
-                {errors.firstName ? (
-                  <FormHelperText>{errors.firstName.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
-          <Controller
-            control={control}
-            name="lastName"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.firstName)}>
-                <InputLabel>Last name</InputLabel>
-                <OutlinedInput {...field} label="Last name" />
-                {errors.firstName ? (
-                  <FormHelperText>{errors.firstName.message}</FormHelperText>
+              <FormControl error={Boolean(errors.name)}>
+                <InputLabel>Name</InputLabel>
+                <OutlinedInput {...field} label="Name" />
+                {errors.name ? (
+                  <FormHelperText>{errors.name.message}</FormHelperText>
                 ) : null}
               </FormControl>
             )}
@@ -139,6 +133,80 @@ export function SignUpForm(): React.JSX.Element {
           />
           <Controller
             control={control}
+            name="mobile"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.mobile)}>
+                <InputLabel>Mobile</InputLabel>
+                <OutlinedInput {...field} label="Mobile" type="number" />
+                {errors.mobile ? (
+                  <FormHelperText>{errors.mobile.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="gender"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.gender)}>
+                <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                <Select
+                  {...field}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Gender"
+                >
+                  <MenuItem value={"male"}>Male</MenuItem>
+                  <MenuItem value={"female"}>Female</MenuItem>
+                </Select>
+                {errors.gender ? (
+                  <FormHelperText>{errors.gender.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+          <Controller
+            control={control}
+            name="organization"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.organization)}>
+                <InputLabel>Organization</InputLabel>
+                <OutlinedInput {...field} label="Organization" />
+                {errors.organization ? (
+                  <FormHelperText>{errors.organization.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+          <Controller
+            control={control}
+            name="designation"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.designation)}>
+                <InputLabel>Designation</InputLabel>
+                <OutlinedInput {...field} label="Designation" />
+                {errors.designation ? (
+                  <FormHelperText>{errors.designation.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+          {/* <Controller
+            control={control}
+            name="role"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.role)}>
+                <InputLabel>role</InputLabel>
+                <OutlinedInput {...field} label="role" />
+                {errors.role ? (
+                  <FormHelperText>{errors.role.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          /> */}
+          <Controller
+            control={control}
             name="password"
             render={({ field }) => (
               <FormControl error={Boolean(errors.password)}>
@@ -150,7 +218,7 @@ export function SignUpForm(): React.JSX.Element {
               </FormControl>
             )}
           />
-          <Controller
+          {/* <Controller
             control={control}
             name="terms"
             render={({ field }) => (
@@ -168,7 +236,7 @@ export function SignUpForm(): React.JSX.Element {
                 ) : null}
               </div>
             )}
-          />
+          /> */}
           {errors.root ? (
             <Alert color="error">{errors.root.message}</Alert>
           ) : null}
