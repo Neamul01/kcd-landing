@@ -13,9 +13,9 @@ export const metadata = {
 export default function Page(): React.JSX.Element {
   return (
     <Layout>
-      {/* <GuestGuard> */}
-      <SignUpForm />
-      {/* </GuestGuard> */}
+      <GuestGuard>
+        <SignUpForm />
+      </GuestGuard>
     </Layout>
   );
 }
