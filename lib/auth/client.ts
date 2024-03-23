@@ -14,7 +14,14 @@ const user = {
   firstName: "Sofia",
   lastName: "Rivers",
   email: "sofia@devias.io",
-} satisfies User;
+};
+type clientUser = {
+  id: string;
+  avatar: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 
 export interface SignUpParams {
   name: string;
@@ -81,11 +88,11 @@ class AuthClient {
     return { error: "Update reset not implemented" };
   }
 
-  async getUser(): Promise<{ data?: User | null; error?: string }> {
+  async getUser(): Promise<{ data?: clientUser | null; error?: string }> {
     // Make API request
 
     // We do not handle the API, so just check if we have a token in localStorage.
-    const token = localStorage.getItem("custom-auth-token");
+    const token = localStorage.getItem("token");
 
     if (!token) {
       return { data: null };
