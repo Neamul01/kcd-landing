@@ -1,5 +1,7 @@
+import { useUser } from "@/hooks/use-user";
 import { Ticket } from "@/types/types";
 import { Button, TextField } from "@mui/material";
+import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { TbCurrencyTaka } from "react-icons/tb";
@@ -15,6 +17,9 @@ export default function BuyTicketSummery({
   selectedTickets: Ticket | undefined;
   ticketQuantity: number;
 }) {
+  const { data: user } = useUser();
+  const router = useRouter();
+
   const handleProceed = () => {
     if (tab < 3) {
       setTab(tab + 1);
@@ -93,17 +98,31 @@ export default function BuyTicketSummery({
           </div>
         </div>
         <div className="w-full mb-6">
-          <Button
-            onClick={handleProceed}
-            // disabled
-            variant="contained"
-            size="large"
-            className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"
-          >
-            <span className="text-lg capitalize font-bold text-white">
-              Proceed
-            </span>
-          </Button>
+          {user ? (
+            <Button
+              onClick={handleProceed}
+              // disabled
+              variant="contained"
+              size="large"
+              className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"
+            >
+              <span className="text-lg capitalize font-bold text-white">
+                Proceed
+              </span>
+            </Button>
+          ) : (
+            <Button
+              onClick={() => router.push("/auth/sign-in")}
+              // disabled
+              variant="outlined"
+              size="large"
+              className="w-full  disabled:bg-accent/40 !disabled:cursor-not-allowed border-accent  py-3 shadow-none"
+            >
+              <span className="text-lg capitalize font-bold text-black">
+                Sign In
+              </span>
+            </Button>
+          )}
         </div>
       </div>
     </div>
