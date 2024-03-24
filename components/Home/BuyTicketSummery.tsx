@@ -1,8 +1,11 @@
+"use client";
 import { useUser } from "@/hooks/use-user";
+import axiosInstance from "@/lib/Axios";
 import { Ticket } from "@/types/types";
 import { Button, TextField } from "@mui/material";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { TbCurrencyTaka } from "react-icons/tb";
 
@@ -19,12 +22,35 @@ export default function BuyTicketSummery({
 }) {
   const { data: user } = useUser();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const handleProceed = async () => {
+    setLoading(true);
 
-  const handleProceed = () => {
-    if (tab < 3) {
-      setTab(tab + 1);
-    } else {
-      setTab(tab);
+    try {
+      if (tab < 3) {
+        setTab(tab + 1);
+      } else {
+        setTab(tab);
+      }
+      const orderData = {
+        tax: 0,
+        shippingFee: 0,
+        cartItems: [
+          {
+            name: selectedTickets?.title,
+            price: selectedTickets?.price,
+            quantity: 1,
+            ticket: selectedTickets?._id,
+          },
+        ],
+      };
+
+      await axiosInstance
+        .post("/orders", orderData)
+        .then((res) => console.log("order placed", res));
+    } finally {
+      // catch(err=>console.log('err',err))
+      setLoading(false);
     }
   };
   return (
@@ -101,13 +127,19 @@ export default function BuyTicketSummery({
           {user ? (
             <Button
               onClick={handleProceed}
-              disabled={!selectedTickets}
+              disabled={!selectedTickets || loading}
               variant="contained"
               size="large"
               className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"
             >
               <span className="text-lg capitalize font-bold text-white">
-                Proceed
+                {loading
+                  ? "Loading..."
+                  : tab === 2
+                    ? "Checkout"
+                    : tab === 3
+                      ? "Proceed to checkout"
+                      : "Proceed"}
               </span>
             </Button>
           ) : (
@@ -124,6 +156,20 @@ export default function BuyTicketSummery({
             </Button>
           )}
         </div>
+        <p className="text-sm text-center text-black/60">
+          By registering for this event, you provide consent to share your
+          contact information to the event organizers and KonfHub Technologies
+          LLP to share the event and other updates with you by email, post or
+          telephone. You understand and accept that you will abide by the
+          KonfHub&apos;s{" "}
+          <Link href={"#"} className="text-primary underline">
+            Code Of Conduct
+          </Link>{" "}
+          and{" "}
+          <Link href={"#"} className="text-primary underline">
+            Terms and Conditions.
+          </Link>
+        </p>
       </div>
     </div>
   );
