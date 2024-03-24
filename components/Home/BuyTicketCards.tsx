@@ -5,9 +5,15 @@ import { TbCurrencyTaka } from "react-icons/tb";
 export default function BuyTicketCards({
   tickets,
   setSelectedTickets,
+  selectedTickets,
+  ticketQuantity,
+  setTicketQuantity,
 }: {
   tickets: Ticket[];
   setSelectedTickets: Dispatch<SetStateAction<Ticket | undefined>>;
+  setTicketQuantity: Dispatch<SetStateAction<number>>;
+  selectedTickets: Ticket | undefined;
+  ticketQuantity: number;
 }) {
   return (
     <div className="">
@@ -23,12 +29,39 @@ export default function BuyTicketCards({
                 <TbCurrencyTaka /> {ticket.price}
               </p>
             </div>
+
+            {/* {selectedTickets?._id === ticket._id ? (
+              <div className="flex gap-2 items-center justify-center">
+                <button
+                  onClick={() => {
+                    ticket.quantity + 1;
+                  }}
+                  className="disabled:cursor-not-allowed bg-transparent hover:bg-gray-100 text-black border-gray-500 border rounded-lg mt-auto font-bold py-2 px-8 h-10"
+                >
+                  +
+                </button>
+                <button className="disabled:cursor-not-allowed bg-transparent hover:bg-transparent text-accent  mt-auto font-bold py-2 px-3 h-10">
+                  {ticket.quantity}
+                </button>
+                <button
+                  onClick={() => {
+                    ticket.quantity + 1;
+                  }}
+                  disabled={!ticket._id}
+                  className="disabled:cursor-not-allowed bg-transparent hover:bg-gray-100 text-black border-gray-500 border rounded-lg mt-auto font-bold py-2 px-8 h-10"
+                >
+                  -
+                </button>
+              </div>
+            ) : ( */}
             <button
               onClick={() => setSelectedTickets(ticket)}
-              className="bg-transparent hover:bg-gray-100 text-black border-gray-500 border rounded-lg mt-auto font-bold py-2 px-8 h-10"
+              disabled={ticket._id === selectedTickets?._id}
+              className="disabled:cursor-not-allowed disabled:text-black/30 bg-transparent hover:bg-gray-100 text-black border-gray-500 border rounded-lg mt-auto font-bold py-2 px-8 h-10"
             >
               Add
             </button>
+            {/* )} */}
           </div>
         ))}
       </div>

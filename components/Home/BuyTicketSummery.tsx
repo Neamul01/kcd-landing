@@ -8,10 +8,12 @@ export default function BuyTicketSummery({
   setTab,
   tab,
   selectedTickets,
+  ticketQuantity,
 }: {
   setTab: Dispatch<SetStateAction<number>>;
   tab: number;
   selectedTickets: Ticket | undefined;
+  ticketQuantity: number;
 }) {
   const handleProceed = () => {
     if (tab < 3) {
@@ -35,6 +37,7 @@ export default function BuyTicketSummery({
                     ? selectedTickets.title.slice(0, 20) + "..."
                     : selectedTickets.title}
                 </p>
+                <p className="">x{ticketQuantity}</p>
                 <p className="font-medium flex items-center justify-center">
                   <TbCurrencyTaka /> {selectedTickets.price}{" "}
                 </p>

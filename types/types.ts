@@ -6,4 +6,5 @@ export type Ticket = {
   availability: string;
   user: string;
   createdAt: string;
+  quantity: number;
 };

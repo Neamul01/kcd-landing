@@ -15,6 +15,8 @@ export default function BuyTicket() {
   const [tab, setTab] = useState(1);
   const [tickets, setTickets] = useState<Ticket[]>();
   const [selectedTickets, setSelectedTickets] = useState<Ticket>();
+  const [ticketQuantity, setTicketQuantity] = useState(1);
+  const [total, setTotal] = useState<number>();
 
   const handleBack = () => {
     if (tab > 1) {
@@ -23,6 +25,12 @@ export default function BuyTicket() {
       setTab(tab);
     }
   };
+
+  useEffect(() => {
+    // const subTotal = ticket
+    // setTotal
+  }, [ticketQuantity]);
+
   useEffect(() => {
     const getTicket = async () => {
       await axiosInstance
@@ -66,17 +74,20 @@ export default function BuyTicket() {
               </Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-              <div className="col-span-1 md:col-span-8 border-gray-400 border-2 rounded-lg grid grid-cols-1 md:grid-cols-12">
+              <div className="col-span-1 md:col-span-8 border-gray-400 border-2 rounded-lg grid grid-cols-1 md:grid-cols-12 ">
                 <div className="md:col-span-3 ">
                   <BuyTicketSideTracker tab={tab} />
                 </div>
-                <div className="col-span-9 p-4">
+                <div className="col-span-9 p-4 max-h-[524px] overflow-y-scroll">
                   {tab === 2 ? (
                     <BuyTicketDetails />
                   ) : (
                     <BuyTicketCards
                       tickets={tickets}
                       setSelectedTickets={setSelectedTickets}
+                      selectedTickets={selectedTickets}
+                      setTicketQuantity={setTicketQuantity}
+                      ticketQuantity={ticketQuantity}
                     />
                   )}
                 </div>
@@ -86,6 +97,7 @@ export default function BuyTicket() {
                   setTab={setTab}
                   tab={tab}
                   selectedTickets={selectedTickets}
+                  ticketQuantity={ticketQuantity}
                 />
               </div>
             </div>
