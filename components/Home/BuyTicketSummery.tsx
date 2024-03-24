@@ -162,11 +162,17 @@ export default function BuyTicketSummery({
           LLP to share the event and other updates with you by email, post or
           telephone. You understand and accept that you will abide by the
           KonfHub&apos;s{" "}
-          <Link href={"#"} className="text-primary underline">
-            Code Of Conduct
+          <Link
+            href={"/conditions/refund-policy"}
+            className="text-primary underline"
+          >
+            refund policy
           </Link>{" "}
           and{" "}
-          <Link href={"#"} className="text-primary underline">
+          <Link
+            href={"/conditions/terms-condition"}
+            className="text-primary underline"
+          >
             Terms and Conditions.
           </Link>
         </p>
