@@ -42,7 +42,7 @@ export default function BuyTicketSummery({
                     ? selectedTickets.title.slice(0, 20) + "..."
                     : selectedTickets.title}
                 </p>
-                <p className="">x{ticketQuantity}</p>
+                {/* <p className="">x{ticketQuantity}</p> */}
                 <p className="font-medium flex items-center justify-center">
                   <TbCurrencyTaka /> {selectedTickets.price}{" "}
                 </p>
@@ -101,7 +101,7 @@ export default function BuyTicketSummery({
           {user ? (
             <Button
               onClick={handleProceed}
-              // disabled
+              disabled={!selectedTickets}
               variant="contained"
               size="large"
               className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"

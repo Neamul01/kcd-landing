@@ -56,7 +56,9 @@ export default function BuyTicketCards({
             ) : ( */}
             <button
               onClick={() => setSelectedTickets(ticket)}
-              disabled={ticket._id === selectedTickets?._id}
+              disabled={
+                ticket._id === selectedTickets?._id || !ticket.availability
+              }
               className="disabled:cursor-not-allowed disabled:text-black/30 bg-transparent hover:bg-gray-100 text-black border-gray-500 border rounded-lg mt-auto font-bold py-2 px-8 h-10"
             >
               Add

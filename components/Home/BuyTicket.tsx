@@ -7,7 +7,7 @@ import BuyTicketSummery from "./BuyTicketSummery";
 import BuyTicketDetails from "./BuyTicketDetails";
 import { Button } from "@mui/material";
 import { IoIosArrowBack } from "react-icons/io";
-import { Ticket } from "@/types/types";
+import { Order, Ticket } from "@/types/types";
 import axiosInstance from "@/lib/Axios";
 import Loader from "../Shared/Loader";
 
@@ -16,6 +16,7 @@ export default function BuyTicket() {
   const [tickets, setTickets] = useState<Ticket[]>();
   const [selectedTickets, setSelectedTickets] = useState<Ticket>();
   const [ticketQuantity, setTicketQuantity] = useState(1);
+  const [orderDetails, setOrderDetails] = useState<Order>();
   const [total, setTotal] = useState<number>();
 
   const handleBack = () => {
@@ -80,7 +81,10 @@ export default function BuyTicket() {
                 </div>
                 <div className="col-span-9 p-4 max-h-[524px] overflow-y-scroll">
                   {tab === 2 ? (
-                    <BuyTicketDetails />
+                    <BuyTicketDetails
+                      selectedTickets={selectedTickets}
+                      setOrderDetails={setOrderDetails}
+                    />
                   ) : (
                     <BuyTicketCards
                       tickets={tickets}
