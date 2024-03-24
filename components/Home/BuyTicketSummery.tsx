@@ -1,6 +1,11 @@
+"use client";
+import { useUser } from "@/hooks/use-user";
+import axiosInstance from "@/lib/Axios";
 import { Ticket } from "@/types/types";
 import { Button, TextField } from "@mui/material";
-import React, { Dispatch, SetStateAction } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { TbCurrencyTaka } from "react-icons/tb";
 
@@ -8,16 +13,44 @@ export default function BuyTicketSummery({
   setTab,
   tab,
   selectedTickets,
+  ticketQuantity,
 }: {
   setTab: Dispatch<SetStateAction<number>>;
   tab: number;
   selectedTickets: Ticket | undefined;
+  ticketQuantity: number;
 }) {
-  const handleProceed = () => {
-    if (tab < 3) {
-      setTab(tab + 1);
-    } else {
-      setTab(tab);
+  const { data: user } = useUser();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const handleProceed = async () => {
+    setLoading(true);
+
+    try {
+      if (tab < 3) {
+        setTab(tab + 1);
+      } else {
+        setTab(tab);
+      }
+      const orderData = {
+        tax: 0,
+        shippingFee: 0,
+        cartItems: [
+          {
+            name: selectedTickets?.title,
+            price: selectedTickets?.price,
+            quantity: 1,
+            ticket: selectedTickets?._id,
+          },
+        ],
+      };
+
+      await axiosInstance
+        .post("/orders", orderData)
+        .then((res) => console.log("order placed", res));
+    } finally {
+      // catch(err=>console.log('err',err))
+      setLoading(false);
     }
   };
   return (
@@ -35,6 +68,7 @@ export default function BuyTicketSummery({
                     ? selectedTickets.title.slice(0, 20) + "..."
                     : selectedTickets.title}
                 </p>
+                {/* <p className="">x{ticketQuantity}</p> */}
                 <p className="font-medium flex items-center justify-center">
                   <TbCurrencyTaka /> {selectedTickets.price}{" "}
                 </p>
@@ -90,18 +124,58 @@ export default function BuyTicketSummery({
           </div>
         </div>
         <div className="w-full mb-6">
-          <Button
-            onClick={handleProceed}
-            // disabled
-            variant="contained"
-            size="large"
-            className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"
-          >
-            <span className="text-lg capitalize font-bold text-white">
-              Proceed
-            </span>
-          </Button>
+          {user ? (
+            <Button
+              onClick={handleProceed}
+              disabled={!selectedTickets || loading}
+              variant="contained"
+              size="large"
+              className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"
+            >
+              <span className="text-lg capitalize font-bold text-white">
+                {loading
+                  ? "Loading..."
+                  : tab === 2
+                    ? "Checkout"
+                    : tab === 3
+                      ? "Proceed to checkout"
+                      : "Proceed"}
+              </span>
+            </Button>
+          ) : (
+            <Button
+              onClick={() => router.push("/auth/sign-in")}
+              // disabled
+              variant="outlined"
+              size="large"
+              className="w-full  disabled:bg-accent/40 !disabled:cursor-not-allowed border-accent  py-3 shadow-none"
+            >
+              <span className="text-lg capitalize font-bold text-black">
+                Sign In
+              </span>
+            </Button>
+          )}
         </div>
+        <p className="text-sm text-center text-black/60">
+          By registering for this event, you provide consent to share your
+          contact information to the event organizers and KonfHub Technologies
+          LLP to share the event and other updates with you by email, post or
+          telephone. You understand and accept that you will abide by the
+          KonfHub&apos;s{" "}
+          <Link
+            href={"/conditions/refund-policy"}
+            className="text-primary underline"
+          >
+            refund policy
+          </Link>{" "}
+          and{" "}
+          <Link
+            href={"/conditions/terms-condition"}
+            className="text-primary underline"
+          >
+            Terms and Conditions.
+          </Link>
+        </p>
       </div>
     </div>
   );

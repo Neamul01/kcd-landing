@@ -68,8 +68,11 @@ function Navbar() {
     setAnchorElNav(null);
   };
 
+  // ---------define where the header should transparent
   const isTransparent = () => {
-    return backgroundColor === "transparent" && !pathname.includes("/auth")
+    return backgroundColor === "transparent" &&
+      !pathname.includes("/auth") &&
+      !pathname.includes("/conditions")
       ? true
       : false;
   };

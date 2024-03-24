@@ -1,42 +1,42 @@
 "use client";
 
 import * as React from "react";
-import RouterLink from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Alert from "@mui/material/Alert";
-import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import InputLabel from "@mui/material/InputLabel";
-import Link from "@mui/material/Link";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-// import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
 import { IoMdEye as EyeIcon, IoMdEyeOff as EyeSlashIcon } from "react-icons/io";
-// import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
+import { Order, Ticket } from "@/types/types";
+import { useUser } from "@/hooks/use-user";
 
 const schema = zod.object({
   email: zod.string().min(1, { message: "Email is required" }).email(),
-  password: zod.string().min(1, { message: "Password is required" }),
+  name: zod.string().min(1, { message: "Name is required" }),
+  mobile: zod.string().min(1, { message: "Mobile number is required" }),
+  address: zod.string().min(1, { message: "Address is required" }),
+  designation: zod.string().min(1, { message: "Designation is required" }),
+  organization: zod.string().min(1, { message: "Organization is required" }),
+  gender: zod.string().min(1, { message: "Organization is required" }),
 });
 
 type Values = zod.infer<typeof schema>;
 
-const defaultValues = {
-  email: "sofia@devias.io",
-  password: "Secret1",
-} satisfies Values;
-
-export default function BuyTicketDetails() {
+export default function BuyTicketDetails({
+  selectedTickets,
+  setOrderDetails,
+}: {
+  selectedTickets: Ticket | undefined;
+  setOrderDetails: React.Dispatch<React.SetStateAction<Order | undefined>>;
+}) {
   const router = useRouter();
 
-  // const { checkSession } = useUser();
-
-  const [showPassword, setShowPassword] = React.useState<boolean>();
+  const { data: user } = useUser();
 
   const [isPending, setIsPending] = React.useState<boolean>(false);
 
@@ -44,8 +44,22 @@ export default function BuyTicketDetails() {
     control,
     handleSubmit,
     setError,
+    reset,
     formState: { errors },
-  } = useForm<Values>({ defaultValues, resolver: zodResolver(schema) });
+  } = useForm<Values>({
+    defaultValues: React.useMemo(() => {
+      return {
+        name: user?.name || "",
+        email: user?.email || "",
+        mobile: user?.mobile || "",
+        address: "",
+        designation: user?.designation || "",
+        organization: user?.organization || "",
+        gender: user?.gender || "",
+      };
+    }, [user]),
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
@@ -56,20 +70,55 @@ export default function BuyTicketDetails() {
     [router, setError]
   );
 
+  React.useEffect(() => {
+    reset({
+      address: "",
+      email: user?.email || "",
+      mobile: user?.mobile || "",
+      name: user?.name || "",
+      designation: user?.designation || "",
+      organization: user?.organization || "",
+      gender: user?.gender || "",
+    });
+  }, [user]);
+
   return (
     <Stack spacing={4}>
       <Stack spacing={1}>
-        <Typography variant="h5">Early Bird (1 of 1)</Typography>
+        <Typography variant="h5">{selectedTickets?.title}</Typography>
       </Stack>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
+          <Controller
+            control={control}
+            name="name"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.name)}>
+                <InputLabel>Name</InputLabel>
+                <OutlinedInput
+                  {...field}
+                  readOnly
+                  label="Name"
+                  defaultValue={user?.name}
+                />
+                {errors.name ? (
+                  <FormHelperText>{errors.name.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
           <Controller
             control={control}
             name="email"
             render={({ field }) => (
               <FormControl error={Boolean(errors.email)}>
                 <InputLabel>Email address</InputLabel>
-                <OutlinedInput {...field} label="Email address" type="email" />
+                <OutlinedInput
+                  {...field}
+                  readOnly
+                  label="Email address"
+                  type="email"
+                />
                 {errors.email ? (
                   <FormHelperText>{errors.email.message}</FormHelperText>
                 ) : null}
@@ -78,36 +127,86 @@ export default function BuyTicketDetails() {
           />
           <Controller
             control={control}
-            name="password"
+            name="mobile"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.password)}>
-                <InputLabel>Password</InputLabel>
+              <FormControl error={Boolean(errors.mobile)}>
+                <InputLabel>Mobile</InputLabel>
                 <OutlinedInput
                   {...field}
-                  endAdornment={
-                    showPassword ? (
-                      <EyeIcon
-                        cursor="pointer"
-                        fontSize="var(--icon-fontSize-md)"
-                        onClick={(): void => {
-                          setShowPassword(false);
-                        }}
-                      />
-                    ) : (
-                      <EyeSlashIcon
-                        cursor="pointer"
-                        fontSize="var(--icon-fontSize-md)"
-                        onClick={(): void => {
-                          setShowPassword(true);
-                        }}
-                      />
-                    )
-                  }
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
+                  readOnly
+                  label="Mobile"
+                  type="number"
                 />
-                {errors.password ? (
-                  <FormHelperText>{errors.password.message}</FormHelperText>
+                {errors.mobile ? (
+                  <FormHelperText>{errors.mobile.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="address"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.address)}>
+                <InputLabel>Address</InputLabel>
+                <OutlinedInput {...field} label="Address" />
+                {errors.address ? (
+                  <FormHelperText>{errors.address.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+          <Controller
+            control={control}
+            name="gender"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.gender)}>
+                <InputLabel>Gender</InputLabel>
+                <OutlinedInput
+                  {...field}
+                  readOnly
+                  label="Gender"
+                  defaultValue={user?.gender}
+                />
+                {errors.gender ? (
+                  <FormHelperText>{errors.gender.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+          <Controller
+            control={control}
+            name="designation"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.designation)}>
+                <InputLabel>Designation</InputLabel>
+                <OutlinedInput
+                  {...field}
+                  readOnly
+                  label="Designation"
+                  defaultValue={user?.designation}
+                />
+                {errors.designation ? (
+                  <FormHelperText>{errors.designation.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+          <Controller
+            control={control}
+            name="organization"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.organization)}>
+                <InputLabel>Organization</InputLabel>
+                <OutlinedInput
+                  {...field}
+                  readOnly
+                  label="Organization"
+                  defaultValue={user?.organization}
+                />
+                {errors.organization ? (
+                  <FormHelperText>{errors.organization.message}</FormHelperText>
                 ) : null}
               </FormControl>
             )}
