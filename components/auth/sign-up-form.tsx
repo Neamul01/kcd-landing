@@ -31,7 +31,6 @@ const schema = zod.object({
   gender: zod.string().min(1, { message: "Gender is required" }),
   organization: zod.string().min(1, { message: "Organization is required" }),
   designation: zod.string().min(1, { message: "Designation is required" }),
-  role: zod.string().min(1, { message: "Role is required" }),
   password: zod
     .string()
     .min(6, { message: "Password should be at least 6 characters" }),
@@ -46,7 +45,6 @@ const defaultValues = {
   gender: "",
   organization: "",
   designation: "",
-  role: "user",
   password: "",
 } satisfies Values;
 
@@ -323,7 +321,7 @@ export function SignUpForm(): React.JSX.Element {
             variant="contained"
             className="bg-primary/80"
           >
-            Sign up
+            {isPending ? "Loading..." : "Sign up"}
           </Button>
         </Stack>
       </form>
