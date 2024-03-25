@@ -31,7 +31,6 @@ const schema = zod.object({
   gender: zod.string().min(1, { message: "Gender is required" }),
   organization: zod.string().min(1, { message: "Organization is required" }),
   designation: zod.string().min(1, { message: "Designation is required" }),
-  role: zod.string().min(1, { message: "Role is required" }),
   password: zod
     .string()
     .min(6, { message: "Password should be at least 6 characters" }),
@@ -46,7 +45,6 @@ const defaultValues = {
   gender: "",
   organization: "",
   designation: "",
-  role: "user",
   password: "",
 } satisfies Values;
 
@@ -57,6 +55,9 @@ export function SignUpForm(): React.JSX.Element {
 
   const [isPending, setIsPending] = React.useState<boolean>(false);
   const [apiError, setAPIError] = React.useState("");
+  const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
+  const [previewImage, setPreviewImage] = React.useState<string | null>(null);
+  const [imageError, setImageError] = React.useState<string | null>(null);
 
   const {
     control,
@@ -68,28 +69,81 @@ export function SignUpForm(): React.JSX.Element {
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      setIsPending(true);
+      try {
+        setIsPending(true);
 
-      console.log("values", values);
+        const formData = new FormData();
 
-      await Axios.post("/auth/register", values)
-        .then((res) => {
-          console.log("res", res);
-          const token = res.data.token;
-          localStorage.setItem("token", token);
-          reset();
-          router.replace("/dashboard");
-        })
-        .catch((err) => {
-          console.log("err", err);
-          setAPIError(err?.response?.data?.error);
-        })
-        .finally(() => {
-          setIsPending(false);
+        // Append other form fields to FormData
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
         });
+
+        // Append the selected image to FormData if available
+        if (selectedImage) {
+          formData.append("file", selectedImage);
+        }
+        if (!selectedImage) {
+          // setIsPending(false);
+          return alert("Please enter a image");
+        }
+
+        console.log("form data", formData);
+
+        await Axios.post("/auth/register", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+          .then((res) => {
+            console.log("res", res);
+            const token = res.data.token;
+            localStorage.setItem("token", token);
+            reset();
+            router.replace("/dashboard");
+          })
+          .catch((err) => {
+            console.log("err", err);
+            setAPIError(err?.response?.data?.error);
+          })
+          .finally(() => {
+            setIsPending(false);
+          });
+      } catch {
+        () => {
+          alert("Something went wrong please try again..");
+        };
+      } finally {
+        setIsPending(false);
+      }
     },
     [router, setError]
   );
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const fileSize = file.size / 1024 / 1024; // Size in MB
+      if (fileSize > 2) {
+        setImageError("Image size should not exceed 2 MB");
+      } else {
+        setImageError(null);
+        setSelectedImage(file);
+        setPreviewImage(URL.createObjectURL(file));
+
+        // Create an image element to check dimensions
+        const img = new Image();
+        img.onload = () => {
+          if (img.width !== 500 || img.height !== 675) {
+            setImageError("Image dimensions should be 500x675 pixels");
+          } else {
+            setImageError(null);
+          }
+        };
+        img.src = URL.createObjectURL(file);
+      }
+    }
+  };
 
   return (
     <Stack spacing={3}>
@@ -209,6 +263,36 @@ export function SignUpForm(): React.JSX.Element {
               </FormControl>
             )}
           />
+          {/* For image upload */}
+          <FormControl>
+            <p>Profile Picture:</p>
+            <OutlinedInput
+              label="Profile Picture"
+              type="file"
+              onChange={handleImageChange}
+              inputProps={{ id: "file-input" }}
+            />
+            {imageError && <FormHelperText error>{imageError}</FormHelperText>}
+            {imageError?.includes("dimensions") && (
+              <p className="text-xs ">
+                You can resize{" "}
+                <a
+                  href="http://https://imageresizer.com/"
+                  className="text-primary underline"
+                >
+                  here.
+                </a>
+              </p>
+            )}
+          </FormControl>
+          {selectedImage && (
+            <img
+              src={previewImage as string}
+              alt="Selected"
+              style={{ maxWidth: "100%", marginTop: 10 }}
+              className=" rounded-lg border-2 border-gray-500"
+            />
+          )}
           {/* <Controller
             control={control}
             name="terms"
@@ -237,7 +321,7 @@ export function SignUpForm(): React.JSX.Element {
             variant="contained"
             className="bg-primary/80"
           >
-            Sign up
+            {isPending ? "Loading..." : "Sign up"}
           </Button>
         </Stack>
       </form>

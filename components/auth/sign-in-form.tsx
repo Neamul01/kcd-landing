@@ -57,35 +57,32 @@ export function SignInForm(): React.JSX.Element {
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      // setIsPending(true);
-      // setAPIError("");
-
-      // const res = await axios.post(
-      //   "https://dev2.kcddhaka.org/api/v1/auth/login",
-      //   {
-      //     ...values,
-      //   }
-      // );
-      // });
-      // console.log("res", res);
-      await Axios.post("/auth/login", values)
-        .then((res) => {
-          console.log("res", res);
-          if (!res) {
-            console.log("error happended");
-          }
-          const token = res.data.token;
-          localStorage.setItem("token", token);
-          reset();
-          router.replace("/dashboard");
-        })
-        .catch((err) => {
-          console.log("err", err);
-          setAPIError(err?.response?.data?.error);
-        })
-        .finally(() => {
-          setIsPending(false);
-        });
+      try {
+        setIsPending(true);
+        setAPIError("");
+        await Axios.post("/auth/login", values)
+          .then((res) => {
+            console.log("res", res);
+            if (!res) {
+              console.log("error happended");
+            }
+            const token = res.data.token;
+            localStorage.setItem("token", token);
+            reset();
+            router.replace("/dashboard");
+          })
+          .catch((err) => {
+            console.log("err", err);
+            setAPIError(err?.response?.data?.error);
+          })
+          .finally(() => {
+            setIsPending(false);
+          });
+      } catch {
+        () => alert("Something went wrong please try again...");
+      } finally {
+        setIsPending(false);
+      }
     },
     [router, setError, reset]
   );
@@ -175,7 +172,7 @@ export function SignInForm(): React.JSX.Element {
             variant="contained"
             className="bg-primary/80"
           >
-            Sign in
+            {isPending ? "Loading..." : "Sign in"}
           </Button>
         </Stack>
       </form>
