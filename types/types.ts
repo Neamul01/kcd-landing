@@ -10,12 +10,31 @@ export type Ticket = {
 };
 
 export type Order = {
-  tax: number;
-  shippingFee: number;
+  name: string;
+  email: string;
+  phone: {
+    number: string;
+    promotion: boolean;
+  };
+  track: string;
+  workshop: string[];
+  tshirt: string;
+  address: string;
   cartItems: {
     name: string;
     price: number;
     quantity: number;
     ticket: string;
   }[];
+};
+
+export type Workshop = {
+  _id: string;
+  title: string;
+  description: string;
+  limit: number;
+  minimumSkill: string;
+  availability: boolean;
+  user: string;
+  createdAt: string;
 };

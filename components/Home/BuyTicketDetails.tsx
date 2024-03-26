@@ -12,39 +12,58 @@ import Typography from "@mui/material/Typography";
 import { IoMdEye as EyeIcon, IoMdEyeOff as EyeSlashIcon } from "react-icons/io";
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
-import { Order, Ticket } from "@/types/types";
+import { Order, Ticket, Workshop } from "@/types/types";
 import { useUser } from "@/hooks/use-user";
+import {
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+} from "@mui/material";
+import Link from "next/link";
+import axiosInstance from "@/lib/Axios";
+import { useDetailsStore } from "@/store/useDetailsStore";
 
 const schema = zod.object({
   email: zod.string().min(1, { message: "Email is required" }).email(),
   name: zod.string().min(1, { message: "Name is required" }),
   mobile: zod.string().min(1, { message: "Mobile number is required" }),
   address: zod.string().min(1, { message: "Address is required" }),
-  designation: zod.string().min(1, { message: "Designation is required" }),
-  organization: zod.string().min(1, { message: "Organization is required" }),
-  gender: zod.string().min(1, { message: "Organization is required" }),
+  tShirt: zod.string().min(1, { message: "Organization is required" }),
+  promotion: zod.boolean().optional(),
+  terms: zod
+    .boolean()
+    .refine((value) => value, "You must accept the terms and conditions"),
+  track: zod
+    .string()
+    .min(1, { message: "Track selection is required" })
+    .optional(),
+  workshop: zod.array(zod.string()).optional(),
 });
 
 type Values = zod.infer<typeof schema>;
 
 export default function BuyTicketDetails({
   selectedTickets,
-  setOrderDetails,
 }: {
   selectedTickets: Ticket | undefined;
-  setOrderDetails: React.Dispatch<React.SetStateAction<Order | undefined>>;
 }) {
   const router = useRouter();
-
+  const submitButtonRef = React.useRef(null);
   const { data: user } = useUser();
 
   const [isPending, setIsPending] = React.useState<boolean>(false);
+  const [workshops, setWorkshops] = React.useState<Workshop[]>([]);
+  const [selectedWorkshop, setSelectedWorkspace] = React.useState<string[]>([]);
 
   const {
     control,
     handleSubmit,
-    setError,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<Values>({
     defaultValues: React.useMemo(() => {
@@ -53,22 +72,99 @@ export default function BuyTicketDetails({
         email: user?.email || "",
         mobile: user?.mobile || "",
         address: "",
-        designation: user?.designation || "",
-        organization: user?.organization || "",
-        gender: user?.gender || "",
+        tShirt: "",
+        terms: false,
+        promotion: false,
+        track: "",
       };
     }, [user]),
     resolver: zodResolver(schema),
   });
+  const [workshopLoading, setWorkshopLoading] = React.useState(false);
+  const [track, setTrack] = React.useState("");
+  const { setData, isSubmit, setIsSubmit, setErrors } = useDetailsStore();
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      setIsPending(true);
+      try {
+        setIsPending(true);
 
-      router.refresh();
+        const submitData = {
+          name: values.name, //
+          email: values.email, //
+          phone: {
+            number: values.mobile, //
+            promotion: values.promotion, //
+          },
+          description: "Test Payment",
+          track: values.track,
+          workshop: selectedWorkshop,
+          tshirt: values.tShirt, //
+          address: values.address, //
+          cartItems: [
+            {
+              title: selectedTickets?.title, //
+              price: selectedTickets?.price, //
+              quantity: 1, //
+              ticket: selectedTickets?._id, //
+            },
+          ],
+        };
+
+        // console.log("values", submitData);
+        setData(submitData);
+      } catch {
+        () => alert("Something went wrong please try again");
+      } finally {
+        setIsPending(false);
+      }
     },
-    [router, setError]
+    [reset]
   );
+
+  const handleTrackSelection = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const selectedTrack = event.target.value;
+
+    setTrack(selectedTrack);
+    setValue("track", selectedTrack);
+
+    if (selectedTrack === "workshop") {
+      try {
+        setWorkshopLoading(true);
+        const response = await axiosInstance("/workshops");
+        if (!response.data) {
+          throw new Error("Failed to fetch workshops");
+        }
+        console.log("workshops", response.data.data);
+
+        setWorkshops(response.data.data);
+      } catch (error) {
+        console.error("Error fetching workshops:", error);
+      } finally {
+        setWorkshopLoading(false);
+      }
+    } else {
+      setWorkshopLoading(false);
+      // Reset workshops if "Presentation" is selected
+      setWorkshops([]);
+    }
+  };
+
+  const handleWorkshopSelect = (workshopId: string) => {
+    console.log("workshop id", workshopId);
+    setValue("workshop", [workshopId]);
+    setSelectedWorkspace((prevSelected) => {
+      if (prevSelected.includes(workshopId)) {
+        // Remove workshopId if already present
+        return prevSelected.filter((id) => id !== workshopId);
+      } else {
+        // Add workshopId if not present
+        return [...prevSelected, workshopId];
+      }
+    });
+  };
 
   React.useEffect(() => {
     reset({
@@ -76,11 +172,17 @@ export default function BuyTicketDetails({
       email: user?.email || "",
       mobile: user?.mobile || "",
       name: user?.name || "",
-      designation: user?.designation || "",
-      organization: user?.organization || "",
-      gender: user?.gender || "",
     });
-  }, [user]);
+  }, [user, reset]);
+
+  React.useEffect(() => {
+    console.log("is submit", isSubmit);
+    if (isSubmit && submitButtonRef.current) {
+      // @ts-ignore
+      submitButtonRef.current.click();
+      setIsSubmit(false);
+    }
+  }, [isSubmit, errors]);
 
   return (
     <Stack spacing={4}>
@@ -125,24 +227,6 @@ export default function BuyTicketDetails({
               </FormControl>
             )}
           />
-          <Controller
-            control={control}
-            name="mobile"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.mobile)}>
-                <InputLabel>Mobile</InputLabel>
-                <OutlinedInput
-                  {...field}
-                  readOnly
-                  label="Mobile"
-                  type="number"
-                />
-                {errors.mobile ? (
-                  <FormHelperText>{errors.mobile.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
 
           <Controller
             control={control}
@@ -157,61 +241,154 @@ export default function BuyTicketDetails({
               </FormControl>
             )}
           />
+
           <Controller
             control={control}
-            name="gender"
+            name="tShirt"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.gender)}>
-                <InputLabel>Gender</InputLabel>
-                <OutlinedInput
+              <FormControl error={Boolean(errors.tShirt)}>
+                <InputLabel id="demo-simple-select-label">
+                  T-Shirt Size
+                </InputLabel>
+                <Select
                   {...field}
-                  readOnly
-                  label="Gender"
-                  defaultValue={user?.gender}
-                />
-                {errors.gender ? (
-                  <FormHelperText>{errors.gender.message}</FormHelperText>
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="T-Shirt Size"
+                >
+                  <MenuItem value={"S"}>S</MenuItem>
+                  <MenuItem value={"M"}>M</MenuItem>
+                  <MenuItem value={"L"}>L</MenuItem>
+                  <MenuItem value={"XL"}>XL</MenuItem>
+                  <MenuItem value={"2XL"}>2XL</MenuItem>
+                </Select>
+                {errors.tShirt ? (
+                  <FormHelperText>{errors.tShirt.message}</FormHelperText>
                 ) : null}
               </FormControl>
             )}
           />
+
           <Controller
             control={control}
-            name="designation"
+            name="promotion"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.designation)}>
-                <InputLabel>Designation</InputLabel>
-                <OutlinedInput
-                  {...field}
-                  readOnly
-                  label="Designation"
-                  defaultValue={user?.designation}
+              <div>
+                <FormControlLabel
+                  control={<Checkbox {...field} />}
+                  label={
+                    <React.Fragment>
+                      I would like to receive updates over WhatsApp.
+                    </React.Fragment>
+                  }
                 />
-                {errors.designation ? (
-                  <FormHelperText>{errors.designation.message}</FormHelperText>
+                {errors.promotion ? (
+                  <FormHelperText error>
+                    {errors.promotion.message}
+                  </FormHelperText>
                 ) : null}
-              </FormControl>
+              </div>
             )}
           />
           <Controller
             control={control}
-            name="organization"
+            name="mobile"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.organization)}>
-                <InputLabel>Organization</InputLabel>
-                <OutlinedInput
-                  {...field}
-                  readOnly
-                  label="Organization"
-                  defaultValue={user?.organization}
-                />
-                {errors.organization ? (
-                  <FormHelperText>{errors.organization.message}</FormHelperText>
+              <FormControl error={Boolean(errors.mobile)}>
+                <InputLabel>Mobile</InputLabel>
+                <OutlinedInput {...field} label="Mobile" type="number" />
+                {errors.mobile ? (
+                  <FormHelperText>{errors.mobile.message}</FormHelperText>
                 ) : null}
               </FormControl>
+            )}
+          />
+
+          {/* Track selection */}
+          <FormControl error={Boolean(errors.track)}>
+            <RadioGroup
+              aria-label="track"
+              name="track"
+              onChange={handleTrackSelection}
+            >
+              <FormControlLabel
+                value="presentation-deck"
+                control={<Radio />}
+                label="Presentation"
+              />
+              <FormControlLabel
+                value="workshop"
+                control={<Radio />}
+                label="Workshop"
+              />
+            </RadioGroup>
+            {errors.track && (
+              <FormHelperText>{errors.track.message}</FormHelperText>
+            )}
+          </FormControl>
+
+          {/* Workshop selection */}
+          {workshopLoading && (
+            <p className="text-xs text-primary">Loading...</p>
+          )}
+          {workshops && workshops?.length > 0 && (
+            <FormControl>
+              <RadioGroup aria-label="workshop" name="workshop">
+                {workshops?.map((workshop) => (
+                  <div key={workshop._id}>
+                    <FormControlLabel
+                      onClick={() => handleWorkshopSelect(workshop._id)}
+                      control={
+                        <Checkbox
+                          checked={selectedWorkshop.includes(workshop._id)}
+                        />
+                      }
+                      label={workshop.title}
+                      value={workshop._id}
+                    />
+                    {errors.workshop ? (
+                      <FormHelperText error>
+                        {errors.workshop.message}
+                      </FormHelperText>
+                    ) : null}
+                  </div>
+                ))}
+              </RadioGroup>
+            </FormControl>
+            // {/* {errors.workshop && (
+            //   <FormHelperText>{errors.workshop.message}</FormHelperText>
+            // )} */}
+          )}
+
+          <Controller
+            control={control}
+            name="terms"
+            render={({ field }) => (
+              <div>
+                <FormControlLabel
+                  control={<Checkbox {...field} />}
+                  label={
+                    <React.Fragment>
+                      I have read the{" "}
+                      <Link
+                        href={"/conditions/terms-condition"}
+                        className="text-primary underline"
+                      >
+                        terms and conditions
+                      </Link>
+                    </React.Fragment>
+                  }
+                />
+                {errors.terms ? (
+                  <FormHelperText error>{errors.terms.message}</FormHelperText>
+                ) : null}
+              </div>
             )}
           />
         </Stack>
+        <button type="submit" ref={submitButtonRef} style={{ display: "none" }}>
+          submit
+        </button>
       </form>
     </Stack>
   );

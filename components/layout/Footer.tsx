@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -32,15 +33,22 @@ export default function Footer() {
               </div>
             </div>
             <div className="flex flex-col items-center md:items-start max-w-full md:max-w-[30%] ">
-              <p className="font-bold border-b-[1px] border-gray-500 mb-4 pb-2">
+              {/* <p className="font-bold border-b-[1px] border-gray-500 mb-4 pb-2">
                 Connect with us
-              </p>
+              </p> */}
+              {/* <Button
+                type="button"
+                variant="outlined"
+                className="w-full p-0 m-0"
+              >
+                <p className="text-sm text-white capitalize">
+                  <a href="mailto:organizers@kcddhaka.org">Contact us</a>
+                </p>
+              </Button> */}
               <div className="flex flex-col gap-2 h-full justify-between">
                 <div className="flex flex-col gap-2">
-                  <p className="text-sm text-white">
-                    <a href="mailto:organizers@kcddhaka.org">
-                      organizers@kcddhaka.org
-                    </a>
+                  <p className="font-semibold text-sm text-white underline">
+                    <a href="mailto:organizers@kcddhaka.org">Contact us</a>
                   </p>
                   <p className="text-sm text-white underline">
                     <Link href={"/conditions/refund-policy"}>

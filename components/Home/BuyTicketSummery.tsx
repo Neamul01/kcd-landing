@@ -1,11 +1,12 @@
 "use client";
 import { useUser } from "@/hooks/use-user";
 import axiosInstance from "@/lib/Axios";
-import { Ticket } from "@/types/types";
+import { useDetailsStore } from "@/store/useDetailsStore";
+import { Order, Ticket } from "@/types/types";
 import { Button, TextField } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { TbCurrencyTaka } from "react-icons/tb";
 
@@ -13,41 +14,72 @@ export default function BuyTicketSummery({
   setTab,
   tab,
   selectedTickets,
-  ticketQuantity,
 }: {
   setTab: Dispatch<SetStateAction<number>>;
   tab: number;
   selectedTickets: Ticket | undefined;
-  ticketQuantity: number;
 }) {
   const { data: user } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [orderId, setOrderId] = useState("");
+  const { data, setIsSubmit, errors } = useDetailsStore();
+
+  const makeOrder = async (orderData: Order) => {
+    await axiosInstance.post("/orders", orderData).then((res) => {
+      console.log("order placed", res.data.data._id);
+      setOrderId(res.data.data._id);
+    });
+  };
+
+  useEffect(() => {
+    console.log("store data", data);
+    // @ts-ignore
+    makeOrder(data);
+    setTab(tab + 1);
+  }, [data]);
+
+  const handleCheckout = async () => {
+    await axiosInstance.get(`/orders/payment/${orderId}`).then((res) => {
+      console.log("res", res);
+      // window.location.href=''
+    });
+  };
+
   const handleProceed = async () => {
-    setLoading(true);
+    // setLoading(true);
 
     try {
-      if (tab < 3) {
+      if (tab === 1) {
         setTab(tab + 1);
       } else {
         setTab(tab);
       }
-      const orderData = {
-        tax: 0,
-        shippingFee: 0,
-        cartItems: [
-          {
-            name: selectedTickets?.title,
-            price: selectedTickets?.price,
-            quantity: 1,
-            ticket: selectedTickets?._id,
-          },
-        ],
-      };
 
-      await axiosInstance
-        .post("/orders", orderData)
-        .then((res) => console.log("order placed", res));
+      if (tab === 2) {
+        setIsSubmit(true);
+      }
+      if (tab === 3) {
+        handleCheckout();
+      }
+
+      console.log("store errors", errors);
+      // const orderData = {
+      //   tax: 0,
+      //   shippingFee: 0,
+      //   cartItems: [
+      //     {
+      //       name: selectedTickets?.title,
+      //       price: selectedTickets?.price,
+      //       quantity: 1,
+      //       ticket: selectedTickets?._id,
+      //     },
+      //   ],
+      // };
+
+      // await axiosInstance
+      //   .post("/orders", orderData)
+      //   .then((res) => console.log("order placed", res));
     } finally {
       // catch(err=>console.log('err',err))
       setLoading(false);
@@ -156,26 +188,27 @@ export default function BuyTicketSummery({
             </Button>
           )}
         </div>
-        <p className="text-sm text-center text-black/60">
-          By registering for this event, you provide consent to share your
-          contact information to the event organizers and KonfHub Technologies
-          LLP to share the event and other updates with you by email, post or
-          telephone. You understand and accept that you will abide by the
-          KonfHub&apos;s{" "}
-          <Link
-            href={"/conditions/refund-policy"}
-            className="text-primary underline"
-          >
-            refund policy
-          </Link>{" "}
-          and{" "}
-          <Link
-            href={"/conditions/terms-condition"}
-            className="text-primary underline"
-          >
-            Terms and Conditions.
-          </Link>
-        </p>
+        {tab === 3 && (
+          <p className="text-sm text-center text-black/60">
+            By registering for this event, you provide consent to share your
+            contact information with the event organisers to share the event and
+            other updates with you by email, mobile & WhatsApp. You understand
+            and accept that you will abide by the KCD Dhaka{" "}
+            <Link
+              href={"/conditions/refund-policy"}
+              className="text-primary underline"
+            >
+              refund policy
+            </Link>{" "}
+            and{" "}
+            <Link
+              href={"/conditions/terms-condition"}
+              className="text-primary underline"
+            >
+              Terms and Conditions.
+            </Link>
+          </p>
+        )}
       </div>
     </div>
   );

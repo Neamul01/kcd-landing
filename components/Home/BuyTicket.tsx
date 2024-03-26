@@ -7,17 +7,17 @@ import BuyTicketSummery from "./BuyTicketSummery";
 import BuyTicketDetails from "./BuyTicketDetails";
 import { Button } from "@mui/material";
 import { IoIosArrowBack } from "react-icons/io";
-import { Order, Ticket } from "@/types/types";
+import { Ticket } from "@/types/types";
 import axiosInstance from "@/lib/Axios";
 import Loader from "../Shared/Loader";
+import BuyTicketPaymentCard from "./BuyTicketPaymentCard";
 
 export default function BuyTicket() {
   const [tab, setTab] = useState(1);
   const [tickets, setTickets] = useState<Ticket[]>();
   const [selectedTickets, setSelectedTickets] = useState<Ticket>();
   const [ticketQuantity, setTicketQuantity] = useState(1);
-  const [orderDetails, setOrderDetails] = useState<Order>();
-  const [total, setTotal] = useState<number>();
+  const [error, setError] = useState<string>();
 
   const handleBack = () => {
     if (tab > 1) {
@@ -28,16 +28,14 @@ export default function BuyTicket() {
   };
 
   useEffect(() => {
-    // const subTotal = ticket
-    // setTotal
-  }, [ticketQuantity]);
-
-  useEffect(() => {
     const getTicket = async () => {
       await axiosInstance
         .get("/tickets")
-        .then((res) => setTickets(res.data.data))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          setError("");
+          setTickets(res.data.data);
+        })
+        .catch((err) => setError("Something went wrong"));
     };
     getTicket();
   }, []);
@@ -50,13 +48,22 @@ export default function BuyTicket() {
         title={"Buy Tickets"}
         className="bg-gray-200"
       >
-        {!tickets ? (
-          <>
+        {/* {!tickets && error ? ( */}
+        <>
+          {error && (
+            <div className="flex items-center justify-center">
+              <p className="text-center text-xs text-red-500">{error}</p>
+            </div>
+          )}
+
+          {!tickets && (
             <div className="flex items-center justify-center">
               <Loader />
             </div>
-          </>
-        ) : (
+          )}
+        </>
+        {/* // ) : ( */}
+        {tickets && (
           <div className="md:w-layout  mx-auto md:p-16 p-2 pt-8 rounded-lg bg-white flex flex-col gap-3">
             <div className="">
               <Button
@@ -81,10 +88,9 @@ export default function BuyTicket() {
                 </div>
                 <div className="col-span-9 p-4 max-h-[524px] overflow-y-scroll">
                   {tab === 2 ? (
-                    <BuyTicketDetails
-                      selectedTickets={selectedTickets}
-                      setOrderDetails={setOrderDetails}
-                    />
+                    <BuyTicketDetails selectedTickets={selectedTickets} />
+                  ) : tab === 3 ? (
+                    <BuyTicketPaymentCard />
                   ) : (
                     <BuyTicketCards
                       tickets={tickets}
@@ -101,7 +107,6 @@ export default function BuyTicket() {
                   setTab={setTab}
                   tab={tab}
                   selectedTickets={selectedTickets}
-                  ticketQuantity={ticketQuantity}
                 />
               </div>
             </div>
