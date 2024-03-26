@@ -26,10 +26,17 @@ export default function BuyTicketSummery({
   const { data, setIsSubmit, errors } = useDetailsStore();
 
   const makeOrder = async (orderData: Order) => {
-    await axiosInstance.post("/orders", orderData).then((res) => {
-      console.log("order placed", res.data.data._id);
-      setOrderId(res.data.data._id);
-    });
+    try {
+      setLoading(true);
+      await axiosInstance.post("/orders", orderData).then((res) => {
+        console.log("order placed", res.data.data._id);
+        setOrderId(res.data.data._id);
+      });
+    } catch {
+      () => alert("something went wrong, please try again");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -40,16 +47,22 @@ export default function BuyTicketSummery({
   }, [data]);
 
   const handleCheckout = async () => {
-    await axiosInstance.get(`/orders/payment/${orderId}`).then((res) => {
-      console.log("res", res);
-      // window.location.href=''
-    });
+    try {
+      setLoading(true);
+      await axiosInstance.get(`/orders/payment/${orderId}`).then((res) => {
+        console.log("res", res);
+        // window.location.href=''
+      });
+    } catch {
+      () => alert("something went wrong, please try again");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleProceed = async () => {
-    // setLoading(true);
-
     try {
+      // setLoading(true);
       if (tab === 1) {
         setTab(tab + 1);
       } else {
@@ -64,24 +77,7 @@ export default function BuyTicketSummery({
       }
 
       console.log("store errors", errors);
-      // const orderData = {
-      //   tax: 0,
-      //   shippingFee: 0,
-      //   cartItems: [
-      //     {
-      //       name: selectedTickets?.title,
-      //       price: selectedTickets?.price,
-      //       quantity: 1,
-      //       ticket: selectedTickets?._id,
-      //     },
-      //   ],
-      // };
-
-      // await axiosInstance
-      //   .post("/orders", orderData)
-      //   .then((res) => console.log("order placed", res));
     } finally {
-      // catch(err=>console.log('err',err))
       setLoading(false);
     }
   };
