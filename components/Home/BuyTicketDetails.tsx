@@ -84,6 +84,8 @@ export default function BuyTicketDetails({
   const [track, setTrack] = React.useState("");
   const { setData, isSubmit, setIsSubmit, setErrors } = useDetailsStore();
 
+  const selectedTShirt = watch("tShirt");
+
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
       try {
@@ -268,6 +270,14 @@ export default function BuyTicketDetails({
               </FormControl>
             )}
           />
+
+          {selectedTShirt && (
+            <img
+              src="/t-shirt-size.png"
+              alt="sizes guide"
+              className="w-full h-full"
+            />
+          )}
 
           <Controller
             control={control}
