@@ -10,6 +10,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { Ticket } from "@/types/types";
 import axiosInstance from "@/lib/Axios";
 import Loader from "../Shared/Loader";
+import BuyTicketPaymentCard from "./BuyTicketPaymentCard";
 
 export default function BuyTicket() {
   const [tab, setTab] = useState(1);
@@ -88,6 +89,8 @@ export default function BuyTicket() {
                 <div className="col-span-9 p-4 max-h-[524px] overflow-y-scroll">
                   {tab === 2 ? (
                     <BuyTicketDetails selectedTickets={selectedTickets} />
+                  ) : tab === 3 ? (
+                    <BuyTicketPaymentCard />
                   ) : (
                     <BuyTicketCards
                       tickets={tickets}
