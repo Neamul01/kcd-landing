@@ -22,8 +22,8 @@ const schema = zod.object({
   name: zod.string().min(1, { message: "Name is required" }),
   mobile: zod.string().min(1, { message: "Mobile number is required" }),
   address: zod.string().min(1, { message: "Address is required" }),
-  designation: zod.string().min(1, { message: "Designation is required" }),
-  organization: zod.string().min(1, { message: "Organization is required" }),
+  // designation: zod.string().min(1, { message: "Designation is required" }),
+  // organization: zod.string().min(1, { message: "Organization is required" }),
   tShirt: zod.string().min(1, { message: "Organization is required" }),
   promotion: zod
     .boolean()
@@ -62,8 +62,6 @@ export default function BuyTicketDetails({
         email: user?.email || "",
         mobile: user?.mobile || "",
         address: "",
-        designation: user?.designation || "",
-        organization: user?.organization || "",
         tShirt: "",
         terms: false,
         promotion: false,
@@ -74,11 +72,42 @@ export default function BuyTicketDetails({
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
-      setIsPending(true);
+      try {
+        setIsPending(true);
 
-      router.refresh();
+        const submitData = {
+          name: values.name, //
+          email: values.email, //
+          phone: {
+            number: values.mobile, //
+            promotion: values.promotion, //
+          },
+          // track: values.
+          // workshop:
+          tshirt: values.tShirt, //
+          // description:
+          address: values.address, //
+          // tax:
+          // shippingFee:
+          cartItems: [
+            {
+              title: selectedTickets?.title, //
+              price: selectedTickets?.price, //
+              quantity: selectedTickets?.quantity, //
+              ticket: selectedTickets?._id, //
+            },
+          ],
+        };
+
+        // Reset form
+        reset();
+      } catch {
+        () => alert("Something went wrong please try again");
+      } finally {
+        setIsPending(false);
+      }
     },
-    [router, setError]
+    [setOrderDetails, reset]
   );
 
   React.useEffect(() => {
@@ -87,8 +116,6 @@ export default function BuyTicketDetails({
       email: user?.email || "",
       mobile: user?.mobile || "",
       name: user?.name || "",
-      designation: user?.designation || "",
-      organization: user?.organization || "",
     });
   }, [user]);
 
@@ -99,108 +126,6 @@ export default function BuyTicketDetails({
       </Stack>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
-          <Controller
-            control={control}
-            name="promotion"
-            render={({ field }) => (
-              <div>
-                <FormControlLabel
-                  control={<Checkbox {...field} />}
-                  label={
-                    <React.Fragment>
-                      I would like to receive updates over WhatsApp.
-                    </React.Fragment>
-                  }
-                />
-                {errors.promotion ? (
-                  <FormHelperText error>
-                    {errors.promotion.message}
-                  </FormHelperText>
-                ) : null}
-              </div>
-            )}
-          />
-          <Controller
-            control={control}
-            name="mobile"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.mobile)}>
-                <InputLabel>WhatsApp Number</InputLabel>
-                <OutlinedInput
-                  {...field}
-                  label="WhatsApp Number"
-                  type="number"
-                />
-                {errors.mobile ? (
-                  <FormHelperText>{errors.mobile.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="tShirt"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.tShirt)}>
-                <InputLabel id="demo-simple-select-label">
-                  T-Shirt Size
-                </InputLabel>
-                <Select
-                  {...field}
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="T-Shirt Size"
-                >
-                  <MenuItem value={"male"}>Male</MenuItem>
-                  <MenuItem value={"female"}>Female</MenuItem>
-                </Select>
-                {errors.tShirt ? (
-                  <FormHelperText>{errors.tShirt.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="terms"
-            render={({ field }) => (
-              <div>
-                <FormControlLabel
-                  control={<Checkbox {...field} />}
-                  label={
-                    <React.Fragment>
-                      I have read the{" "}
-                      <Link
-                        href={"/conditions/terms-condition"}
-                        className="text-primary underline"
-                      >
-                        terms and conditions
-                      </Link>
-                    </React.Fragment>
-                  }
-                />
-                {errors.terms ? (
-                  <FormHelperText error>{errors.terms.message}</FormHelperText>
-                ) : null}
-              </div>
-            )}
-          />
-          <Controller
-            control={control}
-            name="mobile"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.mobile)}>
-                <InputLabel>Phone</InputLabel>
-                <OutlinedInput {...field} label="Phone" type="number" />
-                {errors.mobile ? (
-                  <FormHelperText>{errors.mobile.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
-
           <Controller
             control={control}
             name="name"
@@ -254,38 +179,86 @@ export default function BuyTicketDetails({
 
           <Controller
             control={control}
-            name="designation"
+            name="tShirt"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.designation)}>
-                <InputLabel>Designation</InputLabel>
-                <OutlinedInput
+              <FormControl error={Boolean(errors.tShirt)}>
+                <InputLabel id="demo-simple-select-label">
+                  T-Shirt Size
+                </InputLabel>
+                <Select
                   {...field}
-                  readOnly
-                  label="Designation"
-                  defaultValue={user?.designation}
-                />
-                {errors.designation ? (
-                  <FormHelperText>{errors.designation.message}</FormHelperText>
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="T-Shirt Size"
+                >
+                  <MenuItem value={"male"}>Male</MenuItem>
+                  <MenuItem value={"female"}>Female</MenuItem>
+                </Select>
+                {errors.tShirt ? (
+                  <FormHelperText>{errors.tShirt.message}</FormHelperText>
                 ) : null}
               </FormControl>
             )}
           />
+
           <Controller
             control={control}
-            name="organization"
+            name="promotion"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.organization)}>
-                <InputLabel>Organization</InputLabel>
-                <OutlinedInput
-                  {...field}
-                  readOnly
-                  label="Organization"
-                  defaultValue={user?.organization}
+              <div>
+                <FormControlLabel
+                  control={<Checkbox {...field} />}
+                  label={
+                    <React.Fragment>
+                      I would like to receive updates over WhatsApp.
+                    </React.Fragment>
+                  }
                 />
-                {errors.organization ? (
-                  <FormHelperText>{errors.organization.message}</FormHelperText>
+                {errors.promotion ? (
+                  <FormHelperText error>
+                    {errors.promotion.message}
+                  </FormHelperText>
+                ) : null}
+              </div>
+            )}
+          />
+          <Controller
+            control={control}
+            name="mobile"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.mobile)}>
+                <InputLabel>Mobile</InputLabel>
+                <OutlinedInput {...field} label="Mobile" type="number" />
+                {errors.mobile ? (
+                  <FormHelperText>{errors.mobile.message}</FormHelperText>
                 ) : null}
               </FormControl>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="terms"
+            render={({ field }) => (
+              <div>
+                <FormControlLabel
+                  control={<Checkbox {...field} />}
+                  label={
+                    <React.Fragment>
+                      I have read the{" "}
+                      <Link
+                        href={"/conditions/terms-condition"}
+                        className="text-primary underline"
+                      >
+                        terms and conditions
+                      </Link>
+                    </React.Fragment>
+                  }
+                />
+                {errors.terms ? (
+                  <FormHelperText error>{errors.terms.message}</FormHelperText>
+                ) : null}
+              </div>
             )}
           />
         </Stack>
