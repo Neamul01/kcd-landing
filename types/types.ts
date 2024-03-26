@@ -19,3 +19,14 @@ export type Order = {
     ticket: string;
   }[];
 };
+
+export type Workshop = {
+  _id: string;
+  title: string;
+  description: string;
+  limit: number;
+  minimumSkill: string;
+  availability: boolean;
+  user: string;
+  createdAt: string;
+};
