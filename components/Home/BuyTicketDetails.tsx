@@ -24,6 +24,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import axiosInstance from "@/lib/Axios";
+import { useDetailsStore } from "@/store/useDetailsStore";
 
 const schema = zod.object({
   email: zod.string().min(1, { message: "Email is required" }).email(),
@@ -46,13 +47,11 @@ type Values = zod.infer<typeof schema>;
 
 export default function BuyTicketDetails({
   selectedTickets,
-  setOrderDetails,
 }: {
   selectedTickets: Ticket | undefined;
-  setOrderDetails: React.Dispatch<React.SetStateAction<Order | undefined>>;
 }) {
   const router = useRouter();
-
+  const submitButtonRef = React.useRef(null);
   const { data: user } = useUser();
 
   const [isPending, setIsPending] = React.useState<boolean>(false);
@@ -64,6 +63,7 @@ export default function BuyTicketDetails({
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<Values>({
     defaultValues: React.useMemo(() => {
@@ -80,6 +80,9 @@ export default function BuyTicketDetails({
     }, [user]),
     resolver: zodResolver(schema),
   });
+  const [workshopLoading, setWorkshopLoading] = React.useState(false);
+  const [track, setTrack] = React.useState("");
+  const { setData, isSubmit, setIsSubmit, setErrors } = useDetailsStore();
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
@@ -107,17 +110,15 @@ export default function BuyTicketDetails({
           ],
         };
 
-        console.log("values", submitData);
-
-        // Reset form
-        reset();
+        // console.log("values", submitData);
+        setData(submitData);
       } catch {
         () => alert("Something went wrong please try again");
       } finally {
         setIsPending(false);
       }
     },
-    [setOrderDetails, reset]
+    [reset]
   );
 
   const handleTrackSelection = async (
@@ -125,10 +126,12 @@ export default function BuyTicketDetails({
   ) => {
     const selectedTrack = event.target.value;
 
+    setTrack(selectedTrack);
     setValue("track", selectedTrack);
 
     if (selectedTrack === "workshop") {
       try {
+        setWorkshopLoading(true);
         const response = await axiosInstance("/workshops");
         if (!response.data) {
           throw new Error("Failed to fetch workshops");
@@ -138,8 +141,11 @@ export default function BuyTicketDetails({
         setWorkshops(response.data.data);
       } catch (error) {
         console.error("Error fetching workshops:", error);
+      } finally {
+        setWorkshopLoading(false);
       }
     } else {
+      setWorkshopLoading(false);
       // Reset workshops if "Presentation" is selected
       setWorkshops([]);
     }
@@ -147,6 +153,7 @@ export default function BuyTicketDetails({
 
   const handleWorkshopSelect = (workshopId: string) => {
     console.log("workshop id", workshopId);
+    setValue("workshop", [workshopId]);
     setSelectedWorkspace((prevSelected) => {
       if (prevSelected.includes(workshopId)) {
         // Remove workshopId if already present
@@ -165,7 +172,16 @@ export default function BuyTicketDetails({
       mobile: user?.mobile || "",
       name: user?.name || "",
     });
-  }, [user]);
+  }, [user, reset]);
+
+  React.useEffect(() => {
+    console.log("is submit", isSubmit);
+    if (isSubmit && submitButtonRef.current) {
+      // @ts-ignore
+      submitButtonRef.current.click();
+      setIsSubmit(false);
+    }
+  }, [isSubmit, errors]);
 
   return (
     <Stack spacing={4}>
@@ -308,6 +324,9 @@ export default function BuyTicketDetails({
           </FormControl>
 
           {/* Workshop selection */}
+          {workshopLoading && (
+            <p className="text-xs text-primary">Loading...</p>
+          )}
           {workshops && workshops?.length > 0 && (
             <FormControl>
               <RadioGroup aria-label="workshop" name="workshop">
@@ -363,7 +382,9 @@ export default function BuyTicketDetails({
             )}
           />
         </Stack>
-        <button type="submit">submit</button>
+        <button type="submit" ref={submitButtonRef} style={{ display: "none" }}>
+          submit
+        </button>
       </form>
     </Stack>
   );
