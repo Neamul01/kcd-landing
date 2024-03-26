@@ -156,26 +156,27 @@ export default function BuyTicketSummery({
             </Button>
           )}
         </div>
-        <p className="text-sm text-center text-black/60">
-          By registering for this event, you provide consent to share your
-          contact information to the event organizers and KonfHub Technologies
-          LLP to share the event and other updates with you by email, post or
-          telephone. You understand and accept that you will abide by the
-          KonfHub&apos;s{" "}
-          <Link
-            href={"/conditions/refund-policy"}
-            className="text-primary underline"
-          >
-            refund policy
-          </Link>{" "}
-          and{" "}
-          <Link
-            href={"/conditions/terms-condition"}
-            className="text-primary underline"
-          >
-            Terms and Conditions.
-          </Link>
-        </p>
+        {tab === 3 && (
+          <p className="text-sm text-center text-black/60">
+            By registering for this event, you provide consent to share your
+            contact information with the event organisers to share the event and
+            other updates with you by email, mobile & WhatsApp. You understand
+            and accept that you will abide by the KCD Dhaka{" "}
+            <Link
+              href={"/conditions/refund-policy"}
+              className="text-primary underline"
+            >
+              refund policy
+            </Link>{" "}
+            and{" "}
+            <Link
+              href={"/conditions/terms-condition"}
+              className="text-primary underline"
+            >
+              Terms and Conditions.
+            </Link>
+          </p>
+        )}
       </div>
     </div>
   );
