@@ -96,6 +96,7 @@ export default function BuyTicketDetails({
             number: values.mobile, //
             promotion: values.promotion, //
           },
+          description: "Test Payment",
           track: values.track,
           workshop: selectedWorkshop,
           tshirt: values.tShirt, //
@@ -104,7 +105,7 @@ export default function BuyTicketDetails({
             {
               title: selectedTickets?.title, //
               price: selectedTickets?.price, //
-              quantity: selectedTickets?.quantity, //
+              quantity: 1, //
               ticket: selectedTickets?._id, //
             },
           ],
@@ -255,8 +256,11 @@ export default function BuyTicketDetails({
                   id="demo-simple-select"
                   label="T-Shirt Size"
                 >
-                  <MenuItem value={"male"}>Male</MenuItem>
-                  <MenuItem value={"female"}>Female</MenuItem>
+                  <MenuItem value={"S"}>S</MenuItem>
+                  <MenuItem value={"M"}>M</MenuItem>
+                  <MenuItem value={"L"}>L</MenuItem>
+                  <MenuItem value={"XL"}>XL</MenuItem>
+                  <MenuItem value={"2XL"}>2XL</MenuItem>
                 </Select>
                 {errors.tShirt ? (
                   <FormHelperText>{errors.tShirt.message}</FormHelperText>
