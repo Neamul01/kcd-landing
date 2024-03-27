@@ -9,8 +9,8 @@ export const navItems = [
     icon: "user",
   },
   {
-    key: "speakers",
-    title: "Speakers",
+    key: "Participant",
+    title: "Participant",
     href: paths.dashboard.speakers,
     icon: "user",
   },
@@ -20,22 +20,22 @@ export const navItems = [
     href: paths.dashboard.overview,
     icon: "chart-pie",
   },
-  {
-    key: "customers",
-    title: "Customers",
-    href: paths.dashboard.customers,
-    icon: "users",
-  },
-  {
-    key: "integrations",
-    title: "Integrations",
-    href: paths.dashboard.integrations,
-    icon: "plugs-connected",
-  },
-  {
-    key: "settings",
-    title: "Settings",
-    href: paths.dashboard.settings,
-    icon: "gear-six",
-  },
+  // {
+  //   key: "customers",
+  //   title: "Customers",
+  //   href: paths.dashboard.customers,
+  //   icon: "users",
+  // },
+  // {
+  //   key: "integrations",
+  //   title: "Integrations",
+  //   href: paths.dashboard.integrations,
+  //   icon: "plugs-connected",
+  // },
+  // {
+  //   key: "settings",
+  //   title: "Settings",
+  //   href: paths.dashboard.settings,
+  //   icon: "gear-six",
+  // },
 ] satisfies NavItemConfig[];
