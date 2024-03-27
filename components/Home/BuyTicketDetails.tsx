@@ -63,6 +63,7 @@ export default function BuyTicketDetails({
     handleSubmit,
     reset,
     setValue,
+    setError,
     watch,
     formState: { errors },
   } = useForm<Values>({
@@ -76,6 +77,7 @@ export default function BuyTicketDetails({
         terms: false,
         promotion: false,
         track: "",
+        workshop: [],
       };
     }, [user]),
     resolver: zodResolver(schema),
@@ -89,6 +91,20 @@ export default function BuyTicketDetails({
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
       try {
+        if (!values.track) {
+          return setError("track", {
+            type: "min",
+            message: "Please select a track",
+          });
+        }
+        console.log("select a workshop", values?.workshop);
+        // @ts-ignore
+        if (values.track === "workshop" && values?.workshop?.length <= 0) {
+          return setError("workshop", {
+            type: "min",
+            message: "Please select at least one workshop",
+          });
+        }
         setIsPending(true);
 
         const submitData = {
@@ -113,7 +129,6 @@ export default function BuyTicketDetails({
           ],
         };
 
-        console.log("selectedWorkshop", selectedWorkshop);
         console.log("values", submitData);
         setData(submitData);
       } catch {
@@ -353,6 +368,7 @@ export default function BuyTicketDetails({
                 {workshops?.map((workshop) => (
                   <div key={workshop._id}>
                     <FormControlLabel
+                      disabled={workshop.availability === false}
                       onClick={() => handleWorkshopSelect(workshop._id)}
                       control={
                         <Checkbox
@@ -361,16 +377,19 @@ export default function BuyTicketDetails({
                           checked={selectedWorkshop.includes(workshop._id)}
                         />
                       }
-                      label={workshop.title}
+                      label={`${workshop.title} (${workshop.sessionTime})`}
                       value={workshop._id}
                     />
-                    {errors.workshop ? (
-                      <FormHelperText error>
-                        {errors.workshop.message}
-                      </FormHelperText>
-                    ) : null}
                   </div>
                 ))}
+                {errors.workshop ? (
+                  <FormHelperText error>
+                    {errors.workshop.message}
+                  </FormHelperText>
+                ) : null}
+                <FormHelperText>
+                  You can select one morning and one afternoon time.
+                </FormHelperText>
               </RadioGroup>
             </FormControl>
             // {/* {errors.workshop && (
@@ -404,8 +423,7 @@ export default function BuyTicketDetails({
             )}
           />
         </Stack>
-        {/* <button type="submit" ref={submitButtonRef} style={{ display: "none" }}> */}
-        <button type="submit" ref={submitButtonRef}>
+        <button type="submit" ref={submitButtonRef} style={{ display: "none" }}>
           submit
         </button>
       </form>
