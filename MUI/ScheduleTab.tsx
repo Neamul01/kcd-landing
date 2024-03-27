@@ -121,30 +121,34 @@ export default function ScheduleTab() {
       </Box>
       <CustomTabPanel value={value} index={0}>
         <div className="border rounded-lg">
-          {[1, 2, 3, 4, 5].map((i) => (
+          {/* {[1, 2, 3, 4, 5].map((i) => (
             <ListItem key={i} />
-          ))}
+          ))} */}
+          <h2 className="text-center text-2xl">Coming soon..</h2>
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <div className="border rounded-lg">
-          {[1, 2, 3, 4, 5].map((i) => (
+          {/* {[1, 2, 3, 4, 5].map((i) => (
             <ListItem key={i} />
-          ))}
+          ))} */}
+          <h2 className="text-center text-2xl">Coming soon..</h2>
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <div className="border rounded-lg">
-          {[1, 2, 3, 4, 5].map((i) => (
+          {/* {[1, 2, 3, 4, 5].map((i) => (
             <ListItem key={i} />
-          ))}
+          ))} */}
+          <h2 className="text-center text-2xl">Coming soon..</h2>
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
         <div className="border rounded-lg">
-          {[1, 2, 3, 4, 5].map((i) => (
+          {/* {[1, 2, 3, 4, 5].map((i) => (
             <ListItem key={i} />
-          ))}
+          ))} */}
+          <h2 className="text-center text-2xl">Coming soon..</h2>
         </div>
       </CustomTabPanel>
     </Box>
