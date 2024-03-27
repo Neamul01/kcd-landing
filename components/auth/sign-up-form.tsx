@@ -131,7 +131,7 @@ export function SignUpForm(): React.JSX.Element {
         setSelectedImage(file);
         setPreviewImage(URL.createObjectURL(file));
 
-        // Create an image element to check dimensions
+        // // Create an image element to check dimensions
         const img = new Image();
         img.onload = () => {
           if (img.width !== 500 || img.height !== 675) {
@@ -140,7 +140,7 @@ export function SignUpForm(): React.JSX.Element {
             setImageError(null);
           }
         };
-        img.src = URL.createObjectURL(file);
+        // img.src = URL.createObjectURL(file);
       }
     }
   };
@@ -273,17 +273,17 @@ export function SignUpForm(): React.JSX.Element {
               inputProps={{ id: "file-input" }}
             />
             {imageError && <FormHelperText error>{imageError}</FormHelperText>}
-            {imageError?.includes("dimensions") && (
+            {/* {imageError?.includes("dimensions") && (
               <p className="text-xs ">
                 You can resize{" "}
                 <a
-                  href="http://https://imageresizer.com/"
+                  href="https://imageresizer.com/"
                   className="text-primary underline"
                 >
                   here.
                 </a>
               </p>
-            )}
+            )} */}
           </FormControl>
           {selectedImage && (
             <img
