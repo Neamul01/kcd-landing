@@ -1,11 +1,11 @@
 import SpeakersDetailsForm from "@/components/dashboard/speakers/speakersDetailsForm";
 import { Grid, Stack, Typography } from "@mui/material";
 
-const Jobayer = () => {
+const page = () => {
   return (
     <Stack spacing={3}>
       <div>
-        <Typography variant="h4">Speakers</Typography>
+        <Typography variant="h4">Participant</Typography>
       </div>
       <Grid container spacing={5}>
         {/* <Grid lg={4} md={6} xs={12}>
@@ -19,4 +19,4 @@ const Jobayer = () => {
   );
 };
 
-export default Jobayer;
+export default page;
