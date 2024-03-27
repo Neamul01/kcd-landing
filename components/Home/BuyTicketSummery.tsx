@@ -40,18 +40,27 @@ export default function BuyTicketSummery({
   };
 
   useEffect(() => {
-    console.log("store data", data);
-    // @ts-ignore
-    makeOrder(data);
-    setTab(tab + 1);
+    if (data.address) {
+      try {
+        setLoading(true);
+        // console.log("store data", data);
+        // @ts-ignore
+        makeOrder(data);
+        setTab(tab + 1);
+      } catch {
+        () => alert("something went wrong, please try again");
+      } finally {
+        setLoading(false);
+      }
+    }
   }, [data]);
 
   const handleCheckout = async () => {
     try {
       setLoading(true);
       await axiosInstance.get(`/orders/payment/${orderId}`).then((res) => {
-        console.log("res", res);
-        // window.location.href=''
+        console.log("res", res.data.data.payment_url);
+        window.location.href = res.data.data.payment_url;
       });
     } catch {
       () => alert("something went wrong, please try again");
