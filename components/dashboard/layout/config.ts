@@ -1,11 +1,17 @@
-import type { NavItemConfig } from "@/types/nav";
 import { paths } from "@/paths";
+import type { NavItemConfig } from "@/types/nav";
 
 export const navItems = [
   {
     key: "account",
     title: "Account",
     href: paths.dashboard.account,
+    icon: "user",
+  },
+  {
+    key: "speakers",
+    title: "Speakers",
+    href: paths.dashboard.speakers,
     icon: "user",
   },
   {

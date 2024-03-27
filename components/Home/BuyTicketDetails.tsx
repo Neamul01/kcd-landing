@@ -63,6 +63,7 @@ export default function BuyTicketDetails({
     handleSubmit,
     reset,
     setValue,
+    setError,
     watch,
     formState: { errors },
   } = useForm<Values>({
@@ -76,6 +77,7 @@ export default function BuyTicketDetails({
         terms: false,
         promotion: false,
         track: "",
+        workshop: [],
       };
     }, [user]),
     resolver: zodResolver(schema),
@@ -89,6 +91,20 @@ export default function BuyTicketDetails({
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
       try {
+        if (!values.track) {
+          return setError("track", {
+            type: "min",
+            message: "Please select a track",
+          });
+        }
+        console.log("select a workshop", values?.workshop);
+        // @ts-ignore
+        if (values.track === "workshop" && values?.workshop?.length <= 0) {
+          return setError("workshop", {
+            type: "min",
+            message: "Please select at least one workshop",
+          });
+        }
         setIsPending(true);
 
         const submitData = {
@@ -100,7 +116,7 @@ export default function BuyTicketDetails({
           },
           description: "Test Payment",
           track: values.track,
-          workshop: selectedWorkshop,
+          workshop: values.workshop,
           tshirt: values.tShirt, //
           address: values.address, //
           cartItems: [
@@ -113,7 +129,7 @@ export default function BuyTicketDetails({
           ],
         };
 
-        // console.log("values", submitData);
+        console.log("values", submitData);
         setData(submitData);
       } catch {
         () => alert("Something went wrong please try again");
@@ -156,14 +172,17 @@ export default function BuyTicketDetails({
 
   const handleWorkshopSelect = (workshopId: string) => {
     console.log("workshop id", workshopId);
-    setValue("workshop", [workshopId]);
     setSelectedWorkspace((prevSelected) => {
       if (prevSelected.includes(workshopId)) {
         // Remove workshopId if already present
-        return prevSelected.filter((id) => id !== workshopId);
+        const updatedSelected = prevSelected.filter((id) => id !== workshopId);
+        setValue("workshop", updatedSelected); // Set the updated array
+        return updatedSelected;
       } else {
         // Add workshopId if not present
-        return [...prevSelected, workshopId];
+        const updatedSelected = [...prevSelected, workshopId];
+        setValue("workshop", updatedSelected); // Set the updated array
+        return updatedSelected;
       }
     });
   };
@@ -316,19 +335,21 @@ export default function BuyTicketDetails({
 
           {/* Track selection */}
           <FormControl error={Boolean(errors.track)}>
+            <p>Choose your preferred track to make the most of your day!</p>
             <RadioGroup
               aria-label="track"
               name="track"
               onChange={handleTrackSelection}
+              className=""
             >
               <FormControlLabel
                 value="presentation-deck"
-                control={<Radio />}
+                control={<Radio size="small" />}
                 label="Presentation"
               />
               <FormControlLabel
                 value="workshop"
-                control={<Radio />}
+                control={<Radio size="small" />}
                 label="Workshop"
               />
             </RadioGroup>
@@ -342,27 +363,33 @@ export default function BuyTicketDetails({
             <p className="text-xs text-primary">Loading...</p>
           )}
           {workshops && workshops?.length > 0 && (
-            <FormControl>
+            <FormControl className="pl-2 md:pl-5 !mt-0">
               <RadioGroup aria-label="workshop" name="workshop">
                 {workshops?.map((workshop) => (
                   <div key={workshop._id}>
                     <FormControlLabel
+                      disabled={workshop.availability === false}
                       onClick={() => handleWorkshopSelect(workshop._id)}
                       control={
                         <Checkbox
+                          size="small"
+                          onClick={() => handleWorkshopSelect(workshop._id)}
                           checked={selectedWorkshop.includes(workshop._id)}
                         />
                       }
-                      label={workshop.title}
+                      label={`${workshop.title} (${workshop.sessionTime})`}
                       value={workshop._id}
                     />
-                    {errors.workshop ? (
-                      <FormHelperText error>
-                        {errors.workshop.message}
-                      </FormHelperText>
-                    ) : null}
                   </div>
                 ))}
+                {errors.workshop ? (
+                  <FormHelperText error>
+                    {errors.workshop.message}
+                  </FormHelperText>
+                ) : null}
+                <FormHelperText>
+                  You can select one morning and one afternoon time.
+                </FormHelperText>
               </RadioGroup>
             </FormControl>
             // {/* {errors.workshop && (

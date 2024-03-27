@@ -6,12 +6,9 @@ export default function BuyTicketPaymentCard() {
     <div className="">
       <div className="flex flex-col gap-6">
         {/* {tickets.map((ticket) => ( */}
-        <div className="w-full h-24 rounded-xl px-5 py-3 shadow-xl flex justify-between border-[1px] border-gray-200">
-          <div className="flex flex-col justify-between h-full">
+        <div className="w-full  rounded-xl px-5 py-3 shadow-xl flex justify-between border-[1px] border-gray-200">
+          <div className="flex  justify-between h-full">
             <p className="">AmarPay</p>
-            <p className="font-semibold text-2xl flex items-center">
-              <TbCurrencyTaka />
-            </p>
           </div>
 
           {/* {selectedTickets?._id === ticket._id ? (
@@ -41,7 +38,7 @@ export default function BuyTicketPaymentCard() {
           <button
             //   onClick={() => setSelectedTickets(ticket)}
             disabled
-            className="disabled:cursor-not-allowed disabled:text-black/30 bg-transparent hover:bg-gray-100 text-black border-gray-500 border rounded-lg mt-auto font-bold py-2 px-8 h-10"
+            className="disabled:cursor-not-allowed disabled:text-black/30 bg-transparent hover:bg-gray-100 text-black border-gray-500 border rounded-lg font-bold py-2 px-8 h-10"
           >
             Selected
           </button>

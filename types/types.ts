@@ -35,6 +35,7 @@ export type Workshop = {
   limit: number;
   minimumSkill: string;
   availability: boolean;
+  sessionTime: string;
   user: string;
   createdAt: string;
 };
