@@ -83,6 +83,7 @@ export function SignUpForm(): React.JSX.Element {
         if (selectedImage) {
           formData.append("file", selectedImage);
         }
+        console.log("file", selectedImage);
         if (!selectedImage) {
           // setIsPending(false);
           return alert("Please enter a image");
@@ -117,7 +118,7 @@ export function SignUpForm(): React.JSX.Element {
         setIsPending(false);
       }
     },
-    [router, setError]
+    [router, selectedImage, reset]
   );
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,17 +131,6 @@ export function SignUpForm(): React.JSX.Element {
         setImageError(null);
         setSelectedImage(file);
         setPreviewImage(URL.createObjectURL(file));
-
-        // // Create an image element to check dimensions
-        const img = new Image();
-        img.onload = () => {
-          if (img.width !== 500 || img.height !== 675) {
-            setImageError("Image dimensions should be 500x675 pixels");
-          } else {
-            setImageError(null);
-          }
-        };
-        // img.src = URL.createObjectURL(file);
       }
     }
   };
@@ -217,6 +207,7 @@ export function SignUpForm(): React.JSX.Element {
                 >
                   <MenuItem value={"male"}>Male</MenuItem>
                   <MenuItem value={"female"}>Female</MenuItem>
+                  <MenuItem value={"others"}>Others</MenuItem>
                 </Select>
                 {errors.gender ? (
                   <FormHelperText>{errors.gender.message}</FormHelperText>
