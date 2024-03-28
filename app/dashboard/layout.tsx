@@ -13,49 +13,49 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps): React.JSX.Element {
   return (
-    // <AuthGuard>
-    <>
-      <GlobalStyles
-        styles={{
-          body: {
-            "--MainNav-height": "56px",
-            "--MainNav-zIndex": 1000,
-            "--SideNav-width": "280px",
-            "--SideNav-zIndex": 1100,
-            "--MobileNav-width": "320px",
-            "--MobileNav-zIndex": 1100,
-            "--MainNav-bgColor": "white",
-          },
-        }}
-      />
-      <Box
-        sx={{
-          bgcolor: "white",
-          display: "flex",
-          flexDirection: "column",
-          position: "relative",
-          minHeight: "100%",
-        }}
-      >
-        <SideNav />
+    <AuthGuard>
+      <>
+        <GlobalStyles
+          styles={{
+            body: {
+              "--MainNav-height": "56px",
+              "--MainNav-zIndex": 1000,
+              "--SideNav-width": "280px",
+              "--SideNav-zIndex": 1100,
+              "--MobileNav-width": "320px",
+              "--MobileNav-zIndex": 1100,
+              "--MainNav-bgColor": "white",
+            },
+          }}
+        />
         <Box
           sx={{
-            display: "flex",
-            flex: "1 1 auto",
-            flexDirection: "column",
-            pl: { lg: "var(--SideNav-width)" },
             bgcolor: "white",
+            display: "flex",
+            flexDirection: "column",
+            position: "relative",
+            minHeight: "100%",
           }}
         >
-          <MainNav />
-          <main>
-            <Container maxWidth="xl" sx={{ py: "64px", bgcolor: "white" }}>
-              {children}
-            </Container>
-          </main>
+          <SideNav />
+          <Box
+            sx={{
+              display: "flex",
+              flex: "1 1 auto",
+              flexDirection: "column",
+              pl: { lg: "var(--SideNav-width)" },
+              bgcolor: "white",
+            }}
+          >
+            <MainNav />
+            <main>
+              <Container maxWidth="xl" sx={{ py: "64px", bgcolor: "white" }}>
+                {children}
+              </Container>
+            </main>
+          </Box>
         </Box>
-      </Box>
-    </>
-    // </AuthGuard>
+      </>
+    </AuthGuard>
   );
 }
