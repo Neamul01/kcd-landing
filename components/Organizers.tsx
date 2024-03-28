@@ -64,7 +64,7 @@ export default function Organizers() {
       </SectionLayout> */}
       <SectionLayout paddingBottom title={"Volunteers"}>
         <div className="max-w-sectionLayout text-center text-black/90 mx-auto gap-2 flex flex-col">
-          <p>
+          {/* <p>
             We are seeking dedicated and passionate individuals to join us as
             volunteers.
           </p>
@@ -73,7 +73,7 @@ export default function Organizers() {
             <a href="#" className="text-primary underline pl-1">
               here
             </a>
-          </p>
+          </p> */}
         </div>
       </SectionLayout>
     </div>
