@@ -81,6 +81,7 @@ const SpeakersDetailsForm = () => {
         })
         .then((res) => {
           console.log("res", res);
+          setSelectedImage(null);
           reset();
         })
         .catch((err) => {
