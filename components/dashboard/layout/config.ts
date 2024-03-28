@@ -4,14 +4,8 @@ import type { NavItemConfig } from "@/types/nav";
 export const navItems = [
   {
     key: "account",
-    title: "Account",
+    title: "My Profile",
     href: paths.dashboard.account,
-    icon: "user",
-  },
-  {
-    key: "Participant",
-    title: "Participant",
-    href: paths.dashboard.speakers,
     icon: "user",
   },
   {
@@ -19,6 +13,12 @@ export const navItems = [
     title: "Overview",
     href: paths.dashboard.overview,
     icon: "chart-pie",
+  },
+  {
+    key: "Participant",
+    title: "Participant",
+    href: paths.dashboard.participant,
+    icon: "user",
   },
   // {
   //   key: "customers",
