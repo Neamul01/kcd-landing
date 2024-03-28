@@ -26,27 +26,51 @@ export default function ImageGallery() {
 
 const itemData = [
   {
-    img: "https://www.bracinn.com/images/homeslides/slide04.jpg",
+    img: "https://www.bracinn.com/images/gallery/auditorium-02.jpg",
+    title: "hall 1",
+  },
+  {
+    img: "https://www.bracinn.com/images/gallery/bracinn-meeting-room-2.jpg",
+    title: "meeting room 1",
+  },
+  {
+    img: "https://www.bracinn.com/images/gallery/meeting-room-3.jpg",
+    title: "meeting room 3",
+  },
+  {
+    img: "https://www.bracinn.com/images/gallery/banqueting-hall-02.jpg",
+    title: "banqueting hall",
+  },
+  {
+    img: "https://www.bracinn.com/images/gallery/restaurant.jpg",
+    title: "restaurant",
+  },
+  {
+    img: "https://www.bracinn.com/images/gallery/reception.jpg",
+    title: "reception",
+  },
+  {
+    img: "https://www.bracinn.com/images/gallery/bracinn-meeting-room-3.jpg",
+    title: "bracinn meeting room 3",
+  },
+  {
+    img: "https://www.bracinn.com/images/gallery/auditorium-01.jpg",
     title: "Bed",
   },
   {
-    img: "https://www.bracinn.com/images/meetings/auditorium.jpg",
+    img: "https://www.bracinn.com/images/gallery/the-bracinn-conference-hall.jpg",
     title: "Sink",
   },
   {
-    img: "https://www.bracinn.com/images/meetings/meet02.jpg",
-    title: "Kitchen",
-  },
-  {
-    img: "https://www.bracinn.com/images/homeslides/slide07.jpg",
+    img: "https://www.bracinn.com/images/gallery/banqueting-hall-01.jpg",
     title: "Blinds",
   },
   {
-    img: "https://www.bracinn.com/images/homeslides/slide06.jpg",
+    img: "https://www.bracinn.com/images/gallery/meeting-room-1.jpg",
     title: "Chairs",
   },
   {
-    img: "https://www.bracinn.com/images/homeslides/slide08.jpg",
+    img: "https://www.bracinn.com/images/gallery/lobby.jpg",
     title: "Books",
   },
 ];
