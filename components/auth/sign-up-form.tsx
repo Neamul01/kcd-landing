@@ -85,10 +85,10 @@ export function SignUpForm(): React.JSX.Element {
           formData.append("file", selectedImage);
         }
         console.log("file", selectedImage);
-        if (!selectedImage) {
-          // setIsPending(false);
-          return alert("Please enter a image");
-        }
+        // if (!selectedImage) {
+        //   // setIsPending(false);
+        //   return alert("Please enter a image");
+        // }
 
         console.log("form data", formData);
 
