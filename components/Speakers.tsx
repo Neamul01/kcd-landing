@@ -32,7 +32,7 @@ export default function Speakers() {
           ))}
         </div> */}
         <p className="text-center text-primary w-full">
-          Keynote Speakers update coming soon. Stay tuned to out website for
+          Keynote Speakers update coming soon. Stay tuned to our website for
           details
         </p>
       </SectionLayout>
@@ -47,7 +47,7 @@ export default function Speakers() {
           ))}
         </div> */}
         <p className="text-center text-primary w-full">
-          Event Speakers update coming soon. Stay tuned to out website for
+          Event Speakers update coming soon. Stay tuned to our website for
           details
         </p>
       </SectionLayout>
