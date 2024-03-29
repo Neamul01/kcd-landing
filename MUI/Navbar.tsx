@@ -53,7 +53,7 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  const { data: user } = useUser();
+  // const { data: user } = useUser();
   const pathname = usePathname();
 
   const [backgroundColor, setBackgroundColor] =

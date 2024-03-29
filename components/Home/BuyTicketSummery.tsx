@@ -19,7 +19,7 @@ export default function BuyTicketSummery({
   tab: number;
   selectedTickets: Ticket | undefined;
 }) {
-  const { data: user } = useUser();
+  // const { data: user } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState("");
@@ -161,37 +161,37 @@ export default function BuyTicketSummery({
           </div>
         </div>
         <div className="w-full mb-6">
-          {user ? (
-            <Button
-              onClick={handleProceed}
-              disabled={!selectedTickets || loading}
-              variant="contained"
-              size="large"
-              className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"
-            >
-              <span className="text-lg capitalize font-bold text-white">
-                {loading
-                  ? "Loading..."
-                  : tab === 2
-                    ? "Checkout"
-                    : tab === 3
-                      ? "Proceed to checkout"
-                      : "Proceed"}
-              </span>
-            </Button>
-          ) : (
-            <Button
-              onClick={() => router.push("/auth/sign-in")}
-              // disabled
-              variant="outlined"
-              size="large"
-              className="w-full  disabled:bg-accent/40 !disabled:cursor-not-allowed border-accent  py-3 shadow-none"
-            >
-              <span className="text-lg capitalize font-bold text-black">
-                Sign In
-              </span>
-            </Button>
-          )}
+          {/* {user ? ( */}
+          <Button
+            onClick={handleProceed}
+            disabled={!selectedTickets || loading}
+            variant="contained"
+            size="large"
+            className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"
+          >
+            <span className="text-lg capitalize font-bold text-white">
+              {loading
+                ? "Loading..."
+                : tab === 2
+                  ? "Checkout"
+                  : tab === 3
+                    ? "Proceed to checkout"
+                    : "Proceed"}
+            </span>
+          </Button>
+          {/* // ) : (
+          //   <Button
+          //     onClick={() => router.push("/auth/sign-in")}
+          //     // disabled
+          //     variant="outlined"
+          //     size="large"
+          //     className="w-full  disabled:bg-accent/40 !disabled:cursor-not-allowed border-accent  py-3 shadow-none"
+          //   >
+          //     <span className="text-lg capitalize font-bold text-black">
+          //       Sign In
+          //     </span>
+          //   </Button>
+          // )} */}
         </div>
         {tab === 3 && (
           <p className="text-sm text-center text-black/60">
