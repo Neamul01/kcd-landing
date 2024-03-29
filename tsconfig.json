@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/dashboard/speakers/speaker-info.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/dashboard/speakers/speaker-info.jsx", "components/dashboard/account/account-details-form.tsx"],
   "exclude": ["node_modules"]
 }
