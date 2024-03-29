@@ -40,7 +40,7 @@ export function AccountDetailsForm() {
     formState: { errors },
   } = useForm({ defaultValues, resolver: zodResolver(schema) });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: any) => {
     try {
       console.log("form values: ", values);
       setIsPending(true);
@@ -49,7 +49,7 @@ export function AccountDetailsForm() {
 
       // Append other form fields to FormData
       Object.entries(values).forEach(([key, value]) => {
-        formData.append(key, value);
+        formData.append(key, value as any);
       });
 
       // // Append the selected image to FormData if available
