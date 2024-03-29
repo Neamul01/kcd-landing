@@ -19,8 +19,19 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "baseUrl": "."
   },
+<<<<<<< HEAD
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/dashboard/speakers/speaker-info.jsx", "components/dashboard/account/account-details-form.tsx"],
+=======
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "components/dashboard/speakers/speaker-info.jsx"
+  ],
+>>>>>>> 85a77da256982465ada8202921b4bf746db374b6
   "exclude": ["node_modules"]
 }
