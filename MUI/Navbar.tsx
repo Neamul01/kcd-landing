@@ -123,7 +123,7 @@ function Navbar() {
                 <Image
                   className="cursor-pointer"
                   onClick={() => router.push("/")}
-                  height={70}
+                  height={200}
                   width={144}
                   src={
                     isTransparent()

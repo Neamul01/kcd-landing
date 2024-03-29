@@ -19,6 +19,7 @@ import { z as zod } from "zod";
 import { paths } from "@/paths";
 import { MenuItem, Select } from "@mui/material";
 import Axios from "@/lib/Axios";
+import Image from "next/image";
 // import { useUser } from '@/hooks/use-user';
 
 const schema = zod.object({
@@ -84,10 +85,10 @@ export function SignUpForm(): React.JSX.Element {
           formData.append("file", selectedImage);
         }
         console.log("file", selectedImage);
-        if (!selectedImage) {
-          // setIsPending(false);
-          return alert("Please enter a image");
-        }
+        // if (!selectedImage) {
+        //   // setIsPending(false);
+        //   return alert("Please enter a image");
+        // }
 
         console.log("form data", formData);
 
@@ -275,15 +276,19 @@ export function SignUpForm(): React.JSX.Element {
                 </a>
               </p>
             )} */}
+            {selectedImage && (
+              <div className="w-full">
+                <Image
+                  src={previewImage as string}
+                  alt="Selected"
+                  width={400}
+                  height={300}
+                  style={{ maxWidth: "100%", marginTop: 10 }}
+                  className=" rounded-lg border-2 border-gray-500"
+                />
+              </div>
+            )}
           </FormControl>
-          {selectedImage && (
-            <img
-              src={previewImage as string}
-              alt="Selected"
-              style={{ maxWidth: "100%", marginTop: 10 }}
-              className=" rounded-lg border-2 border-gray-500"
-            />
-          )}
           {/* <Controller
             control={control}
             name="terms"
