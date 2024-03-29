@@ -16,6 +16,9 @@ export default function ImageGallery() {
               src={`${item.img}`}
               alt={item.title}
               loading="lazy"
+              placeholder="blur"
+              blurDataURL="data:..."
+              layout="responsive"
             />
           </ImageListItem>
         ))}
@@ -26,51 +29,51 @@ export default function ImageGallery() {
 
 const itemData = [
   {
-    img: "https://www.bracinn.com/images/gallery/auditorium-02.jpg",
-    title: "hall 1",
+    img: "/venue/auditorium-01.jpg",
+    title: "auditorium-01",
   },
   {
-    img: "https://www.bracinn.com/images/gallery/bracinn-meeting-room-2.jpg",
-    title: "meeting room 1",
+    img: "/venue/auditorium-02.jpg",
+    title: "auditorium-02",
   },
   {
-    img: "https://www.bracinn.com/images/gallery/meeting-room-3.jpg",
-    title: "meeting room 3",
+    img: "/venue/banqueting-hall-01.jpg",
+    title: "banqueting-hall-01",
   },
   {
-    img: "https://www.bracinn.com/images/gallery/banqueting-hall-02.jpg",
-    title: "banqueting hall",
+    img: "/venue/banqueting-hall-02.jpg",
+    title: "banqueting hall 02",
   },
   {
-    img: "https://www.bracinn.com/images/gallery/restaurant.jpg",
-    title: "restaurant",
+    img: "/venue/bracinn-meeting-room-2.jpg",
+    title: "bracinn-meeting-room-2",
   },
   {
-    img: "https://www.bracinn.com/images/gallery/reception.jpg",
+    img: "/venue/bracinn-meeting-room-3.jpg",
+    title: "bracinn-meeting-room-3",
+  },
+  {
+    img: "/venue/lobby.jpg",
+    title: "lobby",
+  },
+  {
+    img: "/venue/meeting-room-1.jpg",
+    title: "meeting-room-1",
+  },
+  {
+    img: "/venue/meeting-room-3.jpg",
+    title: "meeting-room-3",
+  },
+  {
+    img: "/venue/reception.jpg",
     title: "reception",
   },
   {
-    img: "https://www.bracinn.com/images/gallery/bracinn-meeting-room-3.jpg",
-    title: "bracinn meeting room 3",
+    img: "/venue/restaurant.jpg",
+    title: "restaurant",
   },
   {
-    img: "https://www.bracinn.com/images/gallery/auditorium-01.jpg",
-    title: "Bed",
-  },
-  {
-    img: "https://www.bracinn.com/images/gallery/the-bracinn-conference-hall.jpg",
-    title: "Sink",
-  },
-  {
-    img: "https://www.bracinn.com/images/gallery/banqueting-hall-01.jpg",
-    title: "Blinds",
-  },
-  {
-    img: "https://www.bracinn.com/images/gallery/meeting-room-1.jpg",
-    title: "Chairs",
-  },
-  {
-    img: "https://www.bracinn.com/images/gallery/lobby.jpg",
-    title: "Books",
+    img: "/venue/the-bracinn-conference-hall.jpg",
+    title: "the-bracinn-conference-hall",
   },
 ];
