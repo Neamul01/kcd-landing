@@ -217,7 +217,7 @@ function Navbar() {
                 ))}
               </Box>
 
-              {user ? (
+              {/* {user ? (
                 <Button
                   className="border-secondary border"
                   variant="outlined"
@@ -236,7 +236,6 @@ function Navbar() {
                     display: { xs: "none", md: "flex", gap: 6 },
                   }}
                 >
-                  {/* <IoLogoWhatsapp size={35} color="blue" /> */}
                   <Button
                     className="border-secondary border"
                     variant="outlined"
@@ -259,7 +258,7 @@ function Navbar() {
                     </span>
                   </Button>
                 </Box>
-              )}
+              )} */}
             </Toolbar>
           </Container>
         </AppBar>
