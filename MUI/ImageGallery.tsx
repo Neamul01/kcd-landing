@@ -18,7 +18,6 @@ export default function ImageGallery() {
               loading="lazy"
               placeholder="blur"
               blurDataURL="data:..."
-              layout="responsive"
             />
           </ImageListItem>
         ))}

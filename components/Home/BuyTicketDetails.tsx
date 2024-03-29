@@ -25,6 +25,7 @@ import {
 import Link from "next/link";
 import axiosInstance from "@/lib/Axios";
 import { useDetailsStore } from "@/store/useDetailsStore";
+import Image from "next/image";
 
 const schema = zod.object({
   email: zod.string().min(1, { message: "Email is required" }).email(),
@@ -286,17 +287,18 @@ export default function BuyTicketDetails({
                 {errors.tShirt ? (
                   <FormHelperText>{errors.tShirt.message}</FormHelperText>
                 ) : null}
+                {selectedTShirt && (
+                  <Image
+                    width={300}
+                    height={300}
+                    src="/t-shirt-size.png"
+                    alt="sizes guide"
+                    className="w-full h-full border rounded-b-lg"
+                  />
+                )}
               </FormControl>
             )}
           />
-
-          {selectedTShirt && (
-            <img
-              src="/t-shirt-size.png"
-              alt="sizes guide"
-              className="w-full h-full"
-            />
-          )}
 
           <Controller
             control={control}
