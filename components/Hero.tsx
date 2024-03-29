@@ -3,7 +3,7 @@ import React from "react";
 
 function Hero() {
   return (
-    <div className="bg-[url('/b5.jpg')] bg-cover bg-no-repeat bg-center h-[1000px] -mt-[125px] ">
+    <div className="bg-[url('/b5.webp')] bg-cover bg-no-repeat bg-center h-[1000px] -mt-[125px] ">
       <div className="h-full bg-gradient-to-t from-black/75 to-black/70 flex items-center justify-start px-2">
         <div className="w-sectionLayout mx-auto">
           <div className="flex flex-col mb-8 gap-9">
