@@ -32,7 +32,6 @@ const schema = zod.object({
   email: zod.string().min(1, { message: "Email is required" }).email(),
   name: zod.string().min(1, { message: "Name is required" }),
   mobile: zod.string().min(1, { message: "Mobile number is required" }),
-  address: zod.string().min(1, { message: "Address is required" }),
   tShirt: zod.string().min(1, { message: "Organization is required" }),
   promotion: zod.boolean().optional(),
   terms: zod
@@ -42,6 +41,11 @@ const schema = zod.object({
     .string()
     .min(1, { message: "Track selection is required" })
     .optional(),
+  organization: zod
+    .string()
+    .min(1, { message: "Input your Organization/Institute Name" }),
+
+  designation: zod.string().min(1, { message: "Input your designation" }),
   workshop: zod.array(zod.string()).optional(),
 });
 
@@ -77,11 +81,13 @@ export default function BuyTicketDetails({
         name: "",
         email: "",
         mobile: "",
-        address: "",
         tShirt: "",
         terms: false,
         promotion: false,
         track: "",
+        studentId: "",
+        organization: "",
+        designation: "",
         workshop: [],
       };
     }, []),
@@ -124,7 +130,9 @@ export default function BuyTicketDetails({
           track: values.track,
           workshop: values.workshop,
           tshirt: values.tShirt, //
-          address: values.address, //
+          studentId: "",
+          designation: "",
+          organization: values.organization,
           cartItems: [
             {
               title: selectedTickets?.title as string, //
@@ -136,8 +144,12 @@ export default function BuyTicketDetails({
         };
 
         submitData.workshop = selectedWorkshops.map((workshop) => workshop.id);
+        selectedTickets?.ticketType === "student"
+          ? (submitData.studentId = values.designation)
+          : (submitData.designation = values.designation);
+        // submitData.studentId=selectedTickets?.ticketType === 'student'? values.designation:
 
-        console.log("values", submitData);
+        console.log("----------------------values", submitData);
         setData(submitData);
       } catch {
         () => alert("Something went wrong please try again");
@@ -292,20 +304,47 @@ export default function BuyTicketDetails({
             />
           </div>
 
+          {/* ------------------------ fields for professional/students --------------------- */}
           <div className="grid grid-cols-2 gap-2">
             <Controller
               control={control}
-              name="address"
+              name="organization"
               render={({ field }) => (
-                <FormControl error={Boolean(errors.address)}>
-                  <InputLabel size="small">Address</InputLabel>
-                  <OutlinedInput size="small" {...field} label="Address" />
-                  {errors.address ? (
-                    <FormHelperText>{errors.address.message}</FormHelperText>
+                <FormControl error={Boolean(errors.organization)}>
+                  <InputLabel size="small">Company/Institute Name</InputLabel>
+                  <OutlinedInput
+                    size="small"
+                    {...field}
+                    label="Company/Institute Name"
+                    // defaultValue={user?.name}
+                  />
+                  {errors.organization ? (
+                    <FormHelperText>
+                      {errors.organization.message}
+                    </FormHelperText>
                   ) : null}
                 </FormControl>
               )}
             />
+
+            <Controller
+              control={control}
+              name="designation"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.email)}>
+                  <InputLabel size="small">Designation</InputLabel>
+                  <OutlinedInput size="small" {...field} label="Designation" />
+                  {errors.designation ? (
+                    <FormHelperText>
+                      {errors.designation.message}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
             <Controller
               control={control}
               name="mobile"
@@ -326,7 +365,7 @@ export default function BuyTicketDetails({
             />
           </div>
 
-          <div className="grid grid-cols-6 gap-2 items-center">
+          <div className="grid grid-cols-6 gap-2">
             <Controller
               control={control}
               name="tShirt"
@@ -363,7 +402,7 @@ export default function BuyTicketDetails({
                 aria-haspopup="true"
                 onMouseEnter={handlePopoverOpen}
                 onMouseLeave={handlePopoverClose}
-                className="cursor-pointer text-center border rounded-lg py-2 text-primary bg-gray-100"
+                className="cursor-pointer text-center border rounded-lg py-2 text-primary bg-gray-100 mb-auto"
               >
                 Size Guide
               </Typography>

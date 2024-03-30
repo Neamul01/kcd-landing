@@ -51,7 +51,8 @@ export default function BuyTicketSummery({
 
   // make order (tab-2) --------------------------------------
   useEffect(() => {
-    if (data.address) {
+    console.log("-------------------submit errors", errors);
+    if (data.name) {
       setLoading(true);
       makeOrder(data)
         .then((error) => {
@@ -134,10 +135,10 @@ export default function BuyTicketSummery({
         price: Number(selectedTickets.price),
         discount: couponDetails.discountPercentage,
         subTotal:
-          Number(selectedTickets.price) +
+          Number(selectedTickets.price) -
           Number(couponDetails.discountPercentage),
         total:
-          Number(selectedTickets.price) +
+          Number(selectedTickets.price) -
           Number(couponDetails.discountPercentage),
       });
     } catch {
