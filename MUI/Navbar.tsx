@@ -53,6 +53,9 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
+  const [showNavbar, setShowNavbar] = React.useState(true);
+  const [prevScrollPos, setPrevScrollPos] = React.useState(0);
+  const [isScrolled, setIsScrolled] = React.useState(false);
   // const { data: user } = useUser();
   const pathname = usePathname();
 
@@ -79,12 +82,19 @@ function Navbar() {
 
   React.useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > 50) {
-        setBackgroundColor("#ffffff"); // Change to white when scrolled
+      const currentScrollPos = window.pageYOffset;
+      const isScrolledDown = currentScrollPos > prevScrollPos;
+
+      if (currentScrollPos < 250) {
+        setShowNavbar(true);
       } else {
-        setBackgroundColor("transparent"); // Back to transparent when at top
+        setShowNavbar(!isScrolledDown);
       }
+      setPrevScrollPos(currentScrollPos);
+
+      const scrollTop = window.pageYOffset;
+      const isScrolling = scrollTop > 0;
+      setIsScrolled(isScrolling);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -92,19 +102,24 @@ function Navbar() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [prevScrollPos]);
 
   return (
     <>
       {pathname.includes("/dashboard") ? null : (
-        <AppBar
-          position="static"
-          sx={{ color: "#000" }}
-          className={`${
-            isTransparent()
-              ? `bg-transparent shadow-none !text-white  py-3`
-              : "bg-white py-2"
-          } sticky top-0 z-50 transition-all duration-500`}
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            width: "100%",
+            zIndex: 1000,
+            transition:
+              "transform 0.5s ease-in-out, background-color 0.5s ease, color 0.5s ease,padding-y 0.5s ease",
+            transform: showNavbar ? "translateY(0)" : "translateY(-100%)",
+            backgroundColor: isScrolled ? "#ffffff" : "transparent",
+            color: isScrolled ? "#000000" : "#ffffff",
+            py: 1,
+          }}
         >
           <Container maxWidth="xl">
             <Toolbar disableGutters>
@@ -117,7 +132,7 @@ function Navbar() {
                     onClick={() => router.push("/")}
                     height={84}
                     width={120}
-                    src={isTransparent() ? "/KCDLogoW.png" : "/KCDLogoB.png"}
+                    src={!isScrolled ? "/KCDLogoW.png" : "/KCDLogoB.png"}
                     alt="Navbar Icon"
                   />
                 </div>
@@ -127,7 +142,7 @@ function Navbar() {
                     height={200}
                     width={144}
                     src={
-                      isTransparent()
+                      !isScrolled
                         ? "/kcd-logo/cncf-logo-300.png"
                         : "/kcd-logo/cncf-logo-black-300.png"
                     }
@@ -171,7 +186,9 @@ function Navbar() {
                         href={page.link}
                         key={page.link}
                         className={`${
-                          isTransparent() ? `!text-white ` : "text-black "
+                          !showNavbar || !isScrolled
+                            ? `!text-white `
+                            : "text-black "
                         } capitalize text-center transition-all duration-500`}
                       >
                         {page.name}
@@ -211,7 +228,7 @@ function Navbar() {
                     // onClick={handleCloseNavMenu}
                     // sx={{ my: 2, display: "block" }}
                     className={`${
-                      isTransparent()
+                      !showNavbar || !isScrolled
                         ? `!text-white  transition-all duration-500`
                         : "text-black  transition-all duration-500"
                     } capitalize my-1 px-3`}
@@ -228,7 +245,7 @@ function Navbar() {
                   onClick={() => router.push("/dashboard")}
                 >
                   <span
-                    className={`capitalize ${isTransparent() ? "text-white" : "text-black"} font-medium text-lg`}
+                    className={`capitalize ${!showNavbar ? "text-white" : "text-black"} font-medium text-lg`}
                   >
                     Dashboard
                   </span>
@@ -246,7 +263,7 @@ function Navbar() {
                     onClick={() => router.push("/auth/sign-in")}
                   >
                     <span
-                      className={`capitalize ${isTransparent() ? "text-white" : "text-black"} font-medium text-lg`}
+                      className={`capitalize ${!showNavbar ? "text-white" : "text-black"} font-medium text-lg`}
                     >
                       Sign In
                     </span>
@@ -265,7 +282,7 @@ function Navbar() {
               )} */}
             </Toolbar>
           </Container>
-        </AppBar>
+        </Box>
       )}
     </>
   );
