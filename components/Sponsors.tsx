@@ -7,7 +7,7 @@ export default function Sponsors() {
   return (
     <div
       id="sponsors"
-      className="bg-[url('/b3.webp')] bg-cover bg-no-repeat bg-center  "
+      className="bg-[url('/kcddhaka-bg.webp')] bg-cover bg-no-repeat bg-center  "
     >
       <div className="h-full bg-gradient-to-t from-black/50 to-black/50 text-white">
         <SectionLayout title={"Sponsors & Partners"}>
