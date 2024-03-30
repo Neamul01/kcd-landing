@@ -23,7 +23,7 @@ export default function BuyTicketPaymentCard() {
           <button
             //   onClick={() => setSelectedTickets(ticket)}
             disabled
-            className="disabled:cursor-not-allowed disabled:text-white/60 bg-transparent hover:bg-green-400 hover:text-black/60 text-white border-gray-500 rounded-lg font-bold py-2 px-8 h-10 bg-green-500"
+            className="disabled:cursor-not-allowed disabled:text-white/60 bg-transparent hover:bg-green-400 hover:text-black/60 text-white border-gray-500 rounded-lg font-bold py-2 px-8 h-10 bg-green-500 disabled:bg-green-500"
           >
             Selected
           </button>
