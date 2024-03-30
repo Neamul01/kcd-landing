@@ -35,7 +35,8 @@ export default function BuyTicketSummery({
     try {
       setLoading(true);
       clearErrors();
-      const response = await axiosInstance.post("/orders", orderData);
+      const orderUrl = coupon ? `/orders?coupon=${coupon}` : `/orders`;
+      const response = await axiosInstance.post(orderUrl, orderData);
       // console.log("order placed", response.data.data._id);
       setOrderId(response.data.data._id);
       setLoading(false);
@@ -130,17 +131,20 @@ export default function BuyTicketSummery({
       }
 
       // Update state
+      // Calculate discounted price
+      const discountPercentage = couponDetails.discountPercentage;
+      const originalPrice = Number(selectedTickets.price);
+      const discountedPrice =
+        originalPrice - (discountPercentage / 100) * originalPrice;
+
       setTicketSummary({
         ...ticketSummary,
-        price: Number(selectedTickets.price),
-        discount: couponDetails.discountPercentage,
-        subTotal:
-          Number(selectedTickets.price) -
-          Number(couponDetails.discountPercentage),
-        total:
-          Number(selectedTickets.price) -
-          Number(couponDetails.discountPercentage),
+        price: originalPrice,
+        discount: discountPercentage,
+        subTotal: discountedPrice,
+        total: discountedPrice,
       });
+      // setCoupon("");
     } catch {
       (err: any) => {
         toast.error(
@@ -169,6 +173,12 @@ export default function BuyTicketSummery({
                 {/* <p className="">x{ticketQuantity}</p> */}
                 <p className="font-medium flex items-center justify-center">
                   <TbCurrencyTaka /> {ticketSummary.price}{" "}
+                </p>
+              </div>
+              <div className="flex justify-between text-black/60 text-sm">
+                <p className="">Discount</p>
+                <p className="font-medium flex items-center justify-center">
+                  {ticketSummary.discount}%
                 </p>
               </div>
               <div className="flex justify-between text-black/60">
@@ -207,6 +217,7 @@ export default function BuyTicketSummery({
                 id="outlined-error"
                 placeholder="Enter Code"
                 size="small"
+                value={coupon}
                 onChange={(e) => setCoupon(e.target.value)}
                 className="bg-white border-none focus:ring-amber-600"
               />
