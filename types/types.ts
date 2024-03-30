@@ -40,6 +40,7 @@ export type Workshop = {
   sessionTime: string;
   user: string;
   createdAt: string;
+  schedule: string;
 };
 
 export type TicketSummery = {

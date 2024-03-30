@@ -188,14 +188,14 @@ export default function BuyTicketDetails({
     });
   };
 
-  React.useEffect(() => {
-    reset({
-      address: "",
-      email: user?.email || "",
-      mobile: user?.mobile || "",
-      name: user?.name || "",
-    });
-  }, [user, reset]);
+  // React.useEffect(() => {
+  //   reset({
+  //     address: "",
+  //     email: user?.email || "",
+  //     mobile: user?.mobile || "",
+  //     name: user?.name || "",
+  //   });
+  // }, [user, reset]);
 
   React.useEffect(() => {
     console.log("is submit", isSubmit);
@@ -221,7 +221,6 @@ export default function BuyTicketDetails({
                 <InputLabel>Name</InputLabel>
                 <OutlinedInput
                   {...field}
-                  readOnly
                   label="Name"
                   defaultValue={user?.name}
                 />
@@ -237,12 +236,7 @@ export default function BuyTicketDetails({
             render={({ field }) => (
               <FormControl error={Boolean(errors.email)}>
                 <InputLabel>Email address</InputLabel>
-                <OutlinedInput
-                  {...field}
-                  readOnly
-                  label="Email address"
-                  type="email"
-                />
+                <OutlinedInput {...field} label="Email address" type="email" />
                 {errors.email ? (
                   <FormHelperText>{errors.email.message}</FormHelperText>
                 ) : null}
@@ -366,12 +360,15 @@ export default function BuyTicketDetails({
           )}
           {workshops && workshops?.length > 0 && (
             <FormControl className="pl-2 md:pl-5 !mt-0">
-              <RadioGroup aria-label="workshop" name="workshop">
+              <RadioGroup
+                aria-label="workshop"
+                name="workshop"
+                className="flex flex-col gap-2"
+              >
                 {workshops?.map((workshop) => (
                   <div key={workshop._id}>
                     <FormControlLabel
                       disabled={workshop.availability === false}
-                      onClick={() => handleWorkshopSelect(workshop._id)}
                       control={
                         <Checkbox
                           size="small"
@@ -379,7 +376,16 @@ export default function BuyTicketDetails({
                           checked={selectedWorkshop.includes(workshop._id)}
                         />
                       }
-                      label={`${workshop.title} (${workshop.sessionTime})`}
+                      label={
+                        <p className="flex flex-col">
+                          <span className="leading-3 text-sm capitalize">
+                            {workshop.title}
+                          </span>
+                          <span className="text-xs text-black/80 capitalize">
+                            {workshop.sessionTime} ({workshop.schedule})
+                          </span>
+                        </p>
+                      }
                       value={workshop._id}
                     />
                   </div>
