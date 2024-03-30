@@ -93,8 +93,6 @@ function Navbar() {
     };
   }, [prevScrollPos]);
 
-  console.log("is home page", isHomePage);
-
   return (
     <>
       {pathname.includes("/dashboard") ? null : (
@@ -191,18 +189,22 @@ function Navbar() {
               </Box>
               <Box
                 sx={{ display: { xs: "flex", md: "none" } }}
-                className="items-center gap-8"
+                className="items-center gap-8 py-2"
               >
                 <Image
                   height={84}
                   width={120}
-                  src={"/KCDLogoB.png"}
+                  src={!isScrolled ? "/KCDLogoW.png" : "/KCDLogoB.png"}
                   alt="Navbar Icon"
                 />
                 <Image
                   height={70}
                   width={144}
-                  src={"/CloudNativeLogoB.png"}
+                  src={
+                    !isScrolled
+                      ? "/kcd-logo/cncf-logo-300.png"
+                      : "/kcd-logo/cncf-logo-black-300.png"
+                  }
                   alt="Navbar Icon"
                 />
               </Box>
