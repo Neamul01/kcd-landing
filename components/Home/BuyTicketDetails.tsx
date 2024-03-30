@@ -135,6 +135,8 @@ export default function BuyTicketDetails({
           ],
         };
 
+        submitData.workshop = selectedWorkshops.map((workshop) => workshop.id);
+
         console.log("values", submitData);
         setData(submitData);
       } catch {
@@ -143,7 +145,7 @@ export default function BuyTicketDetails({
         setIsPending(false);
       }
     },
-    [reset]
+    [reset, selectedWorkshops]
   );
 
   const handleTrackSelection = async (
@@ -186,6 +188,14 @@ export default function BuyTicketDetails({
       setSelectedWorkshops((prevSelected) =>
         prevSelected.filter((workshop) => workshop.id !== workshopId)
       );
+      //------------ Update the form field value
+      const updatedWorkshops = selectedWorkshops.filter(
+        (workshop) => workshop.id !== workshopId
+      );
+      setValue(
+        "workshop",
+        updatedWorkshops.map((workshop) => workshop.id)
+      );
     } else {
       //----------- Workshop is not selected, check for conflicting session time
       const hasConflictingSession = selectedWorkshops.some(
@@ -202,12 +212,21 @@ export default function BuyTicketDetails({
           ...prevSelected,
           { id: workshopId, sessionTime },
         ]);
+        // Update the form field value
+        const updatedWorkshops = [
+          ...selectedWorkshops,
+          { id: workshopId, sessionTime },
+        ];
+        setValue(
+          "workshop",
+          updatedWorkshops.map((workshop) => workshop.id)
+        );
       }
     }
   };
 
   React.useEffect(() => {
-    console.log("is submit", isSubmit);
+    // console.log("is submit", isSubmit);
     if (isSubmit && submitButtonRef.current) {
       // @ts-ignore
       submitButtonRef.current.click();
