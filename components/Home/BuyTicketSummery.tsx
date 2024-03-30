@@ -2,27 +2,33 @@
 import { useUser } from "@/hooks/use-user";
 import axiosInstance from "@/lib/Axios";
 import { useDetailsStore } from "@/store/useDetailsStore";
-import { Order, Ticket } from "@/types/types";
+import { Coupon, Order, Ticket, TicketSummery } from "@/types/types";
 import { Button, TextField } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { TbCurrencyTaka } from "react-icons/tb";
+import { toast } from "react-toastify";
 
 export default function BuyTicketSummery({
   setTab,
   tab,
   selectedTickets,
+  ticketSummary,
+  setTicketSummary,
 }: {
   setTab: Dispatch<SetStateAction<number>>;
   tab: number;
   selectedTickets: Ticket | undefined;
+  ticketSummary: TicketSummery;
+  setTicketSummary: Dispatch<SetStateAction<TicketSummery>>;
 }) {
   // const { data: user } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState("");
+  const [coupon, setCoupon] = useState("");
   const { data, setIsSubmit, errors } = useDetailsStore();
 
   const makeOrder = async (orderData: Order) => {
@@ -33,7 +39,7 @@ export default function BuyTicketSummery({
         setOrderId(res.data.data._id);
       });
     } catch {
-      () => alert("something went wrong, please try again");
+      () => toast.error("something went wrong, please try again");
     } finally {
       setLoading(false);
     }
@@ -48,7 +54,7 @@ export default function BuyTicketSummery({
         makeOrder(data);
         setTab(tab + 1);
       } catch {
-        () => alert("something went wrong, please try again");
+        () => toast.error("something went wrong, please try again");
       } finally {
         setLoading(false);
       }
@@ -63,7 +69,7 @@ export default function BuyTicketSummery({
         window.location.href = res.data.data.payment_url;
       });
     } catch {
-      () => alert("something went wrong, please try again");
+      () => toast.error("something went wrong, please try again");
     } finally {
       setLoading(false);
     }
@@ -90,6 +96,53 @@ export default function BuyTicketSummery({
       setLoading(false);
     }
   };
+
+  // coupon ---------------------------------
+  const handleApplyCoupon = async () => {
+    try {
+      if (!coupon) {
+        return toast.error("Please enter a coupon");
+      }
+
+      if (!selectedTickets) {
+        return toast.error("Please select a ticket first.");
+      }
+
+      const couponDetails = await axiosInstance
+        .get(`coupons/apply/${coupon}/${selectedTickets?._id}`)
+        .then((res) => res.data.data)
+        .catch((err) => {
+          toast.error(err.response.data.error);
+        });
+
+      console.log("response", couponDetails);
+
+      if (!couponDetails.isAvailable) {
+        return toast.error("This ticket is expired.");
+      }
+
+      // Update state
+      setTicketSummary({
+        ...ticketSummary,
+        price: Number(selectedTickets.price),
+        discount: couponDetails.discountPercentage,
+        subTotal:
+          Number(selectedTickets.price) +
+          Number(couponDetails.discountPercentage),
+        total:
+          Number(selectedTickets.price) +
+          Number(couponDetails.discountPercentage),
+      });
+    } catch {
+      (err: any) => {
+        toast.error(
+          "An error occurred while applying the coupon. Please try again."
+        );
+        console.log(err);
+      };
+    }
+  };
+
   return (
     <div className="bg-gray-100 w-full h-full p-4">
       <div className="h-full w-full flex flex-col justify-between gap-3">
@@ -107,20 +160,20 @@ export default function BuyTicketSummery({
                 </p>
                 {/* <p className="">x{ticketQuantity}</p> */}
                 <p className="font-medium flex items-center justify-center">
-                  <TbCurrencyTaka /> {selectedTickets.price}{" "}
+                  <TbCurrencyTaka /> {ticketSummary.price}{" "}
                 </p>
               </div>
               <div className="flex justify-between text-black/60">
                 <p className="">Sub Total</p>
                 <p className="font-medium flex items-center justify-center">
-                  <TbCurrencyTaka /> {selectedTickets.price}{" "}
+                  <TbCurrencyTaka /> {ticketSummary.subTotal}{" "}
                 </p>
               </div>
             </div>
             <div className="flex justify-between text-black text-xl font-semibold py-3 border-y border-gray-200">
               <p className="">Total</p>
               <p className="font-medium flex items-center justify-center">
-                <TbCurrencyTaka /> {selectedTickets.price}{" "}
+                <TbCurrencyTaka /> {ticketSummary.total}{" "}
               </p>
             </div>
             <div className="flex items-center justify-center">
@@ -146,6 +199,7 @@ export default function BuyTicketSummery({
                 id="outlined-error"
                 placeholder="Enter Code"
                 size="small"
+                onChange={(e) => setCoupon(e.target.value)}
                 className="bg-white border-none focus:ring-amber-600"
               />
             </div>
@@ -153,6 +207,8 @@ export default function BuyTicketSummery({
               <Button
                 variant="outlined"
                 size="medium"
+                disabled={!selectedTickets}
+                onClick={handleApplyCoupon}
                 className="border-accent/50 border-2"
               >
                 <span className="text-accent/60 capitalize">Apply</span>

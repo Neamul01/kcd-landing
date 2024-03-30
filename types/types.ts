@@ -39,3 +39,16 @@ export type Workshop = {
   user: string;
   createdAt: string;
 };
+
+export type TicketSummery = {
+  price?: number;
+  discount?: number;
+  subTotal?: number;
+  total?: number;
+};
+
+export type Coupon = {
+  code: string;
+  discountPercentage: number;
+  isAvailable: boolean;
+};
