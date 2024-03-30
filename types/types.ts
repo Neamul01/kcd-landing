@@ -8,6 +8,7 @@ export type Ticket = {
   user: string;
   createdAt: string;
   quantity: number;
+  ticketType: string;
 };
 
 export type CartItem = {
