@@ -333,7 +333,11 @@ export default function BuyTicketDetails({
               render={({ field }) => (
                 <FormControl error={Boolean(errors.email)}>
                   <InputLabel size="small">Designation/Student ID</InputLabel>
-                  <OutlinedInput size="small" {...field} label="Designation" />
+                  <OutlinedInput
+                    size="small"
+                    {...field}
+                    label="Designation/Student ID"
+                  />
                   {errors.designation ? (
                     <FormHelperText>
                       {errors.designation.message}
