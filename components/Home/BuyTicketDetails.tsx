@@ -416,6 +416,7 @@ export default function BuyTicketDetails({
                     <React.Fragment>
                       I have read the{" "}
                       <Link
+                        target="_blank"
                         href={"/conditions/terms-condition"}
                         className="text-primary underline"
                       >

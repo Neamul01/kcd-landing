@@ -58,7 +58,7 @@ function Navbar() {
   const [isScrolled, setIsScrolled] = React.useState(false);
   // const { data: user } = useUser();
   const pathname = usePathname();
-
+  const isHomePage = pathname === "/";
   const router = useRouter();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -93,6 +93,8 @@ function Navbar() {
     };
   }, [prevScrollPos]);
 
+  console.log("is home page", isHomePage);
+
   return (
     <>
       {pathname.includes("/dashboard") ? null : (
@@ -105,8 +107,9 @@ function Navbar() {
             transition:
               "transform 0.5s ease-in-out, background-color 0.5s ease, color 0.5s ease,padding-y 0.5s ease",
             transform: showNavbar ? "translateY(0)" : "translateY(-100%)",
-            backgroundColor: isScrolled ? "#ffffff" : "transparent",
-            color: isScrolled ? "#000000" : "#ffffff",
+            backgroundColor:
+              isScrolled || !isHomePage ? "#ffffff" : "transparent",
+            color: isScrolled || !isHomePage ? "#000000" : "#ffffff",
             py: 1,
           }}
         >
@@ -175,7 +178,7 @@ function Navbar() {
                         href={page.link}
                         key={page.link}
                         className={`${
-                          !showNavbar || !isScrolled
+                          !showNavbar || !isScrolled || !isHomePage
                             ? `!text-white `
                             : "text-black "
                         } capitalize text-center transition-all duration-500`}
@@ -217,7 +220,7 @@ function Navbar() {
                     // onClick={handleCloseNavMenu}
                     // sx={{ my: 2, display: "block" }}
                     className={`${
-                      !showNavbar || !isScrolled
+                      !showNavbar || !isScrolled || !isHomePage
                         ? `!text-white  transition-all duration-500`
                         : "text-black  transition-all duration-500"
                     } capitalize my-1 px-3`}
