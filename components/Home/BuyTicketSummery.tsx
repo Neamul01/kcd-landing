@@ -25,42 +25,49 @@ export default function BuyTicketSummery({
   setTicketSummary: Dispatch<SetStateAction<TicketSummery>>;
 }) {
   // const { data: user } = useUser();
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [coupon, setCoupon] = useState("");
-  const { data, setIsSubmit, errors } = useDetailsStore();
+  const { data, setIsSubmit, errors, setErrors, clearErrors } =
+    useDetailsStore();
 
   const makeOrder = async (orderData: Order) => {
     try {
       setLoading(true);
-      await axiosInstance.post("/orders", orderData).then((res) => {
-        console.log("order placed", res.data.data._id);
-        setOrderId(res.data.data._id);
-      });
-    } catch {
-      () => toast.error("something went wrong, please try again");
-    } finally {
+      clearErrors();
+      const response = await axiosInstance.post("/orders", orderData);
+      // console.log("order placed", response.data.data._id);
+      setOrderId(response.data.data._id);
       setLoading(false);
+      return null;
+    } catch (err: any) {
+      setLoading(false);
+      toast.error(err.response.data.error);
+      setErrors(err.response.data.error);
+      console.log("make order error", err.response.data.error);
+      return err.response.data.error;
     }
   };
 
+  // make order (tab-2) --------------------------------------
   useEffect(() => {
     if (data.address) {
-      try {
-        setLoading(true);
-        // console.log("store data", data);
-        // @ts-ignore
-        makeOrder(data);
-        setTab(tab + 1);
-      } catch {
-        () => toast.error("something went wrong, please try again");
-      } finally {
-        setLoading(false);
-      }
+      setLoading(true);
+      makeOrder(data)
+        .then((error) => {
+          if (error) {
+            console.log("Error encountered, cannot proceed to the next tab.");
+          } else {
+            setTab(tab + 1);
+          }
+        })
+        .catch(() => {
+          toast.error("Something went wrong, please try again");
+        });
     }
   }, [data]);
 
+  // checkout (tab-3) --------------------------------------
   const handleCheckout = async () => {
     try {
       setLoading(true);
