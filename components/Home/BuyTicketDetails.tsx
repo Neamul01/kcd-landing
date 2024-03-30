@@ -275,7 +275,7 @@ export default function BuyTicketDetails({
                   className="!mt-0"
                   control={<Checkbox size="small" {...field} />}
                   label={
-                    <p className="text-sm mt-0">
+                    <p className="text-base mt-0">
                       I would like to receive updates over WhatsApp.
                     </p>
                   }
