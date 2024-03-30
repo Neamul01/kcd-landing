@@ -70,7 +70,7 @@ export default function FAQ() {
             No! The Presentations in KCDs cover a wide variety of topics around
             open source and cloud-native technologies. A very basic awareness of
             Cloud and Containers is sufficient to benefit from attending KCD
-            Kerala. Cloud native technologies empower organizations to build and
+            Dhaka. Cloud native technologies empower organizations to build and
             run scalable applications in modern, dynamic environments such as
             public, private, and hybrid clouds. Containers, service meshes,
             microservices, immutable infrastructure, and declarative APIs
