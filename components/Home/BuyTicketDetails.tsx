@@ -18,6 +18,7 @@ import {
   Checkbox,
   FormControlLabel,
   MenuItem,
+  Popover,
   Radio,
   RadioGroup,
   Select,
@@ -83,9 +84,10 @@ export default function BuyTicketDetails({
     }, [user]),
     resolver: zodResolver(schema),
   });
+  const { setData, isSubmit, setIsSubmit, setErrors } = useDetailsStore();
   const [workshopLoading, setWorkshopLoading] = React.useState(false);
   const [track, setTrack] = React.useState("");
-  const { setData, isSubmit, setIsSubmit, setErrors } = useDetailsStore();
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
   const selectedTShirt = watch("tShirt");
 
@@ -206,6 +208,18 @@ export default function BuyTicketDetails({
     }
   }, [isSubmit, errors]);
 
+  // popover ---------------------------
+
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
   return (
     <Stack spacing={4}>
       <Stack spacing={1}>
@@ -213,86 +227,44 @@ export default function BuyTicketDetails({
       </Stack>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
-          <Controller
-            control={control}
-            name="name"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.name)}>
-                <InputLabel>Name</InputLabel>
-                <OutlinedInput
-                  {...field}
-                  label="Name"
-                  defaultValue={user?.name}
-                />
-                {errors.name ? (
-                  <FormHelperText>{errors.name.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
-          <Controller
-            control={control}
-            name="email"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.email)}>
-                <InputLabel>Email address</InputLabel>
-                <OutlinedInput {...field} label="Email address" type="email" />
-                {errors.email ? (
-                  <FormHelperText>{errors.email.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="address"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.address)}>
-                <InputLabel>Address</InputLabel>
-                <OutlinedInput {...field} label="Address" />
-                {errors.address ? (
-                  <FormHelperText>{errors.address.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="tShirt"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.tShirt)}>
-                <InputLabel id="demo-simple-select-label">
-                  T-Shirt Size
-                </InputLabel>
-                <Select
-                  {...field}
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="T-Shirt Size"
-                >
-                  <MenuItem value={"S"}>S</MenuItem>
-                  <MenuItem value={"M"}>M</MenuItem>
-                  <MenuItem value={"L"}>L</MenuItem>
-                  <MenuItem value={"XL"}>XL</MenuItem>
-                  <MenuItem value={"2XL"}>2XL</MenuItem>
-                </Select>
-                {errors.tShirt ? (
-                  <FormHelperText>{errors.tShirt.message}</FormHelperText>
-                ) : null}
-                {selectedTShirt && (
-                  <Image
-                    width={300}
-                    height={300}
-                    src="/t-shirt-size.png"
-                    alt="sizes guide"
-                    className="w-full h-full border rounded-b-lg"
+          <div className="grid grid-cols-2 gap-2">
+            <Controller
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.name)}>
+                  <InputLabel size="small">Name</InputLabel>
+                  <OutlinedInput
+                    size="small"
+                    {...field}
+                    label="Name"
+                    defaultValue={user?.name}
                   />
-                )}
-              </FormControl>
-            )}
-          />
+                  {errors.name ? (
+                    <FormHelperText>{errors.name.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+            <Controller
+              control={control}
+              name="email"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.email)}>
+                  <InputLabel size="small">Email address</InputLabel>
+                  <OutlinedInput
+                    size="small"
+                    {...field}
+                    label="Email address"
+                    type="email"
+                  />
+                  {errors.email ? (
+                    <FormHelperText>{errors.email.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+          </div>
 
           <Controller
             control={control}
@@ -300,11 +272,12 @@ export default function BuyTicketDetails({
             render={({ field }) => (
               <div>
                 <FormControlLabel
-                  control={<Checkbox {...field} />}
+                  className="!mt-0"
+                  control={<Checkbox size="small" {...field} />}
                   label={
-                    <React.Fragment>
+                    <p className="text-base mt-0">
                       I would like to receive updates over WhatsApp.
-                    </React.Fragment>
+                    </p>
                   }
                 />
                 {errors.promotion ? (
@@ -315,19 +288,110 @@ export default function BuyTicketDetails({
               </div>
             )}
           />
-          <Controller
-            control={control}
-            name="mobile"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.mobile)}>
-                <InputLabel>Mobile</InputLabel>
-                <OutlinedInput {...field} label="Mobile" type="number" />
-                {errors.mobile ? (
-                  <FormHelperText>{errors.mobile.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
+
+          <div className="grid grid-cols-2 gap-2">
+            <Controller
+              control={control}
+              name="address"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.address)}>
+                  <InputLabel size="small">Address</InputLabel>
+                  <OutlinedInput size="small" {...field} label="Address" />
+                  {errors.address ? (
+                    <FormHelperText>{errors.address.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+            <Controller
+              control={control}
+              name="mobile"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.mobile)}>
+                  <InputLabel size="small">Mobile</InputLabel>
+                  <OutlinedInput
+                    size="small"
+                    {...field}
+                    label="Mobile"
+                    type="number"
+                  />
+                  {errors.mobile ? (
+                    <FormHelperText>{errors.mobile.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-6 gap-2 items-center">
+            <Controller
+              control={control}
+              name="tShirt"
+              render={({ field }) => (
+                <FormControl
+                  className="col-span-4"
+                  error={Boolean(errors.tShirt)}
+                >
+                  <InputLabel size="small" id="demo-simple-select-label">
+                    T-Shirt Size
+                  </InputLabel>
+                  <Select
+                    size="small"
+                    {...field}
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="T-Shirt Size"
+                  >
+                    <MenuItem value={"S"}>S</MenuItem>
+                    <MenuItem value={"M"}>M</MenuItem>
+                    <MenuItem value={"L"}>L</MenuItem>
+                    <MenuItem value={"XL"}>XL</MenuItem>
+                    <MenuItem value={"2XL"}>2XL</MenuItem>
+                  </Select>
+                  {errors.tShirt ? (
+                    <FormHelperText>{errors.tShirt.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+            <div className="col-span-2">
+              <Typography
+                aria-owns={open ? "mouse-over-popover" : undefined}
+                aria-haspopup="true"
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
+                className="cursor-pointer text-center border rounded-lg py-2 text-primary bg-gray-100"
+              >
+                Size Guide
+              </Typography>
+              <Popover
+                id="mouse-over-popover"
+                sx={{
+                  pointerEvents: "none",
+                }}
+                open={open}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+                onClose={handlePopoverClose}
+                disableRestoreFocus
+              >
+                <Image
+                  width={400}
+                  height={400}
+                  src="/t-shirt-size.png"
+                  alt="sizes guide"
+                  className="w-full h-full border rounded-b-lg"
+                />
+              </Popover>
+            </div>
+          </div>
 
           {/* Track selection */}
           <FormControl error={Boolean(errors.track)}>
@@ -341,12 +405,12 @@ export default function BuyTicketDetails({
               <FormControlLabel
                 value="presentation-deck"
                 control={<Radio size="small" />}
-                label="Presentation"
+                label={<p className="text-sm">Presentation</p>}
               />
               <FormControlLabel
                 value="workshop"
-                control={<Radio size="small" />}
-                label="Workshop"
+                control={<Radio size="small" className="py-0" />}
+                label={<p className="text-sm">Workshop </p>}
               />
             </RadioGroup>
             {errors.track && (
@@ -363,7 +427,7 @@ export default function BuyTicketDetails({
               <RadioGroup
                 aria-label="workshop"
                 name="workshop"
-                className="flex flex-col gap-2"
+                className="flex flex-col gap-2 mt-2"
               >
                 {workshops?.map((workshop) => (
                   <div key={workshop._id}>
@@ -411,17 +475,18 @@ export default function BuyTicketDetails({
             render={({ field }) => (
               <div>
                 <FormControlLabel
-                  control={<Checkbox {...field} />}
+                  control={<Checkbox size="small" {...field} />}
                   label={
-                    <React.Fragment>
+                    <p className="text-sm">
                       I have read the{" "}
                       <Link
+                        target="_blank"
                         href={"/conditions/terms-condition"}
                         className="text-primary underline"
                       >
                         terms and conditions
                       </Link>
-                    </React.Fragment>
+                    </p>
                   }
                 />
                 {errors.terms ? (

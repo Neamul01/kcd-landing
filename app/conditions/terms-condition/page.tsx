@@ -2,7 +2,7 @@ import React from "react";
 
 export default function page() {
   return (
-    <div className="max-w-sectionLayout mx-auto my-10">
+    <div className="max-w-sectionLayout mx-auto my-40">
       <h2 className=" border-b-2 pb-3 text-2xl font-semibold mb-8">
         Terms & Condition
       </h2>

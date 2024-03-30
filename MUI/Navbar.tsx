@@ -53,11 +53,12 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
+  const [showNavbar, setShowNavbar] = React.useState(true);
+  const [prevScrollPos, setPrevScrollPos] = React.useState(0);
+  const [isScrolled, setIsScrolled] = React.useState(false);
   // const { data: user } = useUser();
   const pathname = usePathname();
-
-  const [backgroundColor, setBackgroundColor] =
-    React.useState<string>("transparent");
+  const isHomePage = pathname === "/";
   const router = useRouter();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -68,23 +69,21 @@ function Navbar() {
     setAnchorElNav(null);
   };
 
-  // ---------define where the header should transparent
-  const isTransparent = () => {
-    return backgroundColor === "transparent" &&
-      !pathname.includes("/auth") &&
-      !pathname.includes("/conditions")
-      ? true
-      : false;
-  };
-
   React.useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > 50) {
-        setBackgroundColor("#ffffff"); // Change to white when scrolled
+      const currentScrollPos = window.pageYOffset;
+      const isScrolledDown = currentScrollPos > prevScrollPos;
+
+      if (currentScrollPos < 200) {
+        setShowNavbar(true);
       } else {
-        setBackgroundColor("transparent"); // Back to transparent when at top
+        setShowNavbar(!isScrolledDown);
       }
+      setPrevScrollPos(currentScrollPos);
+
+      const scrollTop = window.pageYOffset;
+      const isScrolling = scrollTop > 0;
+      setIsScrolled(isScrolling);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -92,19 +91,25 @@ function Navbar() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [prevScrollPos]);
 
   return (
     <>
       {pathname.includes("/dashboard") ? null : (
-        <AppBar
-          position="static"
-          sx={{ color: "#000" }}
-          className={`${
-            isTransparent()
-              ? `bg-transparent shadow-none !text-white`
-              : "bg-white"
-          } sticky top-0 z-50`}
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            width: "100%",
+            zIndex: 1000,
+            transition:
+              "transform 0.5s ease-in-out, background-color 0.5s ease, color 0.5s ease,padding-y 0.5s ease",
+            transform: showNavbar ? "translateY(0)" : "translateY(-100%)",
+            backgroundColor:
+              isScrolled || !isHomePage ? "#ffffff" : "transparent",
+            color: isScrolled || !isHomePage ? "#000000" : "#ffffff",
+            py: 1,
+          }}
         >
           <Container maxWidth="xl">
             <Toolbar disableGutters>
@@ -112,26 +117,28 @@ function Navbar() {
                 sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
                 className="items-center gap-8"
               >
-                <Image
-                  className="cursor-pointer"
-                  onClick={() => router.push("/")}
-                  height={84}
-                  width={120}
-                  src={isTransparent() ? "/KCDLogoW.png" : "/KCDLogoB.png"}
-                  alt="Navbar Icon"
-                />
-                <Image
-                  className="cursor-pointer"
-                  onClick={() => router.push("/")}
-                  height={200}
-                  width={144}
-                  src={
-                    isTransparent()
-                      ? "/CloudNativeLogoW.png"
-                      : "/CloudNativeLogoB.png"
-                  }
-                  alt="Navbar Icon"
-                />
+                <div className="cursor-pointer transition-opacity duration-500">
+                  <Image
+                    onClick={() => router.push("/")}
+                    height={84}
+                    width={120}
+                    src={!isScrolled ? "/KCDLogoW.png" : "/KCDLogoB.png"}
+                    alt="Navbar Icon"
+                  />
+                </div>
+                <div className="cursor-pointer transition-opacity duration-500">
+                  <Image
+                    onClick={() => router.push("/")}
+                    height={200}
+                    width={144}
+                    src={
+                      !isScrolled
+                        ? "/kcd-logo/cncf-logo-300.png"
+                        : "/kcd-logo/cncf-logo-black-300.png"
+                    }
+                    alt="Navbar Icon"
+                  />
+                </div>
               </Box>
 
               <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -169,8 +176,10 @@ function Navbar() {
                         href={page.link}
                         key={page.link}
                         className={`${
-                          isTransparent() ? `!text-white` : "text-black"
-                        } capitalize text-center`}
+                          !showNavbar || !isScrolled || !isHomePage
+                            ? `!text-white `
+                            : "text-black "
+                        } capitalize text-center transition-all duration-500`}
                       >
                         {page.name}
                       </Link>
@@ -180,18 +189,22 @@ function Navbar() {
               </Box>
               <Box
                 sx={{ display: { xs: "flex", md: "none" } }}
-                className="items-center gap-8"
+                className="items-center gap-8 py-2"
               >
                 <Image
                   height={84}
                   width={120}
-                  src={"/KCDLogoB.png"}
+                  src={!isScrolled ? "/KCDLogoW.png" : "/KCDLogoB.png"}
                   alt="Navbar Icon"
                 />
                 <Image
                   height={70}
                   width={144}
-                  src={"/CloudNativeLogoB.png"}
+                  src={
+                    !isScrolled
+                      ? "/kcd-logo/cncf-logo-300.png"
+                      : "/kcd-logo/cncf-logo-black-300.png"
+                  }
                   alt="Navbar Icon"
                 />
               </Box>
@@ -209,7 +222,9 @@ function Navbar() {
                     // onClick={handleCloseNavMenu}
                     // sx={{ my: 2, display: "block" }}
                     className={`${
-                      isTransparent() ? `!text-white` : "text-black"
+                      !showNavbar || !isScrolled || !isHomePage
+                        ? `!text-white  transition-all duration-500`
+                        : "text-black  transition-all duration-500"
                     } capitalize my-1 px-3`}
                   >
                     {page.name}
@@ -224,7 +239,7 @@ function Navbar() {
                   onClick={() => router.push("/dashboard")}
                 >
                   <span
-                    className={`capitalize ${isTransparent() ? "text-white" : "text-black"} font-medium text-lg`}
+                    className={`capitalize ${!showNavbar ? "text-white" : "text-black"} font-medium text-lg`}
                   >
                     Dashboard
                   </span>
@@ -242,7 +257,7 @@ function Navbar() {
                     onClick={() => router.push("/auth/sign-in")}
                   >
                     <span
-                      className={`capitalize ${isTransparent() ? "text-white" : "text-black"} font-medium text-lg`}
+                      className={`capitalize ${!showNavbar ? "text-white" : "text-black"} font-medium text-lg`}
                     >
                       Sign In
                     </span>
@@ -261,7 +276,7 @@ function Navbar() {
               )} */}
             </Toolbar>
           </Container>
-        </AppBar>
+        </Box>
       )}
     </>
   );
