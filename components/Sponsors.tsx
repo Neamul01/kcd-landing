@@ -100,11 +100,27 @@ export default function Sponsors() {
             </div>
           </div>
         </SectionLayout>
+        <SectionLayout paddingBottom title={"Payment Partner"}>
+          <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
+            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
+              {paymentPartner.map((sponsor) => (
+                <IconCard key={sponsor.id} sponsor={sponsor} />
+              ))}
+            </div>
+          </div>
+        </SectionLayout>
       </div>
     </div>
   );
 }
 
+const paymentPartner = [
+  {
+    id: "1",
+    name: "redhat",
+    icon: "/aamarpay.png",
+  },
+];
 const silverSponsors = [
   {
     id: "1",
