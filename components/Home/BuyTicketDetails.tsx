@@ -18,6 +18,7 @@ import {
   Checkbox,
   FormControlLabel,
   MenuItem,
+  Popover,
   Radio,
   RadioGroup,
   Select,
@@ -83,9 +84,10 @@ export default function BuyTicketDetails({
     }, [user]),
     resolver: zodResolver(schema),
   });
+  const { setData, isSubmit, setIsSubmit, setErrors } = useDetailsStore();
   const [workshopLoading, setWorkshopLoading] = React.useState(false);
   const [track, setTrack] = React.useState("");
-  const { setData, isSubmit, setIsSubmit, setErrors } = useDetailsStore();
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
   const selectedTShirt = watch("tShirt");
 
@@ -206,6 +208,18 @@ export default function BuyTicketDetails({
     }
   }, [isSubmit, errors]);
 
+  // popover ---------------------------
+
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
   return (
     <Stack spacing={4}>
       <Stack spacing={1}>
@@ -258,41 +272,74 @@ export default function BuyTicketDetails({
             )}
           />
 
-          <Controller
-            control={control}
-            name="tShirt"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.tShirt)}>
-                <InputLabel id="demo-simple-select-label">
-                  T-Shirt Size
-                </InputLabel>
-                <Select
-                  {...field}
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="T-Shirt Size"
+          <div className="grid grid-cols-6 gap-2 items-center">
+            <Controller
+              control={control}
+              name="tShirt"
+              render={({ field }) => (
+                <FormControl
+                  className="col-span-4"
+                  error={Boolean(errors.tShirt)}
                 >
-                  <MenuItem value={"S"}>S</MenuItem>
-                  <MenuItem value={"M"}>M</MenuItem>
-                  <MenuItem value={"L"}>L</MenuItem>
-                  <MenuItem value={"XL"}>XL</MenuItem>
-                  <MenuItem value={"2XL"}>2XL</MenuItem>
-                </Select>
-                {errors.tShirt ? (
-                  <FormHelperText>{errors.tShirt.message}</FormHelperText>
-                ) : null}
-                {selectedTShirt && (
-                  <Image
-                    width={300}
-                    height={300}
-                    src="/t-shirt-size.png"
-                    alt="sizes guide"
-                    className="w-full h-full border rounded-b-lg"
-                  />
-                )}
-              </FormControl>
-            )}
-          />
+                  <InputLabel id="demo-simple-select-label">
+                    T-Shirt Size
+                  </InputLabel>
+                  <Select
+                    {...field}
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="T-Shirt Size"
+                  >
+                    <MenuItem value={"S"}>S</MenuItem>
+                    <MenuItem value={"M"}>M</MenuItem>
+                    <MenuItem value={"L"}>L</MenuItem>
+                    <MenuItem value={"XL"}>XL</MenuItem>
+                    <MenuItem value={"2XL"}>2XL</MenuItem>
+                  </Select>
+                  {errors.tShirt ? (
+                    <FormHelperText>{errors.tShirt.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+            <div className="col-span-2">
+              <Typography
+                aria-owns={open ? "mouse-over-popover" : undefined}
+                aria-haspopup="true"
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
+                className="cursor-pointer text-center border rounded-lg py-4 text-primary bg-gray-100"
+              >
+                Size Guide
+              </Typography>
+              <Popover
+                id="mouse-over-popover"
+                sx={{
+                  pointerEvents: "none",
+                }}
+                open={open}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+                onClose={handlePopoverClose}
+                disableRestoreFocus
+              >
+                <Image
+                  width={400}
+                  height={400}
+                  src="/t-shirt-size.png"
+                  alt="sizes guide"
+                  className="w-full h-full border rounded-b-lg"
+                />
+              </Popover>
+            </div>
+          </div>
 
           <Controller
             control={control}
