@@ -9,11 +9,10 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { IoMdEye as EyeIcon, IoMdEyeOff as EyeSlashIcon } from "react-icons/io";
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
-import { CartItem, Order, Ticket, Workshop } from "@/types/types";
-import { useUser } from "@/hooks/use-user";
+import { Ticket, Workshop } from "@/types/types";
+// import { useUser } from "@/hooks/use-user";
 import {
   Checkbox,
   FormControlLabel,
@@ -54,7 +53,7 @@ export default function BuyTicketDetails({
 }) {
   const router = useRouter();
   const submitButtonRef = React.useRef(null);
-  const { data: user } = useUser();
+  // const { data: user } = useUser();
 
   const [isPending, setIsPending] = React.useState<boolean>(false);
   const [workshops, setWorkshops] = React.useState<Workshop[]>([]);
@@ -71,9 +70,9 @@ export default function BuyTicketDetails({
   } = useForm<Values>({
     defaultValues: React.useMemo(() => {
       return {
-        name: user?.name || "",
-        email: user?.email || "",
-        mobile: user?.mobile || "",
+        name: "",
+        email: "",
+        mobile: "",
         address: "",
         tShirt: "",
         terms: false,
@@ -81,7 +80,7 @@ export default function BuyTicketDetails({
         track: "",
         workshop: [],
       };
-    }, [user]),
+    }, []),
     resolver: zodResolver(schema),
   });
   const { setData, isSubmit, setIsSubmit, setErrors } = useDetailsStore();
@@ -190,15 +189,6 @@ export default function BuyTicketDetails({
     });
   };
 
-  // React.useEffect(() => {
-  //   reset({
-  //     address: "",
-  //     email: user?.email || "",
-  //     mobile: user?.mobile || "",
-  //     name: user?.name || "",
-  //   });
-  // }, [user, reset]);
-
   React.useEffect(() => {
     console.log("is submit", isSubmit);
     if (isSubmit && submitButtonRef.current) {
@@ -238,7 +228,7 @@ export default function BuyTicketDetails({
                     size="small"
                     {...field}
                     label="Name"
-                    defaultValue={user?.name}
+                    // defaultValue={user?.name}
                   />
                   {errors.name ? (
                     <FormHelperText>{errors.name.message}</FormHelperText>
@@ -265,29 +255,6 @@ export default function BuyTicketDetails({
               )}
             />
           </div>
-
-          <Controller
-            control={control}
-            name="promotion"
-            render={({ field }) => (
-              <div>
-                <FormControlLabel
-                  className="!mt-0"
-                  control={<Checkbox size="small" {...field} />}
-                  label={
-                    <p className="text-base mt-0">
-                      I would like to receive updates over WhatsApp.
-                    </p>
-                  }
-                />
-                {errors.promotion ? (
-                  <FormHelperText error>
-                    {errors.promotion.message}
-                  </FormHelperText>
-                ) : null}
-              </div>
-            )}
-          />
 
           <div className="grid grid-cols-2 gap-2">
             <Controller
@@ -468,6 +435,30 @@ export default function BuyTicketDetails({
             //   <FormHelperText>{errors.workshop.message}</FormHelperText>
             // )} */}
           )}
+          <Controller
+            control={control}
+            name="promotion"
+            render={({ field }) => (
+              <div>
+                <FormControlLabel
+                  className="!mt-0"
+                  control={
+                    <Checkbox className="py-0" size="small" {...field} />
+                  }
+                  label={
+                    <p className="text-base mt-0">
+                      I would like to receive updates over WhatsApp.
+                    </p>
+                  }
+                />
+                {errors.promotion ? (
+                  <FormHelperText error>
+                    {errors.promotion.message}
+                  </FormHelperText>
+                ) : null}
+              </div>
+            )}
+          />
 
           <Controller
             control={control}
@@ -475,16 +466,18 @@ export default function BuyTicketDetails({
             render={({ field }) => (
               <div>
                 <FormControlLabel
-                  control={<Checkbox size="small" {...field} />}
+                  control={
+                    <Checkbox className="py-0" size="small" {...field} />
+                  }
                   label={
-                    <p className="text-sm">
+                    <p className="text-base">
                       I have read the{" "}
                       <Link
                         target="_blank"
                         href={"/conditions/terms-condition"}
                         className="text-primary underline"
                       >
-                        terms and conditions
+                        terms and conditions.
                       </Link>
                     </p>
                   }
