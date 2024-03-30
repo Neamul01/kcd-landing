@@ -9,11 +9,10 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { IoMdEye as EyeIcon, IoMdEyeOff as EyeSlashIcon } from "react-icons/io";
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
-import { CartItem, Order, Ticket, Workshop } from "@/types/types";
-import { useUser } from "@/hooks/use-user";
+import { Ticket, Workshop } from "@/types/types";
+// import { useUser } from "@/hooks/use-user";
 import {
   Checkbox,
   FormControlLabel,
@@ -27,6 +26,7 @@ import Link from "next/link";
 import axiosInstance from "@/lib/Axios";
 import { useDetailsStore } from "@/store/useDetailsStore";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 const schema = zod.object({
   email: zod.string().min(1, { message: "Email is required" }).email(),
@@ -54,11 +54,14 @@ export default function BuyTicketDetails({
 }) {
   const router = useRouter();
   const submitButtonRef = React.useRef(null);
-  const { data: user } = useUser();
+  // const { data: user } = useUser();
 
   const [isPending, setIsPending] = React.useState<boolean>(false);
   const [workshops, setWorkshops] = React.useState<Workshop[]>([]);
-  const [selectedWorkshop, setSelectedWorkspace] = React.useState<string[]>([]);
+  // const [selectedWorkshop, setSelectedWorkspace] = React.useState<string[]>([]);
+  const [selectedWorkshops, setSelectedWorkshops] = React.useState<
+    { id: string; sessionTime: string }[]
+  >([]);
 
   const {
     control,
@@ -71,9 +74,9 @@ export default function BuyTicketDetails({
   } = useForm<Values>({
     defaultValues: React.useMemo(() => {
       return {
-        name: user?.name || "",
-        email: user?.email || "",
-        mobile: user?.mobile || "",
+        name: "",
+        email: "",
+        mobile: "",
         address: "",
         tShirt: "",
         terms: false,
@@ -81,7 +84,7 @@ export default function BuyTicketDetails({
         track: "",
         workshop: [],
       };
-    }, [user]),
+    }, []),
     resolver: zodResolver(schema),
   });
   const { setData, isSubmit, setIsSubmit, setErrors } = useDetailsStore();
@@ -132,6 +135,8 @@ export default function BuyTicketDetails({
           ],
         };
 
+        submitData.workshop = selectedWorkshops.map((workshop) => workshop.id);
+
         console.log("values", submitData);
         setData(submitData);
       } catch {
@@ -140,7 +145,7 @@ export default function BuyTicketDetails({
         setIsPending(false);
       }
     },
-    [reset]
+    [reset, selectedWorkshops]
   );
 
   const handleTrackSelection = async (
@@ -173,34 +178,55 @@ export default function BuyTicketDetails({
     }
   };
 
-  const handleWorkshopSelect = (workshopId: string) => {
-    console.log("workshop id", workshopId);
-    setSelectedWorkspace((prevSelected) => {
-      if (prevSelected.includes(workshopId)) {
-        // Remove workshopId if already present
-        const updatedSelected = prevSelected.filter((id) => id !== workshopId);
-        setValue("workshop", updatedSelected); // Set the updated array
-        return updatedSelected;
+  const handleWorkshopSelect = (workshopId: string, sessionTime: string) => {
+    const isAlreadySelected = selectedWorkshops.some(
+      (selectedWorkshop) => selectedWorkshop.id === workshopId
+    );
+
+    if (isAlreadySelected) {
+      //------------ Workshop is already selected, so deselect it
+      setSelectedWorkshops((prevSelected) =>
+        prevSelected.filter((workshop) => workshop.id !== workshopId)
+      );
+      //------------ Update the form field value
+      const updatedWorkshops = selectedWorkshops.filter(
+        (workshop) => workshop.id !== workshopId
+      );
+      setValue(
+        "workshop",
+        updatedWorkshops.map((workshop) => workshop.id)
+      );
+    } else {
+      //----------- Workshop is not selected, check for conflicting session time
+      const hasConflictingSession = selectedWorkshops.some(
+        (selectedWorkshop) => selectedWorkshop.sessionTime === sessionTime
+      );
+
+      if (hasConflictingSession) {
+        toast.error(
+          "Another workshop with the same session time is already selected."
+        );
       } else {
-        // Add workshopId if not present
-        const updatedSelected = [...prevSelected, workshopId];
-        setValue("workshop", updatedSelected); // Set the updated array
-        return updatedSelected;
+        //------------ No conflict, add the workshop to selectedWorkshops
+        setSelectedWorkshops((prevSelected) => [
+          ...prevSelected,
+          { id: workshopId, sessionTime },
+        ]);
+        // Update the form field value
+        const updatedWorkshops = [
+          ...selectedWorkshops,
+          { id: workshopId, sessionTime },
+        ];
+        setValue(
+          "workshop",
+          updatedWorkshops.map((workshop) => workshop.id)
+        );
       }
-    });
+    }
   };
 
-  // React.useEffect(() => {
-  //   reset({
-  //     address: "",
-  //     email: user?.email || "",
-  //     mobile: user?.mobile || "",
-  //     name: user?.name || "",
-  //   });
-  // }, [user, reset]);
-
   React.useEffect(() => {
-    console.log("is submit", isSubmit);
+    // console.log("is submit", isSubmit);
     if (isSubmit && submitButtonRef.current) {
       // @ts-ignore
       submitButtonRef.current.click();
@@ -238,7 +264,7 @@ export default function BuyTicketDetails({
                     size="small"
                     {...field}
                     label="Name"
-                    defaultValue={user?.name}
+                    // defaultValue={user?.name}
                   />
                   {errors.name ? (
                     <FormHelperText>{errors.name.message}</FormHelperText>
@@ -265,29 +291,6 @@ export default function BuyTicketDetails({
               )}
             />
           </div>
-
-          <Controller
-            control={control}
-            name="promotion"
-            render={({ field }) => (
-              <div>
-                <FormControlLabel
-                  className="!mt-0"
-                  control={<Checkbox size="small" {...field} />}
-                  label={
-                    <p className="text-base mt-0">
-                      I would like to receive updates over WhatsApp.
-                    </p>
-                  }
-                />
-                {errors.promotion ? (
-                  <FormHelperText error>
-                    {errors.promotion.message}
-                  </FormHelperText>
-                ) : null}
-              </div>
-            )}
-          />
 
           <div className="grid grid-cols-2 gap-2">
             <Controller
@@ -427,7 +430,7 @@ export default function BuyTicketDetails({
               <RadioGroup
                 aria-label="workshop"
                 name="workshop"
-                className="flex flex-col gap-2 mt-2"
+                className="flex flex-col gap-1 mt-2"
               >
                 {workshops?.map((workshop) => (
                   <div key={workshop._id}>
@@ -436,17 +439,26 @@ export default function BuyTicketDetails({
                       control={
                         <Checkbox
                           size="small"
-                          onClick={() => handleWorkshopSelect(workshop._id)}
-                          checked={selectedWorkshop.includes(workshop._id)}
+                          onClick={() =>
+                            handleWorkshopSelect(
+                              workshop._id,
+                              workshop.sessionTime
+                            )
+                          }
+                          // checked={selectedWorkshops.includes(workshop._id)}
+                          checked={selectedWorkshops.some(
+                            (work) => work.id === workshop._id
+                          )}
                         />
                       }
                       label={
-                        <p className="flex flex-col">
+                        <p className="flex items-center">
                           <span className="leading-3 text-sm capitalize">
                             {workshop.title}
                           </span>
-                          <span className="text-xs text-black/80 capitalize">
-                            {workshop.sessionTime} ({workshop.schedule})
+                          <span className="text-xs text-black/80 capitalize pl-1">
+                            {" "}
+                            ({workshop.sessionTime})
                           </span>
                         </p>
                       }
@@ -468,6 +480,30 @@ export default function BuyTicketDetails({
             //   <FormHelperText>{errors.workshop.message}</FormHelperText>
             // )} */}
           )}
+          <Controller
+            control={control}
+            name="promotion"
+            render={({ field }) => (
+              <div>
+                <FormControlLabel
+                  className="!mt-0"
+                  control={
+                    <Checkbox className="py-0" size="small" {...field} />
+                  }
+                  label={
+                    <p className="text-base mt-0">
+                      I would like to receive updates over WhatsApp.
+                    </p>
+                  }
+                />
+                {errors.promotion ? (
+                  <FormHelperText error>
+                    {errors.promotion.message}
+                  </FormHelperText>
+                ) : null}
+              </div>
+            )}
+          />
 
           <Controller
             control={control}
@@ -475,16 +511,18 @@ export default function BuyTicketDetails({
             render={({ field }) => (
               <div>
                 <FormControlLabel
-                  control={<Checkbox size="small" {...field} />}
+                  control={
+                    <Checkbox className="py-0" size="small" {...field} />
+                  }
                   label={
-                    <p className="text-sm">
+                    <p className="text-base">
                       I have read the{" "}
                       <Link
                         target="_blank"
                         href={"/conditions/terms-condition"}
                         className="text-primary underline"
                       >
-                        terms and conditions
+                        terms and conditions.
                       </Link>
                     </p>
                   }

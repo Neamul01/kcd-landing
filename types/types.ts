@@ -1,9 +1,10 @@
 export type Ticket = {
   _id: string;
+  bookCount: number;
   title: string;
   description: string;
   price: string;
-  availability: boolean;
+  isAvailable: boolean;
   user: string;
   createdAt: string;
   quantity: number;

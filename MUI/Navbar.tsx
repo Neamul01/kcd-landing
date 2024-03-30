@@ -130,7 +130,7 @@ function Navbar() {
                   <Image
                     onClick={() => router.push("/")}
                     height={200}
-                    width={144}
+                    width={120}
                     src={
                       !isScrolled
                         ? "/kcd-logo/cncf-logo-300.png"
@@ -199,7 +199,7 @@ function Navbar() {
                 />
                 <Image
                   height={70}
-                  width={144}
+                  width={120}
                   src={
                     !isScrolled
                       ? "/kcd-logo/cncf-logo-300.png"
