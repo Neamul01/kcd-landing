@@ -102,9 +102,9 @@ function Navbar() {
           sx={{ color: "#000" }}
           className={`${
             isTransparent()
-              ? `bg-transparent shadow-none !text-white`
-              : "bg-white"
-          } sticky top-0 z-50`}
+              ? `bg-transparent shadow-none !text-white `
+              : "bg-white  "
+          } sticky top-0 z-50 transition-all duration-700`}
         >
           <Container maxWidth="xl">
             <Toolbar disableGutters>
@@ -112,26 +112,28 @@ function Navbar() {
                 sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
                 className="items-center gap-8"
               >
-                <Image
-                  className="cursor-pointer"
-                  onClick={() => router.push("/")}
-                  height={84}
-                  width={120}
-                  src={isTransparent() ? "/KCDLogoW.png" : "/KCDLogoB.png"}
-                  alt="Navbar Icon"
-                />
-                <Image
-                  className="cursor-pointer"
-                  onClick={() => router.push("/")}
-                  height={200}
-                  width={144}
-                  src={
-                    isTransparent()
-                      ? "/CloudNativeLogoW.png"
-                      : "/CloudNativeLogoB.png"
-                  }
-                  alt="Navbar Icon"
-                />
+                <div className="cursor-pointer transition-opacity duration-700">
+                  <Image
+                    onClick={() => router.push("/")}
+                    height={84}
+                    width={120}
+                    src={isTransparent() ? "/KCDLogoW.png" : "/KCDLogoB.png"}
+                    alt="Navbar Icon"
+                  />
+                </div>
+                <div className="cursor-pointer transition-opacity duration-700">
+                  <Image
+                    onClick={() => router.push("/")}
+                    height={200}
+                    width={144}
+                    src={
+                      isTransparent()
+                        ? "/CloudNativeLogoW.png"
+                        : "/CloudNativeLogoB.png"
+                    }
+                    alt="Navbar Icon"
+                  />
+                </div>
               </Box>
 
               <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -169,8 +171,8 @@ function Navbar() {
                         href={page.link}
                         key={page.link}
                         className={`${
-                          isTransparent() ? `!text-white` : "text-black"
-                        } capitalize text-center`}
+                          isTransparent() ? `!text-white ` : "text-black "
+                        } capitalize text-center transition-all duration-700`}
                       >
                         {page.name}
                       </Link>
@@ -209,7 +211,9 @@ function Navbar() {
                     // onClick={handleCloseNavMenu}
                     // sx={{ my: 2, display: "block" }}
                     className={`${
-                      isTransparent() ? `!text-white` : "text-black"
+                      isTransparent()
+                        ? `!text-white  transition-all duration-700`
+                        : "text-black  transition-all duration-700"
                     } capitalize my-1 px-3`}
                   >
                     {page.name}
