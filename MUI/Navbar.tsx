@@ -102,8 +102,8 @@ function Navbar() {
           sx={{ color: "#000" }}
           className={`${
             isTransparent()
-              ? `bg-transparent shadow-none !text-white `
-              : "bg-white  "
+              ? `bg-transparent shadow-none !text-white  py-3`
+              : "bg-white py-2"
           } sticky top-0 z-50 transition-all duration-700`}
         >
           <Container maxWidth="xl">
