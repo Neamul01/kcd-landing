@@ -304,7 +304,7 @@ export default function BuyTicketDetails({
             />
           </div>
 
-          {/* ------------------------ fields for professional/students --------------------- */}
+          {/* ------------------------ fields for professional/students student--------------------- */}
           <div className="grid grid-cols-2 gap-2">
             <Controller
               control={control}
@@ -332,7 +332,7 @@ export default function BuyTicketDetails({
               name="designation"
               render={({ field }) => (
                 <FormControl error={Boolean(errors.email)}>
-                  <InputLabel size="small">Designation</InputLabel>
+                  <InputLabel size="small">Designation/Student ID</InputLabel>
                   <OutlinedInput size="small" {...field} label="Designation" />
                   {errors.designation ? (
                     <FormHelperText>
