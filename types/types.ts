@@ -9,23 +9,25 @@ export type Ticket = {
   quantity: number;
 };
 
+export type CartItem = {
+  title: string | undefined;
+  price: number | undefined;
+  quantity: number | undefined;
+  ticket: string | undefined;
+};
+
 export type Order = {
   name: string;
   email: string;
   phone: {
     number: string;
-    promotion: boolean;
+    promotion: boolean | undefined;
   };
   track: string;
   workshop: string[];
   tshirt: string;
   address: string;
-  cartItems: {
-    name: string;
-    price: number;
-    quantity: number;
-    ticket: string;
-  }[];
+  cartItems: CartItem[];
 };
 
 export type Workshop = {
@@ -38,4 +40,18 @@ export type Workshop = {
   sessionTime: string;
   user: string;
   createdAt: string;
+  schedule: string;
+};
+
+export type TicketSummery = {
+  price?: number;
+  discount?: number;
+  subTotal?: number;
+  total?: number;
+};
+
+export type Coupon = {
+  code: string;
+  discountPercentage: number;
+  isAvailable: boolean;
 };

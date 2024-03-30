@@ -2,59 +2,72 @@
 import { useUser } from "@/hooks/use-user";
 import axiosInstance from "@/lib/Axios";
 import { useDetailsStore } from "@/store/useDetailsStore";
-import { Order, Ticket } from "@/types/types";
+import { Coupon, Order, Ticket, TicketSummery } from "@/types/types";
 import { Button, TextField } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { TbCurrencyTaka } from "react-icons/tb";
+import { toast } from "react-toastify";
 
 export default function BuyTicketSummery({
   setTab,
   tab,
   selectedTickets,
+  ticketSummary,
+  setTicketSummary,
 }: {
   setTab: Dispatch<SetStateAction<number>>;
   tab: number;
   selectedTickets: Ticket | undefined;
+  ticketSummary: TicketSummery;
+  setTicketSummary: Dispatch<SetStateAction<TicketSummery>>;
 }) {
-  const { data: user } = useUser();
-  const router = useRouter();
+  // const { data: user } = useUser();
   const [loading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState("");
-  const { data, setIsSubmit, errors } = useDetailsStore();
+  const [coupon, setCoupon] = useState("");
+  const { data, setIsSubmit, errors, setErrors, clearErrors } =
+    useDetailsStore();
 
   const makeOrder = async (orderData: Order) => {
     try {
       setLoading(true);
-      await axiosInstance.post("/orders", orderData).then((res) => {
-        console.log("order placed", res.data.data._id);
-        setOrderId(res.data.data._id);
-      });
-    } catch {
-      () => alert("something went wrong, please try again");
-    } finally {
+      clearErrors();
+      const response = await axiosInstance.post("/orders", orderData);
+      // console.log("order placed", response.data.data._id);
+      setOrderId(response.data.data._id);
       setLoading(false);
+      return null;
+    } catch (err: any) {
+      setLoading(false);
+      toast.error(err.response.data.error);
+      setErrors(err.response.data.error);
+      console.log("make order error", err.response.data.error);
+      return err.response.data.error;
     }
   };
 
+  // make order (tab-2) --------------------------------------
   useEffect(() => {
     if (data.address) {
-      try {
-        setLoading(true);
-        // console.log("store data", data);
-        // @ts-ignore
-        makeOrder(data);
-        setTab(tab + 1);
-      } catch {
-        () => alert("something went wrong, please try again");
-      } finally {
-        setLoading(false);
-      }
+      setLoading(true);
+      makeOrder(data)
+        .then((error) => {
+          if (error) {
+            console.log("Error encountered, cannot proceed to the next tab.");
+          } else {
+            setTab(tab + 1);
+          }
+        })
+        .catch(() => {
+          toast.error("Something went wrong, please try again");
+        });
     }
   }, [data]);
 
+  // checkout (tab-3) --------------------------------------
   const handleCheckout = async () => {
     try {
       setLoading(true);
@@ -63,7 +76,7 @@ export default function BuyTicketSummery({
         window.location.href = res.data.data.payment_url;
       });
     } catch {
-      () => alert("something went wrong, please try again");
+      () => toast.error("something went wrong, please try again");
     } finally {
       setLoading(false);
     }
@@ -90,6 +103,53 @@ export default function BuyTicketSummery({
       setLoading(false);
     }
   };
+
+  // coupon ---------------------------------
+  const handleApplyCoupon = async () => {
+    try {
+      if (!coupon) {
+        return toast.error("Please enter a coupon");
+      }
+
+      if (!selectedTickets) {
+        return toast.error("Please select a ticket first.");
+      }
+
+      const couponDetails = await axiosInstance
+        .get(`coupons/apply/${coupon}/${selectedTickets?._id}`)
+        .then((res) => res.data.data)
+        .catch((err) => {
+          toast.error(err.response.data.error);
+        });
+
+      console.log("response", couponDetails);
+
+      if (!couponDetails.isAvailable) {
+        return toast.error("This ticket is expired.");
+      }
+
+      // Update state
+      setTicketSummary({
+        ...ticketSummary,
+        price: Number(selectedTickets.price),
+        discount: couponDetails.discountPercentage,
+        subTotal:
+          Number(selectedTickets.price) +
+          Number(couponDetails.discountPercentage),
+        total:
+          Number(selectedTickets.price) +
+          Number(couponDetails.discountPercentage),
+      });
+    } catch {
+      (err: any) => {
+        toast.error(
+          "An error occurred while applying the coupon. Please try again."
+        );
+        console.log(err);
+      };
+    }
+  };
+
   return (
     <div className="bg-gray-100 w-full h-full p-4">
       <div className="h-full w-full flex flex-col justify-between gap-3">
@@ -107,20 +167,20 @@ export default function BuyTicketSummery({
                 </p>
                 {/* <p className="">x{ticketQuantity}</p> */}
                 <p className="font-medium flex items-center justify-center">
-                  <TbCurrencyTaka /> {selectedTickets.price}{" "}
+                  <TbCurrencyTaka /> {ticketSummary.price}{" "}
                 </p>
               </div>
               <div className="flex justify-between text-black/60">
                 <p className="">Sub Total</p>
                 <p className="font-medium flex items-center justify-center">
-                  <TbCurrencyTaka /> {selectedTickets.price}{" "}
+                  <TbCurrencyTaka /> {ticketSummary.subTotal}{" "}
                 </p>
               </div>
             </div>
             <div className="flex justify-between text-black text-xl font-semibold py-3 border-y border-gray-200">
               <p className="">Total</p>
               <p className="font-medium flex items-center justify-center">
-                <TbCurrencyTaka /> {selectedTickets.price}{" "}
+                <TbCurrencyTaka /> {ticketSummary.total}{" "}
               </p>
             </div>
             <div className="flex items-center justify-center">
@@ -146,6 +206,7 @@ export default function BuyTicketSummery({
                 id="outlined-error"
                 placeholder="Enter Code"
                 size="small"
+                onChange={(e) => setCoupon(e.target.value)}
                 className="bg-white border-none focus:ring-amber-600"
               />
             </div>
@@ -153,6 +214,8 @@ export default function BuyTicketSummery({
               <Button
                 variant="outlined"
                 size="medium"
+                disabled={!selectedTickets}
+                onClick={handleApplyCoupon}
                 className="border-accent/50 border-2"
               >
                 <span className="text-accent/60 capitalize">Apply</span>
@@ -161,37 +224,37 @@ export default function BuyTicketSummery({
           </div>
         </div>
         <div className="w-full mb-6">
-          {user ? (
-            <Button
-              onClick={handleProceed}
-              disabled={!selectedTickets || loading}
-              variant="contained"
-              size="large"
-              className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"
-            >
-              <span className="text-lg capitalize font-bold text-white">
-                {loading
-                  ? "Loading..."
-                  : tab === 2
-                    ? "Checkout"
-                    : tab === 3
-                      ? "Proceed to checkout"
-                      : "Proceed"}
-              </span>
-            </Button>
-          ) : (
-            <Button
-              onClick={() => router.push("/auth/sign-in")}
-              // disabled
-              variant="outlined"
-              size="large"
-              className="w-full  disabled:bg-accent/40 !disabled:cursor-not-allowed border-accent  py-3 shadow-none"
-            >
-              <span className="text-lg capitalize font-bold text-black">
-                Sign In
-              </span>
-            </Button>
-          )}
+          {/* {user ? ( */}
+          <Button
+            onClick={handleProceed}
+            disabled={!selectedTickets || loading}
+            variant="contained"
+            size="large"
+            className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"
+          >
+            <span className="text-lg capitalize font-bold text-white">
+              {loading
+                ? "Loading..."
+                : tab === 2
+                  ? "Checkout"
+                  : tab === 3
+                    ? "Proceed to checkout"
+                    : "Proceed"}
+            </span>
+          </Button>
+          {/* // ) : (
+          //   <Button
+          //     onClick={() => router.push("/auth/sign-in")}
+          //     // disabled
+          //     variant="outlined"
+          //     size="large"
+          //     className="w-full  disabled:bg-accent/40 !disabled:cursor-not-allowed border-accent  py-3 shadow-none"
+          //   >
+          //     <span className="text-lg capitalize font-bold text-black">
+          //       Sign In
+          //     </span>
+          //   </Button>
+          // )} */}
         </div>
         {tab === 3 && (
           <p className="text-sm text-center text-black/60">

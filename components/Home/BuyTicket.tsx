@@ -7,7 +7,7 @@ import BuyTicketSummery from "./BuyTicketSummery";
 import BuyTicketDetails from "./BuyTicketDetails";
 import { Button } from "@mui/material";
 import { IoIosArrowBack } from "react-icons/io";
-import { Ticket } from "@/types/types";
+import { Ticket, TicketSummery } from "@/types/types";
 import axiosInstance from "@/lib/Axios";
 import Loader from "../Shared/Loader";
 import BuyTicketPaymentCard from "./BuyTicketPaymentCard";
@@ -18,6 +18,12 @@ export default function BuyTicket() {
   const [selectedTickets, setSelectedTickets] = useState<Ticket>();
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [error, setError] = useState<string>();
+  const [ticketSummary, setTicketSummary] = useState<TicketSummery>({
+    price: 0,
+    discount: 0,
+    subTotal: 0,
+    total: 0,
+  });
 
   const handleBack = () => {
     if (tab > 1) {
@@ -40,6 +46,29 @@ export default function BuyTicket() {
     getTicket();
   }, []);
   // console.log("tickets", tickets);
+
+  useEffect(() => {
+    if (selectedTickets) {
+      const { price } = selectedTickets;
+
+      // Calculate subtotal
+      const subTotal = Number(price);
+
+      // Calculate total
+      const total = subTotal < 0 ? 0 : subTotal;
+
+      // Update state
+      setTicketSummary({
+        ...ticketSummary,
+        price: Number(price),
+        subTotal,
+        total,
+      });
+    }
+  }, [selectedTickets]);
+  // setTicketSummery((previousState) => {
+  //   return { ...previousState, price: selectedTickets.price };
+  // });
 
   return (
     <div id="buy-ticket">
@@ -107,6 +136,8 @@ export default function BuyTicket() {
                   setTab={setTab}
                   tab={tab}
                   selectedTickets={selectedTickets}
+                  ticketSummary={ticketSummary}
+                  setTicketSummary={setTicketSummary}
                 />
               </div>
             </div>
