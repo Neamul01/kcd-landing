@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import { IoMdEye as EyeIcon, IoMdEyeOff as EyeSlashIcon } from "react-icons/io";
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
-import { Order, Ticket, Workshop } from "@/types/types";
+import { CartItem, Order, Ticket, Workshop } from "@/types/types";
 import { useUser } from "@/hooks/use-user";
 import {
   Checkbox,
@@ -122,10 +122,10 @@ export default function BuyTicketDetails({
           address: values.address, //
           cartItems: [
             {
-              title: selectedTickets?.title, //
-              price: selectedTickets?.price, //
+              title: selectedTickets?.title as string, //
+              price: Number(selectedTickets?.price), //
               quantity: 1, //
-              ticket: selectedTickets?._id, //
+              ticket: selectedTickets?._id as string, //
             },
           ],
         };
