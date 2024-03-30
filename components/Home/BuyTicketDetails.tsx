@@ -26,6 +26,7 @@ import Link from "next/link";
 import axiosInstance from "@/lib/Axios";
 import { useDetailsStore } from "@/store/useDetailsStore";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 const schema = zod.object({
   email: zod.string().min(1, { message: "Email is required" }).email(),
@@ -57,7 +58,10 @@ export default function BuyTicketDetails({
 
   const [isPending, setIsPending] = React.useState<boolean>(false);
   const [workshops, setWorkshops] = React.useState<Workshop[]>([]);
-  const [selectedWorkshop, setSelectedWorkspace] = React.useState<string[]>([]);
+  // const [selectedWorkshop, setSelectedWorkspace] = React.useState<string[]>([]);
+  const [selectedWorkshops, setSelectedWorkshops] = React.useState<
+    { id: string; sessionTime: string }[]
+  >([]);
 
   const {
     control,
@@ -172,21 +176,34 @@ export default function BuyTicketDetails({
     }
   };
 
-  const handleWorkshopSelect = (workshopId: string) => {
-    console.log("workshop id", workshopId);
-    setSelectedWorkspace((prevSelected) => {
-      if (prevSelected.includes(workshopId)) {
-        // Remove workshopId if already present
-        const updatedSelected = prevSelected.filter((id) => id !== workshopId);
-        setValue("workshop", updatedSelected); // Set the updated array
-        return updatedSelected;
+  const handleWorkshopSelect = (workshopId: string, sessionTime: string) => {
+    const isAlreadySelected = selectedWorkshops.some(
+      (selectedWorkshop) => selectedWorkshop.id === workshopId
+    );
+
+    if (isAlreadySelected) {
+      //------------ Workshop is already selected, so deselect it
+      setSelectedWorkshops((prevSelected) =>
+        prevSelected.filter((workshop) => workshop.id !== workshopId)
+      );
+    } else {
+      //----------- Workshop is not selected, check for conflicting session time
+      const hasConflictingSession = selectedWorkshops.some(
+        (selectedWorkshop) => selectedWorkshop.sessionTime === sessionTime
+      );
+
+      if (hasConflictingSession) {
+        toast.error(
+          "Another workshop with the same session time is already selected."
+        );
       } else {
-        // Add workshopId if not present
-        const updatedSelected = [...prevSelected, workshopId];
-        setValue("workshop", updatedSelected); // Set the updated array
-        return updatedSelected;
+        //------------ No conflict, add the workshop to selectedWorkshops
+        setSelectedWorkshops((prevSelected) => [
+          ...prevSelected,
+          { id: workshopId, sessionTime },
+        ]);
       }
-    });
+    }
   };
 
   React.useEffect(() => {
@@ -403,8 +420,16 @@ export default function BuyTicketDetails({
                       control={
                         <Checkbox
                           size="small"
-                          onClick={() => handleWorkshopSelect(workshop._id)}
-                          checked={selectedWorkshop.includes(workshop._id)}
+                          onClick={() =>
+                            handleWorkshopSelect(
+                              workshop._id,
+                              workshop.sessionTime
+                            )
+                          }
+                          // checked={selectedWorkshops.includes(workshop._id)}
+                          checked={selectedWorkshops.some(
+                            (work) => work.id === workshop._id
+                          )}
                         />
                       }
                       label={
