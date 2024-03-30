@@ -227,50 +227,101 @@ export default function BuyTicketDetails({
       </Stack>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
-          <Controller
-            control={control}
-            name="name"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.name)}>
-                <InputLabel>Name</InputLabel>
-                <OutlinedInput
-                  {...field}
-                  label="Name"
-                  defaultValue={user?.name}
-                />
-                {errors.name ? (
-                  <FormHelperText>{errors.name.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
-          <Controller
-            control={control}
-            name="email"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.email)}>
-                <InputLabel>Email address</InputLabel>
-                <OutlinedInput {...field} label="Email address" type="email" />
-                {errors.email ? (
-                  <FormHelperText>{errors.email.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
+          <div className="grid grid-cols-2 gap-2">
+            <Controller
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.name)}>
+                  <InputLabel size="small">Name</InputLabel>
+                  <OutlinedInput
+                    size="small"
+                    {...field}
+                    label="Name"
+                    defaultValue={user?.name}
+                  />
+                  {errors.name ? (
+                    <FormHelperText>{errors.name.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+            <Controller
+              control={control}
+              name="email"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.email)}>
+                  <InputLabel size="small">Email address</InputLabel>
+                  <OutlinedInput
+                    size="small"
+                    {...field}
+                    label="Email address"
+                    type="email"
+                  />
+                  {errors.email ? (
+                    <FormHelperText>{errors.email.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+          </div>
 
           <Controller
             control={control}
-            name="address"
+            name="promotion"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.address)}>
-                <InputLabel>Address</InputLabel>
-                <OutlinedInput {...field} label="Address" />
-                {errors.address ? (
-                  <FormHelperText>{errors.address.message}</FormHelperText>
+              <div>
+                <FormControlLabel
+                  className="!mt-0"
+                  control={<Checkbox size="small" {...field} />}
+                  label={
+                    <p className="text-sm mt-0">
+                      I would like to receive updates over WhatsApp.
+                    </p>
+                  }
+                />
+                {errors.promotion ? (
+                  <FormHelperText error>
+                    {errors.promotion.message}
+                  </FormHelperText>
                 ) : null}
-              </FormControl>
+              </div>
             )}
           />
+
+          <div className="grid grid-cols-2 gap-2">
+            <Controller
+              control={control}
+              name="address"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.address)}>
+                  <InputLabel size="small">Address</InputLabel>
+                  <OutlinedInput size="small" {...field} label="Address" />
+                  {errors.address ? (
+                    <FormHelperText>{errors.address.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+            <Controller
+              control={control}
+              name="mobile"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.mobile)}>
+                  <InputLabel size="small">Mobile</InputLabel>
+                  <OutlinedInput
+                    size="small"
+                    {...field}
+                    label="Mobile"
+                    type="number"
+                  />
+                  {errors.mobile ? (
+                    <FormHelperText>{errors.mobile.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+          </div>
 
           <div className="grid grid-cols-6 gap-2 items-center">
             <Controller
@@ -281,10 +332,11 @@ export default function BuyTicketDetails({
                   className="col-span-4"
                   error={Boolean(errors.tShirt)}
                 >
-                  <InputLabel id="demo-simple-select-label">
+                  <InputLabel size="small" id="demo-simple-select-label">
                     T-Shirt Size
                   </InputLabel>
                   <Select
+                    size="small"
                     {...field}
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -308,7 +360,7 @@ export default function BuyTicketDetails({
                 aria-haspopup="true"
                 onMouseEnter={handlePopoverOpen}
                 onMouseLeave={handlePopoverClose}
-                className="cursor-pointer text-center border rounded-lg py-4 text-primary bg-gray-100"
+                className="cursor-pointer text-center border rounded-lg py-2 text-primary bg-gray-100"
               >
                 Size Guide
               </Typography>
@@ -341,41 +393,6 @@ export default function BuyTicketDetails({
             </div>
           </div>
 
-          <Controller
-            control={control}
-            name="promotion"
-            render={({ field }) => (
-              <div>
-                <FormControlLabel
-                  control={<Checkbox {...field} />}
-                  label={
-                    <React.Fragment>
-                      I would like to receive updates over WhatsApp.
-                    </React.Fragment>
-                  }
-                />
-                {errors.promotion ? (
-                  <FormHelperText error>
-                    {errors.promotion.message}
-                  </FormHelperText>
-                ) : null}
-              </div>
-            )}
-          />
-          <Controller
-            control={control}
-            name="mobile"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.mobile)}>
-                <InputLabel>Mobile</InputLabel>
-                <OutlinedInput {...field} label="Mobile" type="number" />
-                {errors.mobile ? (
-                  <FormHelperText>{errors.mobile.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          />
-
           {/* Track selection */}
           <FormControl error={Boolean(errors.track)}>
             <p>Choose your preferred track to make the most of your day!</p>
@@ -388,12 +405,12 @@ export default function BuyTicketDetails({
               <FormControlLabel
                 value="presentation-deck"
                 control={<Radio size="small" />}
-                label="Presentation"
+                label={<p className="text-sm">Presentation</p>}
               />
               <FormControlLabel
                 value="workshop"
-                control={<Radio size="small" />}
-                label="Workshop"
+                control={<Radio size="small" className="py-0" />}
+                label={<p className="text-sm">Workshop </p>}
               />
             </RadioGroup>
             {errors.track && (
@@ -410,7 +427,7 @@ export default function BuyTicketDetails({
               <RadioGroup
                 aria-label="workshop"
                 name="workshop"
-                className="flex flex-col gap-2"
+                className="flex flex-col gap-2 mt-2"
               >
                 {workshops?.map((workshop) => (
                   <div key={workshop._id}>
@@ -458,9 +475,9 @@ export default function BuyTicketDetails({
             render={({ field }) => (
               <div>
                 <FormControlLabel
-                  control={<Checkbox {...field} />}
+                  control={<Checkbox size="small" {...field} />}
                   label={
-                    <React.Fragment>
+                    <p className="text-sm">
                       I have read the{" "}
                       <Link
                         target="_blank"
@@ -469,7 +486,7 @@ export default function BuyTicketDetails({
                       >
                         terms and conditions
                       </Link>
-                    </React.Fragment>
+                    </p>
                   }
                 />
                 {errors.terms ? (
