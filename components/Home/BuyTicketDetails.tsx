@@ -394,7 +394,7 @@ export default function BuyTicketDetails({
               <RadioGroup
                 aria-label="workshop"
                 name="workshop"
-                className="flex flex-col gap-2 mt-2"
+                className="flex flex-col gap-1 mt-2"
               >
                 {workshops?.map((workshop) => (
                   <div key={workshop._id}>
@@ -408,12 +408,13 @@ export default function BuyTicketDetails({
                         />
                       }
                       label={
-                        <p className="flex flex-col">
+                        <p className="flex items-center">
                           <span className="leading-3 text-sm capitalize">
                             {workshop.title}
                           </span>
-                          <span className="text-xs text-black/80 capitalize">
-                            {workshop.sessionTime} ({workshop.schedule})
+                          <span className="text-xs text-black/80 capitalize pl-1">
+                            {" "}
+                            ({workshop.sessionTime})
                           </span>
                         </p>
                       }
