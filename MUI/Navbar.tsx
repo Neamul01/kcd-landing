@@ -128,8 +128,8 @@ function Navbar() {
                     width={144}
                     src={
                       isTransparent()
-                        ? "/CloudNativeLogoW.png"
-                        : "/CloudNativeLogoB.png"
+                        ? "/kcd-logo/cncf-logo-300.png"
+                        : "/kcd-logo/cncf-logo-black-300.png"
                     }
                     alt="Navbar Icon"
                   />
