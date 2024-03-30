@@ -104,7 +104,7 @@ function Navbar() {
             isTransparent()
               ? `bg-transparent shadow-none !text-white  py-3`
               : "bg-white py-2"
-          } sticky top-0 z-50 transition-all duration-700`}
+          } sticky top-0 z-50 transition-all duration-500`}
         >
           <Container maxWidth="xl">
             <Toolbar disableGutters>
@@ -112,7 +112,7 @@ function Navbar() {
                 sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
                 className="items-center gap-8"
               >
-                <div className="cursor-pointer transition-opacity duration-700">
+                <div className="cursor-pointer transition-opacity duration-500">
                   <Image
                     onClick={() => router.push("/")}
                     height={84}
@@ -121,7 +121,7 @@ function Navbar() {
                     alt="Navbar Icon"
                   />
                 </div>
-                <div className="cursor-pointer transition-opacity duration-700">
+                <div className="cursor-pointer transition-opacity duration-500">
                   <Image
                     onClick={() => router.push("/")}
                     height={200}
@@ -172,7 +172,7 @@ function Navbar() {
                         key={page.link}
                         className={`${
                           isTransparent() ? `!text-white ` : "text-black "
-                        } capitalize text-center transition-all duration-700`}
+                        } capitalize text-center transition-all duration-500`}
                       >
                         {page.name}
                       </Link>
@@ -212,8 +212,8 @@ function Navbar() {
                     // sx={{ my: 2, display: "block" }}
                     className={`${
                       isTransparent()
-                        ? `!text-white  transition-all duration-700`
-                        : "text-black  transition-all duration-700"
+                        ? `!text-white  transition-all duration-500`
+                        : "text-black  transition-all duration-500"
                     } capitalize my-1 px-3`}
                   >
                     {page.name}

@@ -7,7 +7,7 @@ function Hero() {
       <div className="h-full bg-gradient-to-t from-black/75 to-black/70 flex items-center justify-start px-2">
         <div className="w-sectionLayout mx-auto">
           <div className="flex flex-col mb-8 gap-9">
-            <h2 className="text-[65px] text-secondary font-semibold leading-tight tracking-wide">
+            <h2 className="text-[65px] text-white font-semibold leading-tight tracking-wide">
               Dhaka Welcomes the <br /> Future of Tech <br /> KCD 2024!
             </h2>
             <p className="font-semibold text-[25px] text-white">
@@ -22,7 +22,7 @@ function Hero() {
               href={"#buy-ticket"}
               className="text-white bg-primary px-8 py-4 rounded-lg "
             >
-              Register Now
+              Buy ticket
             </Link>
           </div>
         </div>
