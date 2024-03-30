@@ -59,8 +59,6 @@ function Navbar() {
   // const { data: user } = useUser();
   const pathname = usePathname();
 
-  const [backgroundColor, setBackgroundColor] =
-    React.useState<string>("transparent");
   const router = useRouter();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -71,21 +69,12 @@ function Navbar() {
     setAnchorElNav(null);
   };
 
-  // ---------define where the header should transparent
-  const isTransparent = () => {
-    return backgroundColor === "transparent" &&
-      !pathname.includes("/auth") &&
-      !pathname.includes("/conditions")
-      ? true
-      : false;
-  };
-
   React.useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.pageYOffset;
       const isScrolledDown = currentScrollPos > prevScrollPos;
 
-      if (currentScrollPos < 250) {
+      if (currentScrollPos < 200) {
         setShowNavbar(true);
       } else {
         setShowNavbar(!isScrolledDown);
