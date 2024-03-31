@@ -18,6 +18,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
 import axiosInstance from "@/lib/Axios";
+import { toast } from "react-toastify";
 
 const schema = zod.object({
   name: zod.string().min(1, { message: "Name is required" }),
@@ -25,19 +26,27 @@ const schema = zod.object({
   organization: zod.string().min(1, { message: "Organization is required" }),
   role: zod.string().min(1, { message: "Role is required" }).optional(),
   sponsor_status: zod.string().optional(),
+  sponsor_link: zod.string().min(1, { message: "Sponsor Link is required" }),
 });
 
 type Values = zod.infer<typeof schema>;
 
-const defaultValues = {
-  name: "",
-  designation: "",
-  organization: "",
-  role: "",
-  sponsor_status: "",
-} satisfies Values;
+// const defaultValues = {
+//   name: "",
+//   designation: "",
+//   organization: "",
+//   role: "",
+//   sponsor_status: "",
+//   sponsor_link: "",
+// } satisfies Values;
 
-const SpeakersDetailsForm = () => {
+const SpeakersDetailsForm = ({
+  selectedParticipant,
+  closeModal,
+}: {
+  selectedParticipant?: Values & { id: string };
+  closeModal?: () => void;
+}) => {
   const [role, setRole] = useState("");
   const [isPending, setIsPending] = React.useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -48,7 +57,17 @@ const SpeakersDetailsForm = () => {
     setValue,
     reset,
     formState: { errors },
-  } = useForm({ defaultValues, resolver: zodResolver(schema) });
+  } = useForm({
+    defaultValues: {
+      name: selectedParticipant?.name || "",
+      designation: selectedParticipant?.designation || "",
+      organization: selectedParticipant?.organization || "",
+      role: selectedParticipant?.role || "",
+      sponsor_status: selectedParticipant?.sponsor_status || "",
+      sponsor_link: selectedParticipant?.sponsor_link || "",
+    },
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = async (values: Values): Promise<void> => {
     try {
@@ -66,12 +85,39 @@ const SpeakersDetailsForm = () => {
       if (selectedImage) {
         formData.append("file", selectedImage);
       }
-      if (!selectedImage) {
-        // setIsPending(false);
-        return alert("Please enter a image");
-      }
+      // if (!selectedImage) {
+      //   // setIsPending(false);
+      //   return alert("Please enter a image");
+      // }
 
       console.log("form data", formData);
+
+      if (selectedParticipant && closeModal) {
+        // ----------------edit form
+        console.log("edit form");
+        return await axiosInstance
+          .put(`/participants/${selectedParticipant.id}`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            toast.success("Participant Updated Successfully.");
+            console.log("res", res);
+            setSelectedImage(null);
+            reset();
+          })
+          .catch((err) => {
+            console.log("err", err);
+            toast.error("Something went wrong please try again.");
+            // alert("Something went wrong please try again");
+          })
+          .finally(() => {
+            setIsPending(false);
+            closeModal();
+          });
+      }
+      console.log("add form");
 
       await axiosInstance
         .post("/participants", formData, {
@@ -80,12 +126,14 @@ const SpeakersDetailsForm = () => {
           },
         })
         .then((res) => {
+          toast.success("Participant Added Successfully.");
           console.log("res", res);
           setSelectedImage(null);
           reset();
         })
         .catch((err) => {
           console.log("err", err);
+          toast.error("Something went wrong please try again.");
           // alert("Something went wrong please try again");
         })
         .finally(() => {
@@ -114,131 +162,171 @@ const SpeakersDetailsForm = () => {
     }
   };
 
+  React.useEffect(() => {
+    if (selectedParticipant) {
+      reset({
+        designation: selectedParticipant.designation,
+        name: selectedParticipant.name,
+        organization: selectedParticipant.organization,
+        role: selectedParticipant.role,
+        sponsor_link: selectedParticipant.sponsor_link,
+        sponsor_status: selectedParticipant.sponsor_status,
+      });
+    }
+  }, [selectedParticipant]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        <Controller
-          control={control}
-          name="name"
-          render={({ field }) => (
-            <FormControl error={Boolean(errors.name)}>
-              <InputLabel>Name</InputLabel>
-              <OutlinedInput {...field} label="Name" />
-              {errors.name && (
-                <FormHelperText>{errors.name.message}</FormHelperText>
-              )}
-            </FormControl>
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="designation"
-          render={({ field }) => (
-            <FormControl error={Boolean(errors.designation)}>
-              <InputLabel>Designation</InputLabel>
-              <OutlinedInput {...field} label="Designation" />
-              {errors.designation ? (
-                <FormHelperText>{errors.designation.message}</FormHelperText>
-              ) : null}
-            </FormControl>
-          )}
-        />
-        <Controller
-          control={control}
-          name="organization"
-          render={({ field }) => (
-            <FormControl error={Boolean(errors.organization)}>
-              <InputLabel>Organization</InputLabel>
-              <OutlinedInput {...field} label="Organization" />
-              {errors.organization ? (
-                <FormHelperText>{errors.organization.message}</FormHelperText>
-              ) : null}
-            </FormControl>
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="role"
-          render={({ field }) => (
-            <FormControl error={Boolean(errors.role)}>
-              <InputLabel id="demo-simple-select-label">Role</InputLabel>
-              <Select
-                {...field}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Role"
-                onChange={handleRoleSelection}
-              >
-                <MenuItem value={"speaker"}>Speaker</MenuItem>
-                <MenuItem value={"organizer"}>Organizer</MenuItem>
-                <MenuItem value={"sponsor"}>Sponsor</MenuItem>
-                <MenuItem value={"volunteer"}>Volunteer</MenuItem>
-              </Select>
-              {errors.role ? (
-                <FormHelperText>{errors.role.message}</FormHelperText>
-              ) : null}
-            </FormControl>
-          )}
-        />
-
-        {role === "sponsor" && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           <Controller
             control={control}
-            name="sponsor_status"
+            name="name"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.sponsor_status)}>
-                <InputLabel id="demo-simple-select-label">
-                  Sponsor Status
-                </InputLabel>
-                <Select
-                  {...field}
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="Sponsor Status"
-                >
-                  <MenuItem value={"PLATINUM"}>Platinum</MenuItem>
-                  <MenuItem value={"GOLD"}>Gold</MenuItem>
-                  <MenuItem value={"SILVER"}>Silver</MenuItem>
-                  <MenuItem value={"BRONZE"}>Bronze</MenuItem>
-                </Select>
-                {errors.sponsor_status ? (
-                  <FormHelperText>
-                    {errors.sponsor_status.message}
-                  </FormHelperText>
+              <FormControl error={Boolean(errors.name)}>
+                <InputLabel size="small">Name</InputLabel>
+                <OutlinedInput size="small" {...field} label="Name" />
+                {errors.name && (
+                  <FormHelperText>{errors.name.message}</FormHelperText>
+                )}
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="designation"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.designation)}>
+                <InputLabel size="small">Designation</InputLabel>
+                <OutlinedInput size="small" {...field} label="Designation" />
+                {errors.designation ? (
+                  <FormHelperText>{errors.designation.message}</FormHelperText>
                 ) : null}
               </FormControl>
             )}
           />
-        )}
-
-        {/* <Controller
-          control={control}
-          name="file"
-          render={({ field }) => ( */}
-        {/* <FormControl> */}
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon />}
-          // onClick={handleFileChange}
-        >
-          Upload file
-          <input
-            type="file"
-            style={{ display: "none" }}
-            onChange={handleFileChange}
+          <Controller
+            control={control}
+            name="organization"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.organization)}>
+                <InputLabel size="small">Organization</InputLabel>
+                <OutlinedInput size="small" {...field} label="Organization" />
+                {errors.organization ? (
+                  <FormHelperText>{errors.organization.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
           />
-        </Button>
-        {/* {errors.file && (
-                <FormHelperText>{errors.file.message}</FormHelperText>
-              )} */}
-        {/* </FormControl> */}
-        {/* )}
-        /> */}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          <Controller
+            control={control}
+            name="role"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.role)}>
+                <InputLabel size="small" id="demo-simple-select-label">
+                  Role
+                </InputLabel>
+                <Select
+                  {...field}
+                  size="small"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Role"
+                  onChange={handleRoleSelection}
+                >
+                  <MenuItem value={"speaker"}>Speaker</MenuItem>
+                  <MenuItem value={"organizer"}>Organizer</MenuItem>
+                  <MenuItem value={"sponsor"}>Sponsor</MenuItem>
+                  <MenuItem value={"volunteer"}>Volunteer</MenuItem>
+                </Select>
+                {errors.role ? (
+                  <FormHelperText>{errors.role.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+
+          {role === "sponsor" && (
+            <Controller
+              control={control}
+              name="sponsor_status"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.sponsor_status)}>
+                  <InputLabel size="small" id="demo-simple-select-label">
+                    Sponsor Status
+                  </InputLabel>
+                  <Select
+                    {...field}
+                    size="small"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Sponsor Status"
+                  >
+                    <MenuItem value={"PLATINUM"}>Platinum</MenuItem>
+                    <MenuItem value={"GOLD"}>Gold</MenuItem>
+                    <MenuItem value={"SILVER"}>Silver</MenuItem>
+                    <MenuItem value={"BRONZE"}>Bronze</MenuItem>
+                  </Select>
+                  {errors.sponsor_status ? (
+                    <FormHelperText>
+                      {errors.sponsor_status.message}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+          )}
+          <Controller
+            control={control}
+            name="sponsor_link"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.sponsor_link)}>
+                <InputLabel size="small">
+                  Sponsor Link (LinkedIn/URL)
+                </InputLabel>
+                <OutlinedInput
+                  size="small"
+                  {...field}
+                  label="Sponsor Link (LinkedIn/URL)"
+                />
+                {errors.sponsor_link ? (
+                  <FormHelperText>{errors.sponsor_link.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+            // onClick={handleFileChange}
+            className="!bg-primary/60"
+          >
+            Upload photo
+            <input
+              type="file"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+              className="bg-primary/60"
+            />
+          </Button>
+          <p className="text-sm">
+            {" "}
+            {role === "speaker" && "Speaker image size should not exceed."}
+            {role === "organizer" && "Organizer image size should not exceed."}
+            {role === "sponsor" && "Sponsor image size should not exceed."}
+            {role === "volunteer" && "Volunteer image size should not exceed."}
+          </p>
+        </div>
+
         {/* Display the uploaded image */}
         {previewImage && (
           <img
@@ -267,7 +355,7 @@ const SpeakersDetailsForm = () => {
           className="bg-primary/80"
         >
           {/* {isPending ? "Loading..." : "Sign up"} */}
-          Submit
+          Add
         </Button>
       </Stack>
     </form>
