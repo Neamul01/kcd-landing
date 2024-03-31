@@ -133,7 +133,7 @@ const goldSponsors = [
   {
     id: "1",
     name: "redhat",
-    icon: "/sponsors/placeholder.png",
+    icon: "/sponsors/nhq.jpg",
   },
 ];
 
