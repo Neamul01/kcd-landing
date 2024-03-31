@@ -79,8 +79,9 @@ export default function page() {
           <p>
             <span className="font-semibold pr-3">6.1.</span>
             If you have any questions or concerns about this Privacy Policy or
-            our privacy practices, please contact us at organizers@kcddhaka.org.
-            By using our website and services, you acknowledge that you have
+            our privacy practices, please contact us at{" "}
+            <a href="mailto:organizers@kcddhaka.org">organizers@kcddhaka.org</a>
+            . By using our website and services, you acknowledge that you have
             read, understood, and agree to be bound by this Privacy Policy.
           </p>
         </div>
