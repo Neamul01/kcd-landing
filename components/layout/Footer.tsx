@@ -46,7 +46,7 @@ export default function Footer() {
                 </p>
               </Button> */}
               <div className="flex flex-col gap-2 h-full justify-between">
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col items-center md:items-start gap-2">
                   <p className="font-semibold text-sm text-white underline">
                     <a href="mailto:organizers@kcddhaka.org">Contact us</a>
                   </p>
@@ -58,6 +58,11 @@ export default function Footer() {
                   <p className="text-sm text-white underline">
                     <Link href={"/conditions/terms-condition"}>
                       Terms and Conditions
+                    </Link>
+                  </p>
+                  <p className="text-sm text-white underline">
+                    <Link href={"/conditions/terms-condition"}>
+                      Privacy Policy
                     </Link>
                   </p>
                 </div>
