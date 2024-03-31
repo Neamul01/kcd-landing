@@ -69,7 +69,7 @@ export default function Footer() {
                     </Link>
                   </p>
                   <p className="text-sm underline">
-                    <Link href={"/conditions/terms-condition"}>
+                    <Link href={"/conditions/privacy-policy"}>
                       Privacy Policy
                     </Link>
                   </p>
