@@ -18,6 +18,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
 import axiosInstance from "@/lib/Axios";
+import { toast } from "react-toastify";
 
 const schema = zod.object({
   name: zod.string().min(1, { message: "Name is required" }),
@@ -30,16 +31,22 @@ const schema = zod.object({
 
 type Values = zod.infer<typeof schema>;
 
-const defaultValues = {
-  name: "",
-  designation: "",
-  organization: "",
-  role: "",
-  sponsor_status: "",
-  sponsor_link: "",
-} satisfies Values;
+// const defaultValues = {
+//   name: "",
+//   designation: "",
+//   organization: "",
+//   role: "",
+//   sponsor_status: "",
+//   sponsor_link: "",
+// } satisfies Values;
 
-const SpeakersDetailsForm = () => {
+const SpeakersDetailsForm = ({
+  selectedParticipant,
+  closeModal,
+}: {
+  selectedParticipant?: Values & { id: string };
+  closeModal?: () => void;
+}) => {
   const [role, setRole] = useState("");
   const [isPending, setIsPending] = React.useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -50,7 +57,17 @@ const SpeakersDetailsForm = () => {
     setValue,
     reset,
     formState: { errors },
-  } = useForm({ defaultValues, resolver: zodResolver(schema) });
+  } = useForm({
+    defaultValues: {
+      name: selectedParticipant?.name || "",
+      designation: selectedParticipant?.designation || "",
+      organization: selectedParticipant?.organization || "",
+      role: selectedParticipant?.role || "",
+      sponsor_status: selectedParticipant?.sponsor_status || "",
+      sponsor_link: selectedParticipant?.sponsor_link || "",
+    },
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = async (values: Values): Promise<void> => {
     try {
@@ -68,12 +85,39 @@ const SpeakersDetailsForm = () => {
       if (selectedImage) {
         formData.append("file", selectedImage);
       }
-      if (!selectedImage) {
-        // setIsPending(false);
-        return alert("Please enter a image");
-      }
+      // if (!selectedImage) {
+      //   // setIsPending(false);
+      //   return alert("Please enter a image");
+      // }
 
       console.log("form data", formData);
+
+      if (selectedParticipant && closeModal) {
+        // ----------------edit form
+        console.log("edit form");
+        return await axiosInstance
+          .put(`/participants/${selectedParticipant.id}`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            toast.success("Participant Updated Successfully.");
+            console.log("res", res);
+            setSelectedImage(null);
+            reset();
+          })
+          .catch((err) => {
+            console.log("err", err);
+            toast.error("Something went wrong please try again.");
+            // alert("Something went wrong please try again");
+          })
+          .finally(() => {
+            setIsPending(false);
+            closeModal();
+          });
+      }
+      console.log("add form");
 
       await axiosInstance
         .post("/participants", formData, {
@@ -82,12 +126,14 @@ const SpeakersDetailsForm = () => {
           },
         })
         .then((res) => {
+          toast.success("Participant Added Successfully.");
           console.log("res", res);
           setSelectedImage(null);
           reset();
         })
         .catch((err) => {
           console.log("err", err);
+          toast.error("Something went wrong please try again.");
           // alert("Something went wrong please try again");
         })
         .finally(() => {
@@ -115,6 +161,19 @@ const SpeakersDetailsForm = () => {
       setPreviewImage(URL.createObjectURL(file));
     }
   };
+
+  React.useEffect(() => {
+    if (selectedParticipant) {
+      reset({
+        designation: selectedParticipant.designation,
+        name: selectedParticipant.name,
+        organization: selectedParticipant.organization,
+        role: selectedParticipant.role,
+        sponsor_link: selectedParticipant.sponsor_link,
+        sponsor_status: selectedParticipant.sponsor_status,
+      });
+    }
+  }, [selectedParticipant]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
