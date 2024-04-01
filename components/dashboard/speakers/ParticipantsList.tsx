@@ -7,25 +7,12 @@ import dayjs from "dayjs";
 
 import { config } from "@/config";
 import { CustomersFilters } from "@/components/dashboard/customer/customers-filters";
-import type { Customer } from "@/components/dashboard/customer/customers-table";
 import axiosInstance from "@/lib/Axios";
 import { Participant, ParticipantsTable } from "./ParticipantsTable";
 
 export const metadata = {
   title: `Customers | Dashboard | ${config.site.name}`,
 } satisfies Metadata;
-
-type ApiResponseData = {
-  _id: string;
-  name: string;
-  email: string;
-  designation: string;
-  organization: string;
-  role: string;
-  createdAt: string;
-  photo: string;
-  sponsor_status: string;
-};
 
 export default function ParticipantsList() {
   const page = 0;
@@ -45,11 +32,10 @@ export default function ParticipantsList() {
       const response = await axiosInstance.get(url);
 
       const formattedData: Participant[] = response.data.data.map(
-        (participant: ApiResponseData) => ({
+        (participant: Participant) => ({
           id: participant._id,
           name: participant.name,
           avatar: participant.photo, // Add avatar field if available
-          email: participant.email,
           organization: participant.organization, // Add city field if available
           designation: participant.designation, // Add country field if available
           role: participant.role, // Add state field if available

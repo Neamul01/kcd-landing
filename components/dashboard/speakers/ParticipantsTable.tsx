@@ -40,16 +40,15 @@ function noop(): void {
 }
 
 export interface Participant {
-  id: string;
-  avatar: string;
-  name: string;
-  email: string;
-  organization: string;
+  createdAt: string;
   designation: string;
+  name: string;
+  organization: string;
+  photo: string;
   role: string;
-  sponsor_status: string;
   sponsor_link: string;
-  createdAt: Date;
+  sponsor_status: string;
+  _id: string;
 }
 
 interface CustomersTableProps {
@@ -74,7 +73,7 @@ export function ParticipantsTable({
   const [selectedRow, setSelectedRow] = React.useState<Participant>();
 
   const rowIds = React.useMemo(() => {
-    return rows.map((customer) => customer.id);
+    return rows.map((customer) => customer._id);
   }, [rows]);
 
   const { selectAll, deselectAll, selectOne, deselectOne, selected } =
@@ -101,7 +100,7 @@ export function ParticipantsTable({
   const handleDelete = async () => {
     if (deleteParticipant) {
       await axiosInstance
-        .delete(`/participants/${deleteParticipant.id}`)
+        .delete(`/participants/${deleteParticipant._id}`)
         .then(() => {
           setOpenDelete(false);
           toast.success("Successfully deleted participant");
@@ -150,25 +149,25 @@ export function ParticipantsTable({
           </TableHead>
           <TableBody>
             {rows.map((row) => {
-              const isSelected = selected?.has(row.id);
+              const isSelected = selected?.has(row._id);
 
               return (
-                <TableRow hover key={row.id} selected={isSelected}>
+                <TableRow hover key={row._id} selected={isSelected}>
                   <TableCell padding="checkbox">
                     <Checkbox
                       checked={isSelected}
                       onChange={(event) => {
                         if (event.target.checked) {
-                          selectOne(row.id);
+                          selectOne(row._id);
                         } else {
-                          deselectOne(row.id);
+                          deselectOne(row._id);
                         }
                       }}
                     />
                   </TableCell>
                   <TableCell>
                     {/* <Image
-                      src={`https://api.kcddhaka.org/${row.avatar}`}
+                      src={`https://api.kcddhaka.org/${row.photo}`}
                       alt="avatar"
                       width={50}
                       height={50}
@@ -178,7 +177,7 @@ export function ParticipantsTable({
                       direction="row"
                       spacing={2}
                     >
-                      <Avatar src={`https://api.kcddhaka.org/${row.avatar}`} />
+                      <Avatar src={`https://api.kcddhaka.org/${row.photo}`} />
                       <Typography variant="subtitle2">{row.name}</Typography>
                     </Stack>
                   </TableCell>
@@ -225,7 +224,7 @@ export function ParticipantsTable({
           <div className="py-2">
             <SpeakersDetailsForm
               selectedParticipant={{
-                id: selectedRow?.id as string,
+                id: selectedRow?._id as string,
                 designation: selectedRow?.designation as string,
                 name: selectedRow?.name as string,
                 organization: selectedRow?.organization as string,
