@@ -178,6 +178,8 @@ const SpeakersDetailsForm = ({
         sponsor_status: selectedParticipant.sponsor_status,
       });
       setUpdateImage(selectedParticipant.photo);
+      // @ts-ignore
+      setSelectedImage(selectedParticipant.photo);
     }
   }, [selectedParticipant, reset]);
 
