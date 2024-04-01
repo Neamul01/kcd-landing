@@ -196,7 +196,7 @@ export default function Page(): React.JSX.Element {
           </Button>
         </div>
       </Stack>
-      {/* <CustomersFilters /> */}
+      {/* <CustomersFilters /> ----------*/}
       <CustomersTable
         count={paginatedCustomers.length}
         page={page}
