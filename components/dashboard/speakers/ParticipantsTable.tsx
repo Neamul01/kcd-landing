@@ -168,18 +168,22 @@ export function ParticipantsTable({
                     />
                   </TableCell>
                   <TableCell>
-                    {/* <Image
-                      src={`https://api.kcddhaka.org/${row.photo}`}
-                      alt="avatar"
-                      width={50}
-                      height={50}
-                    /> */}
                     <Stack
                       sx={{ alignItems: "center" }}
                       direction="row"
                       spacing={2}
                     >
-                      <Avatar src={`https://api.kcddhaka.org/${row.photo}`} />
+                      {row.photo ? (
+                        <Image
+                          width={40}
+                          height={40}
+                          src={`${process.env.NEXT_PUBLIC_BASE_URL}/${row.photo}`}
+                          alt="Participant"
+                          className="bg-cover rounded-full border border-gray-500"
+                        />
+                      ) : (
+                        <Avatar />
+                      )}
                       <Typography variant="subtitle2">{row.name}</Typography>
                     </Stack>
                   </TableCell>
