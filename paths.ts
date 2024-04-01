@@ -9,6 +9,7 @@ export const paths = {
     account: "/dashboard",
     overview: "/dashboard/overview",
     participant: "/dashboard/participant",
+    schedules: "/dashboard/schedules",
     customers: "/dashboard/customers",
     integrations: "/dashboard/integrations",
     settings: "/dashboard/settings",
