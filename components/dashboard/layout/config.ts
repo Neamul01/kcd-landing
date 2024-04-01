@@ -21,10 +21,10 @@ export const navItems = [
     icon: "user",
   },
   {
-    key: "Tickets",
-    title: "Tickets",
-    href: paths.dashboard.tickets,
-    icon: "ticket",
+    key: "Ticket",
+    title: "Ticket",
+    href: paths.dashboard.ticket,
+    icon: "",
   },
   // {
   //   key: "customers",

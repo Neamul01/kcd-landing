@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import axiosInstance from "@/lib/Axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
@@ -14,10 +14,10 @@ import {
   SelectChangeEvent,
   Stack,
 } from "@mui/material";
+import * as React from "react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
-import axiosInstance from "@/lib/Axios";
 
 const schema = zod.object({
   name: zod.string().min(1, { message: "Name is required" }),
@@ -44,6 +44,8 @@ const SpeakersDetailsForm = () => {
   const [isPending, setIsPending] = React.useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  // const [responseData, setResponseData] = useState<MyData | null>(null);
+
   const {
     handleSubmit,
     control,
@@ -54,7 +56,7 @@ const SpeakersDetailsForm = () => {
 
   const onSubmit = async (values: Values): Promise<void> => {
     try {
-      console.log("-------------form values", values);
+      console.log("form values", values);
       setIsPending(true);
 
       const formData = new FormData();
@@ -83,6 +85,7 @@ const SpeakersDetailsForm = () => {
         })
         .then((res) => {
           console.log("res", res);
+          // setResponseData(res.data);
           setSelectedImage(null);
           reset();
         })
