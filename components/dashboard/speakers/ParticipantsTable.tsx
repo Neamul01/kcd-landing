@@ -57,6 +57,7 @@ interface CustomersTableProps {
   page?: number;
   rows?: Participant[];
   rowsPerPage?: number;
+  setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export function ParticipantsTable({
@@ -65,6 +66,7 @@ export function ParticipantsTable({
   rows = [],
   page = 0,
   rowsPerPage = 0,
+  setRowsPerPage,
 }: CustomersTableProps): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -192,7 +194,7 @@ export function ParticipantsTable({
                       <CiEdit size={20} />
                     </Button>
                     <Button onClick={() => handleDeleteClick(row)}>
-                      <MdDeleteOutline size={20} />
+                      <MdDeleteOutline size={20} className="text-accent" />
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -206,7 +208,9 @@ export function ParticipantsTable({
         component="div"
         count={count}
         onPageChange={noop}
-        onRowsPerPageChange={noop}
+        onRowsPerPageChange={(event) =>
+          setRowsPerPage(parseInt(event.target.value, 10))
+        }
         page={page}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[5, 10, 25]}
@@ -223,15 +227,7 @@ export function ParticipantsTable({
         <DialogContent>
           <div className="py-2">
             <SpeakersDetailsForm
-              selectedParticipant={{
-                id: selectedRow?._id as string,
-                designation: selectedRow?.designation as string,
-                name: selectedRow?.name as string,
-                organization: selectedRow?.organization as string,
-                sponsor_link: selectedRow?.sponsor_link as string,
-                role: selectedRow?.role as string,
-                sponsor_status: selectedRow?.sponsor_status as string,
-              }}
+              selectedParticipant={selectedRow as Participant}
               closeModal={closeModal}
             />
           </div>
