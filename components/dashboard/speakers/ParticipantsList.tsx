@@ -9,6 +9,7 @@ import { config } from "@/config";
 import { CustomersFilters } from "@/components/dashboard/customer/customers-filters";
 import axiosInstance from "@/lib/Axios";
 import { Participant, ParticipantsTable } from "./ParticipantsTable";
+import Loader from "@/components/Shared/Loader";
 
 export const metadata = {
   title: `Customers | Dashboard | ${config.site.name}`,
@@ -16,6 +17,7 @@ export const metadata = {
 
 export default function ParticipantsList() {
   const [page, setPage] = React.useState(0);
+  const [count, setCount] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [participants, setParticipants] = React.useState<Participant[]>([]);
   const [selectedRole, setSelectedRole] = React.useState<string>();
@@ -23,13 +25,19 @@ export default function ParticipantsList() {
 
   const paginatedCustomers = applyPagination(participants, page, rowsPerPage);
 
-  const fetchParticipants = async (role?: string, rowsPerPage: number = 10) => {
+  const fetchParticipants = async (
+    role?: string,
+    rowsPerPage: number = 10,
+    page = 0
+  ) => {
     try {
       setLoading(true);
 
-      const url = role
-        ? `/participants?role=${role}?limit=${rowsPerPage}`
-        : `/participants?limit=${rowsPerPage}`;
+      let url = `/participants?limit=${rowsPerPage}&page=${page}`;
+
+      if (role) {
+        url += `&role=${role}`;
+      }
 
       const response = await axiosInstance.get(url);
 
@@ -37,8 +45,8 @@ export default function ParticipantsList() {
         (participant: Participant) => participant
       );
 
-      // setPage(response.data.pagination.next.page);
-      console.log("participants", response.data);
+      setCount(response.data.pagination.total);
+      console.log("participants", response.data.pagination.total);
       // console.log("formattedData", formattedData);
       setParticipants(formattedData);
     } catch (error) {
@@ -48,9 +56,7 @@ export default function ParticipantsList() {
     }
   };
 
-  React.useEffect(() => {
-    console.log("rowsPerPage", rowsPerPage);
-  }, [rowsPerPage]);
+  React.useEffect(() => {}, [rowsPerPage]);
 
   const handleReload = () => {
     if (selectedRole) {
@@ -66,12 +72,13 @@ export default function ParticipantsList() {
 
   React.useEffect(() => {
     if (selectedRole) {
-      fetchParticipants(selectedRole, rowsPerPage);
-      // console.log("selected role", selectedRole);
+      fetchParticipants(selectedRole, rowsPerPage, page);
     } else if (rowsPerPage) {
-      // fetchParticipants();
+      fetchParticipants(undefined, rowsPerPage, page);
+    } else {
+      fetchParticipants(undefined, undefined, page);
     }
-  }, [selectedRole, rowsPerPage]);
+  }, [selectedRole, rowsPerPage, page]);
 
   return (
     <Stack spacing={3}>
@@ -79,14 +86,21 @@ export default function ParticipantsList() {
         setSelectedRole={setSelectedRole}
         selectedRole={selectedRole}
       />
-      <ParticipantsTable
-        handleReload={handleReload}
-        count={paginatedCustomers.length}
-        page={page}
-        rows={paginatedCustomers}
-        rowsPerPage={rowsPerPage}
-        setRowsPerPage={setRowsPerPage}
-      />
+      {loading ? (
+        <div className="w-full flex items-center justify-center">
+          <Loader />
+        </div>
+      ) : (
+        <ParticipantsTable
+          handleReload={handleReload}
+          count={count}
+          page={page}
+          setPage={setPage}
+          rows={paginatedCustomers}
+          rowsPerPage={rowsPerPage}
+          setRowsPerPage={setRowsPerPage}
+        />
+      )}
     </Stack>
   );
 }

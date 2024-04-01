@@ -55,6 +55,7 @@ interface CustomersTableProps {
   handleReload: () => void;
   count?: number;
   page?: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
   rows?: Participant[];
   rowsPerPage?: number;
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
@@ -65,6 +66,7 @@ export function ParticipantsTable({
   count = 0,
   rows = [],
   page = 0,
+  setPage,
   rowsPerPage = 0,
   setRowsPerPage,
 }: CustomersTableProps): React.JSX.Element {
@@ -211,7 +213,7 @@ export function ParticipantsTable({
       <TablePagination
         component="div"
         count={count}
-        onPageChange={noop}
+        onPageChange={(e, newPage) => setPage(newPage)}
         onRowsPerPageChange={(event) =>
           setRowsPerPage(parseInt(event.target.value, 10))
         }

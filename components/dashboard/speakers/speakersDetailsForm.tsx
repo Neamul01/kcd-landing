@@ -297,7 +297,7 @@ const SpeakersDetailsForm = ({
                 <OutlinedInput
                   size="small"
                   {...field}
-                  value={selectedParticipant?.sponsor_link || ""}
+                  // value={selectedParticipant?.sponsor_link || ""}
                   label="Sponsor Link (LinkedIn/URL)"
                 />
                 {errors.sponsor_link ? (
