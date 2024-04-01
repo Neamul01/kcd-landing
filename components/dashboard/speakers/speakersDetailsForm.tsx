@@ -19,6 +19,8 @@ import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
 import axiosInstance from "@/lib/Axios";
 import { toast } from "react-toastify";
+import { Participant } from "./ParticipantsTable";
+import Image from "next/image";
 
 const schema = zod.object({
   name: zod.string().min(1, { message: "Name is required" }),
@@ -44,13 +46,14 @@ const SpeakersDetailsForm = ({
   selectedParticipant,
   closeModal,
 }: {
-  selectedParticipant?: Values & { id: string };
+  selectedParticipant?: Participant;
   closeModal?: () => void;
 }) => {
   const [role, setRole] = useState("");
   const [isPending, setIsPending] = React.useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [updateImage, setUpdateImage] = useState<string | null>(null);
   const {
     handleSubmit,
     control,
@@ -96,7 +99,7 @@ const SpeakersDetailsForm = ({
         // ----------------edit form
         console.log("edit form");
         return await axiosInstance
-          .put(`/participants/${selectedParticipant.id}`, formData, {
+          .put(`/participants/${selectedParticipant._id}`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -105,6 +108,7 @@ const SpeakersDetailsForm = ({
             toast.success("Participant Updated Successfully.");
             console.log("res", res);
             setSelectedImage(null);
+            setPreviewImage(null);
             reset();
           })
           .catch((err) => {
@@ -129,6 +133,7 @@ const SpeakersDetailsForm = ({
           toast.success("Participant Added Successfully.");
           console.log("res", res);
           setSelectedImage(null);
+          setPreviewImage(null);
           reset();
         })
         .catch((err) => {
@@ -172,8 +177,9 @@ const SpeakersDetailsForm = ({
         sponsor_link: selectedParticipant.sponsor_link,
         sponsor_status: selectedParticipant.sponsor_status,
       });
+      setUpdateImage(selectedParticipant.photo);
     }
-  }, [selectedParticipant]);
+  }, [selectedParticipant, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -291,6 +297,7 @@ const SpeakersDetailsForm = ({
                 <OutlinedInput
                   size="small"
                   {...field}
+                  // value={selectedParticipant?.sponsor_link || ""}
                   label="Sponsor Link (LinkedIn/URL)"
                 />
                 {errors.sponsor_link ? (
@@ -328,10 +335,22 @@ const SpeakersDetailsForm = ({
         </div>
 
         {/* Display the uploaded image */}
+        {updateImage && (
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/${updateImage}`}
+            alt="Participant image"
+            style={{ maxWidth: "40%", marginTop: 10 }}
+            width={300}
+            height={250}
+            className=" rounded-lg border-2 border-gray-500"
+          />
+        )}
         {previewImage && (
-          <img
+          <Image
+            width={300}
+            height={250}
             src={previewImage as string}
-            alt="Selected"
+            alt="Selected Image"
             style={{ maxWidth: "40%", marginTop: 10 }}
             className=" rounded-lg border-2 border-gray-500"
           />

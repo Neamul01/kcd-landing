@@ -40,24 +40,25 @@ function noop(): void {
 }
 
 export interface Participant {
-  id: string;
-  avatar: string;
-  name: string;
-  email: string;
-  organization: string;
+  createdAt: string;
   designation: string;
+  name: string;
+  organization: string;
+  photo: string;
   role: string;
-  sponsor_status: string;
   sponsor_link: string;
-  createdAt: Date;
+  sponsor_status: string;
+  _id: string;
 }
 
 interface CustomersTableProps {
   handleReload: () => void;
   count?: number;
   page?: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
   rows?: Participant[];
   rowsPerPage?: number;
+  setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export function ParticipantsTable({
@@ -65,7 +66,9 @@ export function ParticipantsTable({
   count = 0,
   rows = [],
   page = 0,
+  setPage,
   rowsPerPage = 0,
+  setRowsPerPage,
 }: CustomersTableProps): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -74,7 +77,7 @@ export function ParticipantsTable({
   const [selectedRow, setSelectedRow] = React.useState<Participant>();
 
   const rowIds = React.useMemo(() => {
-    return rows.map((customer) => customer.id);
+    return rows.map((customer) => customer._id);
   }, [rows]);
 
   const { selectAll, deselectAll, selectOne, deselectOne, selected } =
@@ -101,7 +104,7 @@ export function ParticipantsTable({
   const handleDelete = async () => {
     if (deleteParticipant) {
       await axiosInstance
-        .delete(`/participants/${deleteParticipant.id}`)
+        .delete(`/participants/${deleteParticipant._id}`)
         .then(() => {
           setOpenDelete(false);
           toast.success("Successfully deleted participant");
@@ -115,8 +118,11 @@ export function ParticipantsTable({
 
   return (
     <Card>
-      <div className="flex justify-end px-9 cursor-pointer">
-        <Tooltip title="Reload" placement="top" onClick={() => handleReload()}>
+      <div
+        onClick={() => handleReload()}
+        className="flex justify-end px-9 cursor-pointer"
+      >
+        <Tooltip title="Reload" placement="top">
           <TfiReload size={22} />
         </Tooltip>
       </div>
@@ -147,35 +153,39 @@ export function ParticipantsTable({
           </TableHead>
           <TableBody>
             {rows.map((row) => {
-              const isSelected = selected?.has(row.id);
+              const isSelected = selected?.has(row._id);
 
               return (
-                <TableRow hover key={row.id} selected={isSelected}>
+                <TableRow hover key={row._id} selected={isSelected}>
                   <TableCell padding="checkbox">
                     <Checkbox
                       checked={isSelected}
                       onChange={(event) => {
                         if (event.target.checked) {
-                          selectOne(row.id);
+                          selectOne(row._id);
                         } else {
-                          deselectOne(row.id);
+                          deselectOne(row._id);
                         }
                       }}
                     />
                   </TableCell>
                   <TableCell>
-                    {/* <Image
-                      src={`https://api.kcddhaka.org/${row.avatar}`}
-                      alt="avatar"
-                      width={50}
-                      height={50}
-                    /> */}
                     <Stack
                       sx={{ alignItems: "center" }}
                       direction="row"
                       spacing={2}
                     >
-                      <Avatar src={`https://api.kcddhaka.org/${row.avatar}`} />
+                      {row.photo ? (
+                        <Image
+                          width={40}
+                          height={40}
+                          src={`${process.env.NEXT_PUBLIC_BASE_URL}/${row.photo}`}
+                          alt="Participant"
+                          className="bg-cover rounded-full border border-gray-500"
+                        />
+                      ) : (
+                        <Avatar />
+                      )}
                       <Typography variant="subtitle2">{row.name}</Typography>
                     </Stack>
                   </TableCell>
@@ -190,7 +200,7 @@ export function ParticipantsTable({
                       <CiEdit size={20} />
                     </Button>
                     <Button onClick={() => handleDeleteClick(row)}>
-                      <MdDeleteOutline size={20} />
+                      <MdDeleteOutline size={20} className="text-accent" />
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -203,8 +213,10 @@ export function ParticipantsTable({
       <TablePagination
         component="div"
         count={count}
-        onPageChange={noop}
-        onRowsPerPageChange={noop}
+        onPageChange={(e, newPage) => setPage(newPage)}
+        onRowsPerPageChange={(event) =>
+          setRowsPerPage(parseInt(event.target.value, 10))
+        }
         page={page}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[5, 10, 25]}
@@ -221,15 +233,7 @@ export function ParticipantsTable({
         <DialogContent>
           <div className="py-2">
             <SpeakersDetailsForm
-              selectedParticipant={{
-                id: selectedRow?.id as string,
-                designation: selectedRow?.designation as string,
-                name: selectedRow?.name as string,
-                organization: selectedRow?.organization as string,
-                sponsor_link: selectedRow?.sponsor_link as string,
-                role: selectedRow?.role as string,
-                sponsor_status: selectedRow?.sponsor_status as string,
-              }}
+              selectedParticipant={selectedRow as Participant}
               closeModal={closeModal}
             />
           </div>

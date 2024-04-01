@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "www.bracinn.com",
+        hostname: "api.kcddhaka.org",
         port: "",
       },
     ],
