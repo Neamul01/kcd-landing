@@ -105,6 +105,7 @@ const SpeakersDetailsForm = ({
             toast.success("Participant Updated Successfully.");
             console.log("res", res);
             setSelectedImage(null);
+            setPreviewImage(null);
             reset();
           })
           .catch((err) => {
@@ -129,6 +130,7 @@ const SpeakersDetailsForm = ({
           toast.success("Participant Added Successfully.");
           console.log("res", res);
           setSelectedImage(null);
+          setPreviewImage(null);
           reset();
         })
         .catch((err) => {
