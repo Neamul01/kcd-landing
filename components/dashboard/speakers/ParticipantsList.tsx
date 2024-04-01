@@ -15,36 +15,30 @@ export const metadata = {
 } satisfies Metadata;
 
 export default function ParticipantsList() {
-  const page = 0;
-  const rowsPerPage = 5;
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [participants, setParticipants] = React.useState<Participant[]>([]);
   const [selectedRole, setSelectedRole] = React.useState<string>();
   const [loading, setLoading] = React.useState(false);
 
   const paginatedCustomers = applyPagination(participants, page, rowsPerPage);
 
-  const fetchParticipants = async (role?: string) => {
+  const fetchParticipants = async (role?: string, rowsPerPage: number = 10) => {
     try {
       setLoading(true);
 
-      const url = role ? `/participants?role=${role}` : "/participants";
+      const url = role
+        ? `/participants?role=${role}?limit=${rowsPerPage}`
+        : `/participants?limit=${rowsPerPage}`;
 
       const response = await axiosInstance.get(url);
 
       const formattedData: Participant[] = response.data.data.map(
-        (participant: Participant) => ({
-          id: participant._id,
-          name: participant.name,
-          avatar: participant.photo, // Add avatar field if available
-          organization: participant.organization, // Add city field if available
-          designation: participant.designation, // Add country field if available
-          role: participant.role, // Add state field if available
-          sponsor_status: participant.sponsor_status, // Add street field if available
-          createdAt: dayjs(participant.createdAt).toDate(),
-        })
+        (participant: Participant) => participant
       );
 
-      // console.log("participants", response.data.data);
+      // setPage(response.data.pagination.next.page);
+      console.log("participants", response.data);
       // console.log("formattedData", formattedData);
       setParticipants(formattedData);
     } catch (error) {
@@ -54,10 +48,13 @@ export default function ParticipantsList() {
     }
   };
 
+  React.useEffect(() => {
+    console.log("rowsPerPage", rowsPerPage);
+  }, [rowsPerPage]);
+
   const handleReload = () => {
     if (selectedRole) {
-      fetchParticipants(selectedRole);
-      console.log("selected role", selectedRole);
+      fetchParticipants(selectedRole, rowsPerPage);
     } else {
       fetchParticipants();
     }
@@ -69,12 +66,12 @@ export default function ParticipantsList() {
 
   React.useEffect(() => {
     if (selectedRole) {
-      fetchParticipants(selectedRole);
-      console.log("selected role", selectedRole);
-    } else {
-      fetchParticipants();
+      fetchParticipants(selectedRole, rowsPerPage);
+      // console.log("selected role", selectedRole);
+    } else if (rowsPerPage) {
+      // fetchParticipants();
     }
-  }, [selectedRole]);
+  }, [selectedRole, rowsPerPage]);
 
   return (
     <Stack spacing={3}>
@@ -88,6 +85,7 @@ export default function ParticipantsList() {
         page={page}
         rows={paginatedCustomers}
         rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
       />
     </Stack>
   );
