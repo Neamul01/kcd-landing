@@ -115,8 +115,11 @@ export function ParticipantsTable({
 
   return (
     <Card>
-      <div className="flex justify-end px-9 cursor-pointer">
-        <Tooltip title="Reload" placement="top" onClick={() => handleReload()}>
+      <div
+        onClick={() => handleReload()}
+        className="flex justify-end px-9 cursor-pointer"
+      >
+        <Tooltip title="Reload" placement="top">
           <TfiReload size={22} />
         </Tooltip>
       </div>

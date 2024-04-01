@@ -1,11 +1,13 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import InputAdornment from "@mui/material/InputAdornment";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { MagnifyingGlass as MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr/MagnifyingGlass";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-export function CustomersFilters(): React.JSX.Element {
+export function CustomersFilters({
+  selectedRole,
+  setSelectedRole,
+}: {
+  selectedRole: string | undefined;
+  setSelectedRole: React.Dispatch<React.SetStateAction<string | undefined>>;
+}): React.JSX.Element {
   return (
     <Box
       sx={{ p: 2, display: "flex", justifyContent: "end" }}
@@ -22,8 +24,10 @@ export function CustomersFilters(): React.JSX.Element {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             label="Role"
-            // onChange={handleRoleSelection}
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value)}
           >
+            <MenuItem value={""}>All</MenuItem>
             <MenuItem value={"speaker"}>Speaker</MenuItem>
             <MenuItem value={"organizer"}>Organizer</MenuItem>
             <MenuItem value={"sponsor"}>Sponsor</MenuItem>

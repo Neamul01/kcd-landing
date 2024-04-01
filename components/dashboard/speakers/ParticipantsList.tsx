@@ -31,16 +31,18 @@ export default function ParticipantsList() {
   const page = 0;
   const rowsPerPage = 5;
   const [participants, setParticipants] = React.useState<Participant[]>([]);
+  const [selectedRole, setSelectedRole] = React.useState<string>();
+  const [loading, setLoading] = React.useState(false);
 
   const paginatedCustomers = applyPagination(participants, page, rowsPerPage);
 
-  React.useEffect(() => {
-    fetchParticipants();
-  }, []);
-
-  const fetchParticipants = async () => {
+  const fetchParticipants = async (role?: string) => {
     try {
-      const response = await axiosInstance.get("/participants");
+      setLoading(true);
+
+      const url = role ? `/participants?role=${role}` : "/participants";
+
+      const response = await axiosInstance.get(url);
 
       const formattedData: Participant[] = response.data.data.map(
         (participant: ApiResponseData) => ({
@@ -56,32 +58,44 @@ export default function ParticipantsList() {
         })
       );
 
-      console.log("participants", response.data.data);
-      console.log("formattedData", formattedData);
+      // console.log("participants", response.data.data);
+      // console.log("formattedData", formattedData);
       setParticipants(formattedData);
     } catch (error) {
       console.error("Error fetching participants:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleReload = () => {
-    console.log("reload");
-    fetchParticipants();
+    if (selectedRole) {
+      fetchParticipants(selectedRole);
+      console.log("selected role", selectedRole);
+    } else {
+      fetchParticipants();
+    }
   };
+
+  React.useEffect(() => {
+    fetchParticipants();
+  }, []);
+
+  React.useEffect(() => {
+    if (selectedRole) {
+      fetchParticipants(selectedRole);
+      console.log("selected role", selectedRole);
+    } else {
+      fetchParticipants();
+    }
+  }, [selectedRole]);
 
   return (
     <Stack spacing={3}>
-      {/* <Stack direction="row" spacing={3}>
-        <div className="ml-auto w-full flex justify-end">
-          <Button
-            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
-            variant="contained"
-          >
-            Add
-          </Button>
-        </div>
-      </Stack> */}
-      <CustomersFilters />
+      <CustomersFilters
+        setSelectedRole={setSelectedRole}
+        selectedRole={selectedRole}
+      />
       <ParticipantsTable
         handleReload={handleReload}
         count={paginatedCustomers.length}
