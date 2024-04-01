@@ -64,6 +64,11 @@ export default function ParticipantsList() {
     }
   };
 
+  const handleReload = () => {
+    console.log("reload");
+    fetchParticipants();
+  };
+
   return (
     <Stack spacing={3}>
       {/* <Stack direction="row" spacing={3}>
@@ -78,6 +83,7 @@ export default function ParticipantsList() {
       </Stack> */}
       <CustomersFilters />
       <ParticipantsTable
+        handleReload={handleReload}
         count={paginatedCustomers.length}
         page={page}
         rows={paginatedCustomers}

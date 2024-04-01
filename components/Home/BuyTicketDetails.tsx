@@ -565,7 +565,15 @@ export default function BuyTicketDetails({
                         href={"/conditions/terms-condition"}
                         className="text-primary underline"
                       >
-                        terms and conditions.
+                        terms and conditions
+                      </Link>{" "}
+                      and{" "}
+                      <Link
+                        target="_blank"
+                        href={"/conditions/refund-policy"}
+                        className="text-primary underline"
+                      >
+                        refund policy.
                       </Link>
                     </p>
                   }
