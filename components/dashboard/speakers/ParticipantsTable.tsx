@@ -219,7 +219,7 @@ export function ParticipantsTable({
         }
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[5, 10, 25, 35, 45, 55]}
       />
 
       {/* ------------------update modal------------- */}

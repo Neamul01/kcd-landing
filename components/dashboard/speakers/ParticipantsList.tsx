@@ -18,7 +18,7 @@ export const metadata = {
 export default function ParticipantsList() {
   const [page, setPage] = React.useState(0);
   const [count, setCount] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [participants, setParticipants] = React.useState<Participant[]>([]);
   const [selectedRole, setSelectedRole] = React.useState<string>();
   const [loading, setLoading] = React.useState(false);
@@ -27,13 +27,13 @@ export default function ParticipantsList() {
 
   const fetchParticipants = async (
     role?: string,
-    rowsPerPage: number = 10,
+    rowsPerPage: number = 25,
     page = 0
   ) => {
     try {
       setLoading(true);
 
-      let url = `/participants?limit=${rowsPerPage}&page=${page}`;
+      let url = `/participants?limit=${rowsPerPage}&page=${page + 1}`;
 
       if (role) {
         url += `&role=${role}`;
@@ -46,7 +46,7 @@ export default function ParticipantsList() {
       );
 
       setCount(response.data.pagination.total);
-      console.log("participants", response.data.pagination.total);
+      // console.log("participants", response.data.pagination.total);
       // console.log("formattedData", formattedData);
       setParticipants(formattedData);
     } catch (error) {
