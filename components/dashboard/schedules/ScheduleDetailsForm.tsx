@@ -63,38 +63,38 @@ const ScheduleDetailsForm = ({
       if (selectedSchedule && closeModal) {
         // ----------------edit form
         console.log("edit form");
-        return await axiosInstance
-          .put(`/schedules/${selectedSchedule._id}`, values)
-          .then((res) => {
-            toast.success("Participant Updated Successfully.");
-            console.log("res", res);
-            reset();
-          })
-          .catch((err) => {
-            console.log("err", err);
-            toast.error("Something went wrong please try again.");
-          })
-          .finally(() => {
-            setIsPending(false);
-            closeModal();
-          });
+        // return await axiosInstance
+        //   .put(`/schedules/${selectedSchedule._id}`, values)
+        //   .then((res) => {
+        //     toast.success("Participant Updated Successfully.");
+        //     console.log("res", res);
+        //     reset();
+        //   })
+        //   .catch((err) => {
+        //     console.log("err", err);
+        //     toast.error("Something went wrong please try again.");
+        //   })
+        //   .finally(() => {
+        //     setIsPending(false);
+        //     closeModal();
+        //   });
       }
       console.log("add form");
 
-      await axiosInstance
-        .post("/schedules", values)
-        .then((res) => {
-          toast.success("Participant Added Successfully.");
-          console.log("res", res);
-          reset();
-        })
-        .catch((err) => {
-          console.log("err", err);
-          toast.error("Something went wrong please try again.");
-        })
-        .finally(() => {
-          setIsPending(false);
-        });
+      // await axiosInstance
+      //   .post("/schedules", values)
+      //   .then((res) => {
+      //     toast.success("Participant Added Successfully.");
+      //     console.log("res", res);
+      //     reset();
+      //   })
+      //   .catch((err) => {
+      //     console.log("err", err);
+      //     toast.error("Something went wrong please try again.");
+      //   })
+      //   .finally(() => {
+      //     setIsPending(false);
+      //   });
     } catch {
       () => {
         alert("Something went wrong please try again..");
@@ -208,8 +208,8 @@ const ScheduleDetailsForm = ({
                 <OutlinedInput
                   size="small"
                   multiline
-                  rows={4}
-                  maxRows={9}
+                  minRows={4}
+                  maxRows={12}
                   {...field}
                   label="description"
                 />
