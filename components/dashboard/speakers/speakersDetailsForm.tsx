@@ -158,12 +158,25 @@ const SpeakersDetailsForm = ({
     setValue("role", selectedRole); // Set the value for the "role" field using react-hook-form
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files && event.target.files[0];
     console.log("------------file", file);
     if (file) {
-      setSelectedImage(file);
       setPreviewImage(URL.createObjectURL(file));
+      if (selectedParticipant) {
+        const fileForm = new FormData();
+        fileForm.append("file", file);
+        await axiosInstance
+          .put(`/participants/${selectedParticipant._id}/photo`, fileForm)
+          .catch(() =>
+            toast.error("Error when updating image, please try again later.")
+          );
+        return;
+      }
+
+      setSelectedImage(file);
     }
   };
 
