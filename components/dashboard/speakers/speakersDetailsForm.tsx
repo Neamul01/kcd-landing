@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import axiosInstance from "@/lib/Axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
@@ -14,11 +14,11 @@ import {
   SelectChangeEvent,
   Stack,
 } from "@mui/material";
+import * as React from "react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { z as zod } from "zod";
-import axiosInstance from "@/lib/Axios";
 import { toast } from "react-toastify";
+import { z as zod } from "zod";
 import { Participant } from "./ParticipantsTable";
 import Image from "next/image";
 
@@ -53,6 +53,8 @@ const SpeakersDetailsForm = ({
   const [isPending, setIsPending] = React.useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  // const [responseData, setResponseData] = useState<MyData | null>(null);
+
   const [updateImage, setUpdateImage] = useState<string | null>(null);
   const {
     handleSubmit,
@@ -74,7 +76,7 @@ const SpeakersDetailsForm = ({
 
   const onSubmit = async (values: Values): Promise<void> => {
     try {
-      console.log("-------------form values", values);
+      console.log("form values", values);
       setIsPending(true);
 
       const formData = new FormData();
@@ -132,6 +134,7 @@ const SpeakersDetailsForm = ({
         .then((res) => {
           toast.success("Participant Added Successfully.");
           console.log("res", res);
+          // setResponseData(res.data);
           setSelectedImage(null);
           setPreviewImage(null);
           reset();

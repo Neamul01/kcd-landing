@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { useRouter } from "next/navigation";
+import { Ticket, Workshop } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -9,10 +8,13 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { useRouter } from "next/navigation";
+import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
-import { Ticket, Workshop } from "@/types/types";
 // import { useUser } from "@/hooks/use-user";
+import axiosInstance from "@/lib/Axios";
+import { useDetailsStore } from "@/store/useDetailsStore";
 import {
   Checkbox,
   FormControlLabel,
@@ -22,10 +24,8 @@ import {
   RadioGroup,
   Select,
 } from "@mui/material";
-import Link from "next/link";
-import axiosInstance from "@/lib/Axios";
-import { useDetailsStore } from "@/store/useDetailsStore";
 import Image from "next/image";
+import Link from "next/link";
 import { toast } from "react-toastify";
 
 const schema = zod.object({
