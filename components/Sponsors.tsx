@@ -141,7 +141,7 @@ const bronzeSponsors = [
   {
     id: "1",
     name: "redhat",
-    icon: "/sponsors/Brilliant_Cloud_logo.png",
+    icon: "/sponsors/brilliant-Cloud.png",
   },
 ];
 
