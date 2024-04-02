@@ -340,12 +340,17 @@ const SpeakersDetailsForm = ({
               className="bg-primary/60"
             />
           </Button>
-          <p className="text-sm">
+          <p className="text-sm text-accent/80">
             {" "}
-            {role === "speaker" && "Speaker image size should not exceed."}
-            {role === "organizer" && "Organizer image size should not exceed."}
-            {role === "sponsor" && "Sponsor image size should not exceed."}
-            {role === "volunteer" && "Volunteer image size should not exceed."}
+            {role === "speaker" &&
+              "Speaker image size 160x216, please follow the resolution."}
+            {role === "organizer" &&
+              "Organizer image size 160x216, please follow the resolution."}
+            {role === "sponsor" &&
+              "Sponsor image size 240x111, please follow the resolution."}
+            {role === "volunteer" &&
+              "Volunteer image size 160x216, please follow the resolution."}
+            {!role && "Please select `Role` to see image resolution guide."}
           </p>
         </div>
 
