@@ -199,7 +199,7 @@ export function SchedulesTable({
         </Table>
       </Box>
       <Divider />
-      <TablePagination
+      {/* <TablePagination
         component="div"
         count={count}
         onPageChange={(e, newPage) => setPage(newPage)}
@@ -209,7 +209,7 @@ export function SchedulesTable({
         page={page}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[5, 10, 25]}
-      />
+      /> */}
 
       {/* ------------------update modal------------- */}
       <Dialog
