@@ -7,7 +7,9 @@ import {
   FormControl,
   FormHelperText,
   InputLabel,
+  MenuItem,
   OutlinedInput,
+  Select,
   Stack,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
@@ -132,18 +134,29 @@ const ScheduleDetailsForm = ({
             )}
           />
 
+          {/* ['keynote-track', 'devops-track', 'security-track', 'startup-community-hub'] */}
           <Controller
             control={control}
             name="scheduleTrack"
             render={({ field }) => (
               <FormControl error={Boolean(errors.scheduleTrack)}>
-                <InputLabel size="small">Schedule Track</InputLabel>
-                <OutlinedInput
-                  size="small"
+                <InputLabel size="small" id="demo-simple-select-label">
+                  Schedule Track
+                </InputLabel>
+                <Select
                   {...field}
-                  // value={selectedSchedule?.scheduleTrack || ""}
-                  label="Sponsor Link (LinkedIn/URL)"
-                />
+                  size="small"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Schedule Track"
+                >
+                  <MenuItem value={"keynote-track"}>Keynote Track</MenuItem>
+                  <MenuItem value={"devops-track"}>Devops Track</MenuItem>
+                  <MenuItem value={"security-track"}>Security Track</MenuItem>
+                  <MenuItem value={"startup-community-hub"}>
+                    Startup Community Hub
+                  </MenuItem>
+                </Select>
                 {errors.scheduleTrack ? (
                   <FormHelperText>
                     {errors.scheduleTrack.message}
