@@ -14,9 +14,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z as zod } from "zod";
 
-const ticketTypeEnum = zod.enum(["professional", "standard", "premium"]);
+const ticketTypeEnum = zod.enum(["professional", "student"]);
 
 const schema = zod.object({
   title: zod.string().min(1, { message: "Title is required" }),
@@ -29,11 +30,11 @@ const schema = zod.object({
 });
 
 const defaultValues = {
-  title: "Hello",
-  description: "Buy a Ticket",
-  price: 2000,
-  limit: 50,
-  ticketType: "professional",
+  title: "",
+  description: "",
+  price: "",
+  limit: "",
+  ticketType: "",
   expiryDate: new Date(),
   isAvailable: true,
 };
@@ -82,8 +83,7 @@ const TicketForm = ({ getResData }) => {
         .then((res) => {
           console.log("res", res.data.data);
           getResData(res.data.data);
-          window.location.reload();
-          alert("Ticket has been added successfully");
+          toast.success("Ticket created successfully");
         })
         .catch((err) => {
           console.log("err", err);
@@ -156,8 +156,19 @@ const TicketForm = ({ getResData }) => {
             name="ticketType"
             render={({ field }) => (
               <FormControl error={Boolean(errors.ticketType)}>
-                <InputLabel size="small">Ticket Type</InputLabel>
-                <OutlinedInput size="small" {...field} label="Ticket Type" />
+                <InputLabel size="small" id="demo-simple-select-label">
+                  Ticket Type
+                </InputLabel>
+                <Select
+                  {...field}
+                  size="small"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Ticket Type"
+                >
+                  <MenuItem value={"professional"}>professional</MenuItem>
+                  <MenuItem value={"student"}>student</MenuItem>
+                </Select>
                 {errors.ticketType ? (
                   <FormHelperText>{errors.ticketType.message}</FormHelperText>
                 ) : null}

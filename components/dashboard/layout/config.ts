@@ -24,7 +24,7 @@ export const navItems = [
     key: "Ticket",
     title: "Ticket",
     href: paths.dashboard.ticket,
-    icon: "",
+    icon: "ticket",
   },
   // {
   //   key: "customers",
