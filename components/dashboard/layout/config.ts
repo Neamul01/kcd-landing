@@ -20,6 +20,12 @@ export const navItems = [
     href: paths.dashboard.participant,
     icon: "user",
   },
+  {
+    key: "schedules",
+    title: "Schedules",
+    href: paths.dashboard.schedules,
+    icon: "user",
+  },
   // {
   //   key: "customers",
   //   title: "Customers",
