@@ -7,88 +7,100 @@ import dayjs from "dayjs";
 
 import { config } from "@/config";
 import { CustomersFilters } from "@/components/dashboard/customer/customers-filters";
-import type { Customer } from "@/components/dashboard/customer/customers-table";
 import axiosInstance from "@/lib/Axios";
 import { Participant, ParticipantsTable } from "./ParticipantsTable";
+import Loader from "@/components/Shared/Loader";
 
 export const metadata = {
   title: `Customers | Dashboard | ${config.site.name}`,
 } satisfies Metadata;
 
-type ApiResponseData = {
-  _id: string;
-  name: string;
-  email: string;
-  designation: string;
-  organization: string;
-  role: string;
-  createdAt: string;
-  photo: string;
-  sponsor_status: string;
-};
-
 export default function ParticipantsList() {
-  const page = 0;
-  const rowsPerPage = 5;
+  const [page, setPage] = React.useState(0);
+  const [count, setCount] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [participants, setParticipants] = React.useState<Participant[]>([]);
+  const [selectedRole, setSelectedRole] = React.useState<string>();
+  const [loading, setLoading] = React.useState(false);
 
   const paginatedCustomers = applyPagination(participants, page, rowsPerPage);
+
+  const fetchParticipants = async (
+    role?: string,
+    rowsPerPage: number = 25,
+    page = 0
+  ) => {
+    try {
+      setLoading(true);
+
+      let url = `/participants?limit=${rowsPerPage}&page=${page + 1}`;
+
+      if (role) {
+        url += `&role=${role}`;
+      }
+
+      const response = await axiosInstance.get(url);
+
+      const formattedData: Participant[] = response.data.data.map(
+        (participant: Participant) => participant
+      );
+
+      setCount(response.data.pagination.total);
+      // console.log("participants", response.data.pagination.total);
+      // console.log("formattedData", formattedData);
+      setParticipants(formattedData);
+    } catch (error) {
+      console.error("Error fetching participants:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {}, [rowsPerPage]);
+
+  const handleReload = () => {
+    if (selectedRole) {
+      fetchParticipants(selectedRole, rowsPerPage);
+    } else {
+      fetchParticipants();
+    }
+  };
 
   React.useEffect(() => {
     fetchParticipants();
   }, []);
 
-  const fetchParticipants = async () => {
-    try {
-      const response = await axiosInstance.get("/participants");
-
-      const formattedData: Participant[] = response.data.data.map(
-        (participant: ApiResponseData) => ({
-          id: participant._id,
-          name: participant.name,
-          avatar: participant.photo, // Add avatar field if available
-          email: participant.email,
-          organization: participant.organization, // Add city field if available
-          designation: participant.designation, // Add country field if available
-          role: participant.role, // Add state field if available
-          sponsor_status: participant.sponsor_status, // Add street field if available
-          createdAt: dayjs(participant.createdAt).toDate(),
-        })
-      );
-
-      console.log("participants", response.data.data);
-      console.log("formattedData", formattedData);
-      setParticipants(formattedData);
-    } catch (error) {
-      console.error("Error fetching participants:", error);
+  React.useEffect(() => {
+    if (selectedRole) {
+      fetchParticipants(selectedRole, rowsPerPage, page);
+    } else if (rowsPerPage) {
+      fetchParticipants(undefined, rowsPerPage, page);
+    } else {
+      fetchParticipants(undefined, undefined, page);
     }
-  };
-
-  const handleReload = () => {
-    console.log("reload");
-    fetchParticipants();
-  };
+  }, [selectedRole, rowsPerPage, page]);
 
   return (
     <Stack spacing={3}>
-      {/* <Stack direction="row" spacing={3}>
-        <div className="ml-auto w-full flex justify-end">
-          <Button
-            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
-            variant="contained"
-          >
-            Add
-          </Button>
-        </div>
-      </Stack> */}
-      <CustomersFilters />
-      <ParticipantsTable
-        handleReload={handleReload}
-        count={paginatedCustomers.length}
-        page={page}
-        rows={paginatedCustomers}
-        rowsPerPage={rowsPerPage}
+      <CustomersFilters
+        setSelectedRole={setSelectedRole}
+        selectedRole={selectedRole}
       />
+      {loading ? (
+        <div className="w-full flex items-center justify-center">
+          <Loader />
+        </div>
+      ) : (
+        <ParticipantsTable
+          handleReload={handleReload}
+          count={count}
+          page={page}
+          setPage={setPage}
+          rows={paginatedCustomers}
+          rowsPerPage={rowsPerPage}
+          setRowsPerPage={setRowsPerPage}
+        />
+      )}
     </Stack>
   );
 }

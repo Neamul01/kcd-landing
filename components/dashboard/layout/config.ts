@@ -26,6 +26,12 @@ export const navItems = [
     href: paths.dashboard.ticket,
     icon: "ticket",
   },
+  {
+    key: "schedules",
+    title: "Schedules",
+    href: paths.dashboard.schedules,
+    icon: "user",
+  },
   // {
   //   key: "customers",
   //   title: "Customers",

@@ -141,7 +141,7 @@ const bronzeSponsors = [
   {
     id: "1",
     name: "redhat",
-    icon: "/sponsors/Brilliant_Cloud_logo.png",
+    icon: "/sponsors/brilliant-cloud.png",
   },
 ];
 
@@ -172,22 +172,22 @@ const Community = [
   {
     id: "1",
     name: "woman",
-    icon: "/community/AWS.png",
+    icon: "/community/amazon-web-services.png",
   },
   {
     id: "2",
     name: "kong",
-    icon: "/community/CNCF.png",
+    icon: "/community/cncf-logo.png",
   },
   {
     id: "3",
     name: "soda",
-    icon: "/community/DCM.png",
+    icon: "/community/dcm-logo.png",
   },
   {
     id: "4",
     name: "ccici",
-    icon: "/community/TFUG.png",
+    icon: "/community/tensorflow-user-group-bangladesh.png",
   },
 ];
 

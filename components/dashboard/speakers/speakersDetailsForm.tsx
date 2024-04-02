@@ -19,6 +19,8 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z as zod } from "zod";
+import { Participant } from "./ParticipantsTable";
+import Image from "next/image";
 
 const schema = zod.object({
   name: zod.string().min(1, { message: "Name is required" }),
@@ -44,7 +46,7 @@ const SpeakersDetailsForm = ({
   selectedParticipant,
   closeModal,
 }: {
-  selectedParticipant?: Values & { id: string };
+  selectedParticipant?: Participant;
   closeModal?: () => void;
 }) => {
   const [role, setRole] = useState("");
@@ -53,6 +55,7 @@ const SpeakersDetailsForm = ({
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   // const [responseData, setResponseData] = useState<MyData | null>(null);
 
+  const [updateImage, setUpdateImage] = useState<string | null>(null);
   const {
     handleSubmit,
     control,
@@ -98,7 +101,7 @@ const SpeakersDetailsForm = ({
         // ----------------edit form
         console.log("edit form");
         return await axiosInstance
-          .put(`/participants/${selectedParticipant.id}`, formData, {
+          .put(`/participants/${selectedParticipant._id}`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -107,6 +110,7 @@ const SpeakersDetailsForm = ({
             toast.success("Participant Updated Successfully.");
             console.log("res", res);
             setSelectedImage(null);
+            setPreviewImage(null);
             reset();
           })
           .catch((err) => {
@@ -132,6 +136,7 @@ const SpeakersDetailsForm = ({
           console.log("res", res);
           // setResponseData(res.data);
           setSelectedImage(null);
+          setPreviewImage(null);
           reset();
         })
         .catch((err) => {
@@ -156,12 +161,25 @@ const SpeakersDetailsForm = ({
     setValue("role", selectedRole); // Set the value for the "role" field using react-hook-form
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files && event.target.files[0];
     console.log("------------file", file);
     if (file) {
-      setSelectedImage(file);
       setPreviewImage(URL.createObjectURL(file));
+      if (selectedParticipant) {
+        const fileForm = new FormData();
+        fileForm.append("file", file);
+        await axiosInstance
+          .put(`/participants/${selectedParticipant._id}/photo`, fileForm)
+          .catch(() =>
+            toast.error("Error when updating image, please try again later.")
+          );
+        return;
+      }
+
+      setSelectedImage(file);
     }
   };
 
@@ -175,8 +193,11 @@ const SpeakersDetailsForm = ({
         sponsor_link: selectedParticipant.sponsor_link,
         sponsor_status: selectedParticipant.sponsor_status,
       });
+      setUpdateImage(selectedParticipant.photo);
+      // @ts-ignore
+      setSelectedImage(selectedParticipant.photo);
     }
-  }, [selectedParticipant]);
+  }, [selectedParticipant, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -294,6 +315,7 @@ const SpeakersDetailsForm = ({
                 <OutlinedInput
                   size="small"
                   {...field}
+                  // value={selectedParticipant?.sponsor_link || ""}
                   label="Sponsor Link (LinkedIn/URL)"
                 />
                 {errors.sponsor_link ? (
@@ -321,20 +343,37 @@ const SpeakersDetailsForm = ({
               className="bg-primary/60"
             />
           </Button>
-          <p className="text-sm">
+          <p className="text-sm text-accent/80">
             {" "}
-            {role === "speaker" && "Speaker image size should not exceed."}
-            {role === "organizer" && "Organizer image size should not exceed."}
-            {role === "sponsor" && "Sponsor image size should not exceed."}
-            {role === "volunteer" && "Volunteer image size should not exceed."}
+            {role === "speaker" &&
+              "Speaker image size 160x216, please follow the resolution."}
+            {role === "organizer" &&
+              "Organizer image size 160x216, please follow the resolution."}
+            {role === "sponsor" &&
+              "Sponsor image size 240x111, please follow the resolution."}
+            {role === "volunteer" &&
+              "Volunteer image size 160x216, please follow the resolution."}
+            {!role && "Please select `Role` to see image resolution guide."}
           </p>
         </div>
 
         {/* Display the uploaded image */}
+        {updateImage && (
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/${updateImage}`}
+            alt="Participant image"
+            style={{ maxWidth: "40%", marginTop: 10 }}
+            width={300}
+            height={250}
+            className=" rounded-lg border-2 border-gray-500"
+          />
+        )}
         {previewImage && (
-          <img
+          <Image
+            width={300}
+            height={250}
             src={previewImage as string}
-            alt="Selected"
+            alt="Selected Image"
             style={{ maxWidth: "40%", marginTop: 10 }}
             className=" rounded-lg border-2 border-gray-500"
           />
