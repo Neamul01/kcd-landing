@@ -44,7 +44,13 @@ export interface Schedule {
   title: string;
   description: string;
   scheduleTrack: string;
-  speaker: string;
+  speaker: {
+    _id: string;
+    designation: string;
+    name: string;
+    organization: string;
+    title: string;
+  };
   _id: string;
   createdAt: string;
 }
@@ -141,11 +147,11 @@ export function SchedulesTable({
                   }}
                 />
               </TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Designation</TableCell>
-              <TableCell>Organization</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Created At</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Schedule Time</TableCell>
+              <TableCell>Schedule Track</TableCell>
+              <TableCell>Speaker</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -167,31 +173,16 @@ export function SchedulesTable({
                       }}
                     />
                   </TableCell>
-                  {/* <TableCell>
-                    <Stack
-                      sx={{ alignItems: "center" }}
-                      direction="row"
-                      spacing={2}
-                    >
-                      {row.photo ? (
-                        <Image
-                          width={40}
-                          height={40}
-                          src={`${process.env.NEXT_PUBLIC_BASE_URL}/${row.photo}`}
-                          alt="Participant"
-                          className="bg-cover rounded-full border border-gray-500"
-                        />
-                      ) : (
-                        <Avatar />
-                      )}
-                      <Typography variant="subtitle2">{row.name}</Typography>
-                    </Stack>
-                  </TableCell> */}
                   <TableCell>{row.title}</TableCell>
                   <TableCell>{row.description}</TableCell>
                   <TableCell>{row.scheduleTime}</TableCell>
                   <TableCell>
-                    {dayjs(row.createdAt).format("MMM D, YYYY")}
+                    {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
+                    {row.scheduleTrack}
+                  </TableCell>
+                  <TableCell>
+                    {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
+                    {row.speaker?.name}
                   </TableCell>
                   <TableCell>
                     <Button onClick={() => handleEdit(row)}>

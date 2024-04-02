@@ -53,7 +53,7 @@ const ScheduleDetailsForm = ({
       title: selectedSchedule?.title || "",
       description: selectedSchedule?.description || "",
       scheduleTrack: selectedSchedule?.scheduleTrack || "",
-      speaker: selectedSchedule?.speaker || "",
+      speaker: selectedSchedule?.speaker._id || "",
       scheduleTime: selectedSchedule?.scheduleTrack || "",
     },
     resolver: zodResolver(schema),
@@ -72,7 +72,7 @@ const ScheduleDetailsForm = ({
 
       if (selectedSchedule && closeModal) {
         // ----------------edit form
-        console.log("edit form");
+        console.log("edit form", values);
         return await axiosInstance
           .put(`/schedules/${selectedSchedule._id}`, values)
           .then((res) => {
@@ -121,7 +121,7 @@ const ScheduleDetailsForm = ({
         description: selectedSchedule.description,
         scheduleTrack: selectedSchedule.scheduleTrack,
         scheduleTime: selectedSchedule.scheduleTime,
-        speaker: selectedSchedule.speaker,
+        speaker: selectedSchedule.speaker._id,
       });
     }
   }, [selectedSchedule, reset]);
@@ -245,6 +245,7 @@ const ScheduleDetailsForm = ({
                 const designation = option.designation || "";
                 return `${name} - ${designation}`;
               }}
+              // defaultValue={selectedSchedule?.name}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -269,25 +270,6 @@ const ScheduleDetailsForm = ({
             ) : null}
           </div>
           {/* ------------------- */}
-
-          {/* <Controller
-            control={control}
-            name="speaker"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.speaker)}>
-                <InputLabel size="small">Speaker</InputLabel>
-                <OutlinedInput
-                  size="small"
-                  {...field}
-                  label="Sponsor Link (LinkedIn/URL)"
-                />
-                {errors.speaker ? (
-                  <FormHelperText>{errors.speaker.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
-          /> */}
-
           <Controller
             control={control}
             name="scheduleTime"
