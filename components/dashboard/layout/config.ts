@@ -32,12 +32,12 @@ export const navItems = [
     href: paths.dashboard.schedules,
     icon: "user",
   },
-  // {
-  //   key: "customers",
-  //   title: "Customers",
-  //   href: paths.dashboard.customers,
-  //   icon: "users",
-  // },
+  {
+    key: "orders",
+    title: "Orders",
+    href: paths.dashboard.orders,
+    icon: "order",
+  },
   // {
   //   key: "integrations",
   //   title: "Integrations",
