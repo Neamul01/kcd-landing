@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const EditTicketModal = ({ open, onClose, ticket = {}, onUpdate }) => {
   const [editedTicket, setEditedTicket] = useState({});
@@ -25,6 +26,7 @@ const EditTicketModal = ({ open, onClose, ticket = {}, onUpdate }) => {
     e.preventDefault();
     onUpdate(editedTicket);
     onClose();
+    toast.success("Coupon updated successfully");
   };
 
   return (
