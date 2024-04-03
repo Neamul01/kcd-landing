@@ -32,6 +32,12 @@ export const navItems = [
     href: paths.dashboard.schedules,
     icon: "user",
   },
+  {
+    key: "workshops",
+    title: "Workshops",
+    href: paths.dashboard.workshops,
+    icon: "user",
+  },
   // {
   //   key: "customers",
   //   title: "Customers",

@@ -11,6 +11,7 @@ export const paths = {
     participant: "/dashboard/participant",
     ticket: "/dashboard/ticket",
     schedules: "/dashboard/schedules",
+    workshops: "/dashboard/workshops",
     customers: "/dashboard/customers",
     integrations: "/dashboard/integrations",
     settings: "/dashboard/settings",
