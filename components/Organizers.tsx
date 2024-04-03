@@ -40,14 +40,14 @@ export default function Organizers() {
       <SectionLayout paddingBottom title={"Organizers"}>
         {/* <Button onClick={() => getData()}>Get organizers</Button> */}
         <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-10 md:gap-y-10">
+          <div className="flex flex-wrap items-center justify-center gap-y-10 md:gap-y-10">
             {organizers ? (
               organizers.map((sponsor) => (
                 <div
-                  className="bg-transparent h-[354px] px-4 flex items-center justify-between flex-col"
+                  className="bg-transparent w-[300px] h-[354px] px-4 flex items-center justify-between flex-col"
                   key={sponsor._id}
                 >
-                  <div className="h-[216px] w-[160px] overflow-hidden rounded-full ">
+                  <div className="h-[170px] w-[160px] overflow-hidden rounded-full">
                     <Image
                       alt="Organizer"
                       src={
@@ -55,20 +55,26 @@ export default function Organizers() {
                           ? `${process.env.NEXT_PUBLIC_BASE_URL}/${sponsor.photo}`
                           : "/download.jpeg"
                       }
-                      height={216}
+                      height={170}
                       width={160}
-                      className="rounded-full"
+                      className="rounded-full border-2"
                     />
                   </div>
-                  <div className="flex flex-col items-center justify-center gap-3">
-                    <p className="font-bold text-sm">{sponsor.name} </p>
-                    <p className="text-base">{sponsor.organization} </p>
-                    <p className="text-xs">{sponsor.designation} </p>
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <p className="font-medium text-lg text-center">
+                      {sponsor.name}
+                    </p>
+                    <p className="text-base text-center">
+                      {sponsor.designation}
+                    </p>
+                    <p className="text-sm text-center">
+                      {sponsor.organization}
+                    </p>
                   </div>
                   <Link
                     href={sponsor.sponsor_link ? sponsor.sponsor_link : "#"}
                     target="_blank"
-                    className="text-blue-600 flex items-center justify-center gap-2"
+                    className="text-blue-600 flex items-center justify-center gap-2 mt-2"
                   >
                     {/* <FaTwitter size={25} /> */}
                     <FaLinkedinIn size={25} />
@@ -87,33 +93,6 @@ export default function Organizers() {
           </div>
         </div>
       </SectionLayout>
-      {/* <SectionLayout paddingBottom title={"Event Team"}>
-        <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
-          <div className="flex flex-wrap items-center justify-center gap-x-10  gap-y-10 md:gap-y-5">
-            {Event.map((sponsor) => (
-              <div
-                className="bg-transparent h-[354px] px-4 flex items-center justify-between flex-col"
-                key={sponsor.id}
-              >
-                <Image
-                  alt="Organizer"
-                  src={sponsor.imageUrl}
-                  height={216}
-                  width={160}
-                  className="rounded-full"
-                />
-                <p className="font-bold text-sm">{sponsor.name} </p>
-                <p className="text-base">{sponsor.designation} </p>
-                <p className="text-xs">{sponsor.position} </p>
-                <p className="text-blue-600 flex items-center justify-center gap-2">
-                  <FaTwitter size={25} />
-                  <FaLinkedinIn size={25} />
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </SectionLayout> */}
       <SectionLayout paddingBottom title={"Volunteers"}>
         <div className="max-w-sectionLayout text-center text-black/90 mx-auto gap-2 flex flex-col">
           {/* <p>
