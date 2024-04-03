@@ -47,7 +47,7 @@ export default function Organizers() {
                   className="bg-transparent w-[300px] h-[354px] px-4 flex items-center justify-between flex-col"
                   key={sponsor._id}
                 >
-                  <div className="h-[216px] w-[160px] overflow-hidden rounded-full">
+                  <div className="h-[170px] w-[160px] overflow-hidden rounded-full">
                     <Image
                       alt="Organizer"
                       src={
@@ -55,7 +55,7 @@ export default function Organizers() {
                           ? `${process.env.NEXT_PUBLIC_BASE_URL}/${sponsor.photo}`
                           : "/download.jpeg"
                       }
-                      height={216}
+                      height={170}
                       width={160}
                       className="rounded-full border-2"
                     />
