@@ -117,89 +117,118 @@ export default function Sponsors() {
 const paymentPartner = [
   {
     id: "1",
-    name: "redhat",
-    icon: "/aamarpay.png",
+    name: "aamarpay",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/aamarpay.png",
+    link: "https://www.aamarpay.com/",
   },
 ];
 const silverSponsors = [
   {
     id: "1",
-    name: "redhat",
-    icon: "/sponsors/apps-code.png",
+    name: "apps-code",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/apps-code.png",
+    link: "https://appscode.com/",
   },
 ];
 
 const goldSponsors = [
   {
     id: "1",
-    name: "redhat",
-    icon: "/sponsors/nhq.jpg",
+    name: "nhq",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/nhq.jpg",
+    link: "https://www.nhqbd.com/",
+  },
+  {
+    id: "2",
+    name: "nhq",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/Upstra.png",
+    link: "https://upstra.com/",
   },
 ];
 
 const bronzeSponsors = [
   {
     id: "1",
-    name: "redhat",
-    icon: "/sponsors/brilliant-cloud.png",
+    name: "brilliant-cloud",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/brilliant-cloud.png",
+    link: "https://intercloud.com.bd/",
   },
 ];
 
 const platinumSponsors = [
   {
     id: "1",
-    name: "24_7",
-    icon: "/sponsors/AES.png",
+    name: "aes",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/anwar_enterprise_systems_ltd.png",
+    link: "https://cloudaes.com/",
   },
   {
     id: "2",
-    name: "prodevans",
-    icon: "/sponsors/astha.png",
+    name: "astha",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/astha_it.png",
+    link: "https://www.asthait.com/",
   },
   {
     id: "3",
-    name: "prodevans",
-    icon: "/sponsors/klover.png",
+    name: "klover",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/klover.png",
+    link: "https://www.klovercloud.com/",
   },
   {
     id: "4",
-    name: "prodevans",
-    icon: "/sponsors/f5.png",
+    name: "f5",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/f5.png",
+    link: "https://www.f5.com/",
   },
 ];
 
 const Community = [
   {
     id: "1",
-    name: "woman",
-    icon: "/community/amazon-web-services.png",
+    name: "amazon-web-services",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/amazon-web-services.png",
+    link: "https://www.facebook.com/groups/AWSBangladesh/",
   },
   {
     id: "2",
-    name: "kong",
-    icon: "/community/cncf-logo.png",
+    name: "cncf-logo",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/cncf-logo.png",
+    link: "https://community.cncf.io/cloud-native-dhaka/",
   },
   {
     id: "3",
-    name: "soda",
-    icon: "/community/dcm-logo.png",
+    name: "dcm-logo",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/dev_change_maker.png",
+    link: "https://www.linkedin.com/company/devchangemakers/",
   },
   {
     id: "4",
-    name: "ccici",
-    icon: "/community/tensorflow-user-group-bangladesh.png",
+    name: "tensorflow-user-group-bangladesh",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/tensorflow-user-group-bangladesh.png",
+    link: "https://www.facebook.com/groups/tfugbd/",
+  },
+  {
+    id: "5",
+    name: "BDSAF",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/BDSAF.png",
+    link: "https://bdsaf.org",
   },
 ];
 
 const Media = [
   {
     id: "1",
-    name: "kube_events",
-    icon: "/media/kube.svg",
+    name: "kube",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/kube.svg",
+    link: "https://kube.careers/",
   },
   {
     id: "2",
-    name: "kube_careers",
-    icon: "/media/kube-event.svg",
+    name: "kube-event",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/kube-event.svg",
+    link: "https://kube.events/",
   },
 ];
+
+("https://d2sycsl2hirrcd.cloudfront.net/sponsors/Upstra.png");
+("https://d2sycsl2hirrcd.cloudfront.net/sponsors/BDSAF.png");

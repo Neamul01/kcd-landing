@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: "api.kcddhaka.org",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "d2sycsl2hirrcd.cloudfront.net",
+        port: "",
+      },
     ],
   },
   eslint: {
