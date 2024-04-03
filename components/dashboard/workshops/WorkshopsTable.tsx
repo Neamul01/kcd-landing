@@ -40,17 +40,14 @@ function noop(): void {
 }
 
 export interface Workshop {
-  scheduleTime: string;
   title: string;
   description: string;
-  scheduleTrack: string;
-  speaker: {
-    _id: string;
-    designation: string;
-    name: string;
-    organization: string;
-    title: string;
-  };
+  limit: number;
+  schedule: string;
+  level?: string;
+  minimumSkill?: string;
+  sessionTime: string;
+  availability: boolean;
   _id: string;
   createdAt: string;
 }
@@ -149,9 +146,9 @@ export function WorkshopsTable({
               </TableCell>
               <TableCell>Title</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>Schedule Time</TableCell>
-              <TableCell>Schedule Track</TableCell>
-              <TableCell>Speaker</TableCell>
+              <TableCell>schedule Time</TableCell>
+              <TableCell>Limit</TableCell>
+              <TableCell>SessionTime</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -175,14 +172,14 @@ export function WorkshopsTable({
                   </TableCell>
                   <TableCell>{row.title}</TableCell>
                   <TableCell>{row.description}</TableCell>
-                  <TableCell>{row.scheduleTime}</TableCell>
+                  <TableCell>{row.schedule}</TableCell>
                   <TableCell>
                     {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
-                    {row.scheduleTrack}
+                    {row.limit}
                   </TableCell>
                   <TableCell>
                     {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
-                    {row.speaker?.name}
+                    {row.sessionTime}
                   </TableCell>
                   <TableCell>
                     <Button onClick={() => handleEdit(row)}>

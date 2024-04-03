@@ -24,17 +24,18 @@ import { Participant } from "../speakers/ParticipantsTable";
 import { Workshop } from "./WorkshopsTable";
 
 const schema = zod.object({
-  scheduleTime: zod.string().min(1, { message: "scheduleTime is required" }),
-  title: zod.string().min(1, { message: "Designation is required" }),
-  description: zod.string().min(1, { message: "Organization is required" }),
-  scheduleTrack: zod.string().min(1, { message: "Role is required" }),
-  speaker: zod.string().min(1, { message: "Organization is required" }),
+  title: zod.string().min(1, { message: "Title is required" }),
+  description: zod.string().min(1, { message: "Description is required" }),
+  limit: zod.number().min(1, { message: "Limit is required" }),
+  schedule: zod.string().min(1, { message: "Schedule is required" }),
+  level: zod.string().min(1, { message: "Level is required" }),
+  sessionTime: zod.string().min(1, { message: "SessionTime is required" }),
 });
 
 type Values = zod.infer<typeof schema>;
 
 const WorkshopsDetailsForm = ({
-  selectedSchedule,
+  selectedSchedule: selectedWorkshops,
   closeModal,
 }: {
   selectedSchedule?: Workshop;
@@ -50,11 +51,11 @@ const WorkshopsDetailsForm = ({
     formState: { errors },
   } = useForm({
     defaultValues: {
-      title: selectedSchedule?.title || "",
-      description: selectedSchedule?.description || "",
-      scheduleTrack: selectedSchedule?.scheduleTrack || "",
-      speaker: selectedSchedule?.speaker._id || "",
-      scheduleTime: selectedSchedule?.scheduleTrack || "",
+      title: selectedWorkshops?.title || "",
+      description: selectedWorkshops?.description || "",
+      limit: selectedWorkshops?.limit || "",
+      minimumSkill: selectedWorkshops?.minimumSkill || "",
+      sessionTime: selectedWorkshops?.sessionTime || "",
     },
     resolver: zodResolver(schema),
   });
@@ -70,11 +71,11 @@ const WorkshopsDetailsForm = ({
       console.log("-------------form values", values);
       setIsPending(true);
 
-      if (selectedSchedule && closeModal) {
+      if (selectedWorkshops && closeModal) {
         // ----------------edit form
         console.log("edit form", values);
         return await axiosInstance
-          .put(`/schedules/${selectedSchedule._id}`, values)
+          .put(`/schedules/${selectedWorkshops._id}`, values)
           .then((res) => {
             toast.success("Schedule Updated Successfully.");
             console.log("res", res);
@@ -115,61 +116,61 @@ const WorkshopsDetailsForm = ({
   };
 
   React.useEffect(() => {
-    if (selectedSchedule) {
+    if (selectedWorkshops) {
       reset({
-        title: selectedSchedule.title,
-        description: selectedSchedule.description,
-        scheduleTrack: selectedSchedule.scheduleTrack,
-        scheduleTime: selectedSchedule.scheduleTime,
-        speaker: selectedSchedule.speaker._id,
+        title: selectedWorkshops.title,
+        description: selectedWorkshops.description,
+        limit: selectedWorkshops.limit,
+        minimumSkill: selectedWorkshops.minimumSkill,
+        sessionTime: selectedWorkshops.sessionTime,
       });
     }
-  }, [selectedSchedule, reset]);
+  }, [selectedWorkshops, reset]);
 
   // -------------speaker autocomplete ---------------------------
-  const handleOptionSelect = (value: Participant | null) => {
-    if (value) {
-      console.log("selected value", value._id);
-      setValue("speaker", value._id);
-      clearErrors("speaker");
-    } else {
-      setValue("speaker", "");
-    }
-  };
-  const fetchAllParticipants = async () => {
-    try {
-      setLoading(true);
-      const response = await axiosInstance.get(`/participants?role=speaker`);
-      const data: Participant[] = response.data.data.map(
-        (participant: Participant) => participant
-      );
-      setFetchedData(data);
-      setOptions(data);
-    } catch (error) {
-      console.error("Error fetching participants:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //   const handleOptionSelect = (value: Participant | null) => {
+  //     if (value) {
+  //       console.log("selected value", value._id);
+  //       setValue("speaker", value._id);
+  //       clearErrors("speaker");
+  //     } else {
+  //       setValue("speaker", "");
+  //     }
+  //   };
+  //   const fetchAllParticipants = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await axiosInstance.get(`/participants?role=speaker`);
+  //       const data: Participant[] = response.data.data.map(
+  //         (participant: Participant) => participant
+  //       );
+  //       setFetchedData(data);
+  //       setOptions(data);
+  //     } catch (error) {
+  //       console.error("Error fetching participants:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-  React.useEffect(() => {
-    if (open) {
-      fetchAllParticipants();
-    }
-  }, [open]);
+  //   React.useEffect(() => {
+  //     if (open) {
+  //       fetchAllParticipants();
+  //     }
+  //   }, [open]);
 
-  const handleInputChange = (
-    event: React.SyntheticEvent<Element, Event>,
-    value: string,
-    reason: AutocompleteInputChangeReason
-  ) => {
-    const inputValue = value;
-    setInputValue(inputValue);
-    const filteredOptions = fetchedData.filter((participant) =>
-      participant.name.toLowerCase().includes(inputValue.toLowerCase())
-    );
-    setOptions(filteredOptions);
-  };
+  //   const handleInputChange = (
+  //     event: React.SyntheticEvent<Element, Event>,
+  //     value: string,
+  //     reason: AutocompleteInputChangeReason
+  //   ) => {
+  //     const inputValue = value;
+  //     setInputValue(inputValue);
+  //     const filteredOptions = fetchedData.filter((participant) =>
+  //       participant.name.toLowerCase().includes(inputValue.toLowerCase())
+  //     );
+  //     setOptions(filteredOptions);
+  //   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -192,9 +193,9 @@ const WorkshopsDetailsForm = ({
           {/* ['keynote-track', 'devops-track', 'security-track', 'startup-community-hub'] */}
           <Controller
             control={control}
-            name="scheduleTrack"
+            name="minimumSkill"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.scheduleTrack)}>
+              <FormControl error={Boolean(errors.minimumSkill)}>
                 <InputLabel size="small" id="demo-simple-select-label">
                   Schedule Track
                 </InputLabel>
@@ -212,17 +213,15 @@ const WorkshopsDetailsForm = ({
                     Startup Community Hub
                   </MenuItem>
                 </Select>
-                {errors.scheduleTrack ? (
-                  <FormHelperText>
-                    {errors.scheduleTrack.message}
-                  </FormHelperText>
+                {errors.minimumSkill ? (
+                  <FormHelperText>{errors.minimumSkill.message}</FormHelperText>
                 ) : null}
               </FormControl>
             )}
           />
 
           {/* -------------speaker autocomplete------------ */}
-          <div className="">
+          {/* <div className="">
             <Autocomplete
               id="asynchronous-demo"
               // sx={{ width: 300 }}
@@ -268,17 +267,17 @@ const WorkshopsDetailsForm = ({
             {errors.speaker ? (
               <FormHelperText error>{errors.speaker.message}</FormHelperText>
             ) : null}
-          </div>
+          </div> */}
           {/* ------------------- */}
           <Controller
             control={control}
-            name="scheduleTime"
+            name="sessionTime"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.scheduleTime)}>
+              <FormControl error={Boolean(errors.sessionTime)}>
                 <InputLabel size="small">Schedule Time</InputLabel>
-                <OutlinedInput size="small" {...field} label="scheduleTime" />
-                {errors.scheduleTime ? (
-                  <FormHelperText>{errors.scheduleTime.message}</FormHelperText>
+                <OutlinedInput size="small" {...field} label="sessionTime" />
+                {errors.sessionTime ? (
+                  <FormHelperText>{errors.sessionTime.message}</FormHelperText>
                 ) : null}
               </FormControl>
             )}
@@ -313,7 +312,7 @@ const WorkshopsDetailsForm = ({
           variant="contained"
           className="bg-primary/80"
         >
-          {isPending ? "Loading..." : selectedSchedule ? "Update" : "Add"}
+          {isPending ? "Loading..." : selectedWorkshops ? "Update" : "Add"}
         </Button>
       </Stack>
     </form>
