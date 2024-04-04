@@ -184,6 +184,12 @@ const platinumSponsors = [
 
 const Community = [
   {
+    id: "15d",
+    name: "kode-kloud",
+    icon: "/sponsors/kode-Kloud.svg",
+    link: "https://kode.wiki/4aCna7r",
+  },
+  {
     id: "10",
     name: "amazon-web-services",
     icon: "/sponsors/amazon-web-services.webp",
@@ -218,17 +224,20 @@ const Community = [
 const Media = [
   {
     id: "15",
+    name: "kode-kloud",
+    icon: "/sponsors/kode-Kloud.svg",
+    link: "https://kode.wiki/4aCna7r",
+  },
+  {
+    id: "16",
     name: "kube",
     icon: "/sponsors/kube_logo.svg",
     link: "https://kube.careers/",
   },
   {
-    id: "16",
+    id: "17",
     name: "kube-event",
     icon: "/sponsors/kube-event_logo.svg",
     link: "https://kube.events/",
   },
 ];
-
-("/sponsors/upstra_logo.webp");
-("/sponsors/BDSAF_Logo.webp");
