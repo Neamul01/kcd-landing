@@ -210,7 +210,7 @@ const Community = [
   {
     id: "5",
     name: "BDSAF",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/BDSAF.png",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/BDSAF_Logo.png",
     link: "https://bdsaf.org",
   },
 ];
