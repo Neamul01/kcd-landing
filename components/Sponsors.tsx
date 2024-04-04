@@ -118,117 +118,126 @@ const paymentPartner = [
   {
     id: "1",
     name: "aamarpay",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/aamarpay.png",
+    icon: "/sponsors/aamarpay_logo.webp",
     link: "https://www.aamarpay.com/",
   },
 ];
 const silverSponsors = [
   {
-    id: "1",
+    id: "2",
     name: "apps-code",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/apps-code.png",
+    icon: "/sponsors/apps-code-logo.png",
     link: "https://appscode.com/",
   },
 ];
 
 const goldSponsors = [
   {
-    id: "1",
+    id: "3",
     name: "nhq",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/nhq.jpg",
+    icon: "/sponsors/nhq_logo.jpg",
     link: "https://www.nhqbd.com/",
   },
   {
-    id: "2",
+    id: "4",
     name: "nhq",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/Upstra.png",
+    icon: "/sponsors/upstra_logo.webp",
     link: "https://upstra.com/",
   },
 ];
 
 const bronzeSponsors = [
   {
-    id: "1",
+    id: "5",
     name: "brilliant-cloud",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/brilliant-cloud.png",
+    icon: "/sponsors/brilliant_cloud_logo.png",
     link: "https://intercloud.com.bd/",
   },
 ];
 
 const platinumSponsors = [
   {
-    id: "1",
+    id: "6",
     name: "aes",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/anwar_enterprise_systems_ltd.png",
+    icon: "/sponsors/anwar_enterprise_systems_ltd_logo.png",
     link: "https://cloudaes.com/",
   },
   {
-    id: "2",
+    id: "7",
     name: "astha",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/astha_it.png",
+    icon: "/sponsors/astha_logo.png",
     link: "https://www.asthait.com/",
   },
   {
-    id: "3",
+    id: "8",
     name: "klover",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/klover.png",
+    icon: "/sponsors/klover_logo.png",
     link: "https://www.klovercloud.com/",
   },
   {
-    id: "4",
+    id: "9",
     name: "f5",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/f5.png",
+    icon: "/sponsors/f5_logo.png",
     link: "https://www.f5.com/",
   },
 ];
 
 const Community = [
   {
-    id: "1",
+    id: "15d",
+    name: "kode-kloud",
+    icon: "/sponsors/kode-Kloud.svg",
+    link: "https://kode.wiki/4aCna7r",
+  },
+  {
+    id: "10",
     name: "amazon-web-services",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/amazon-web-services.png",
+    icon: "/sponsors/amazon-web-services.webp",
     link: "https://www.facebook.com/groups/AWSBangladesh/",
   },
   {
-    id: "2",
+    id: "11",
     name: "cncf-logo",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/cncf-logo.png",
+    icon: "/sponsors/cncf-logo.webp",
     link: "https://community.cncf.io/cloud-native-dhaka/",
   },
   {
-    id: "3",
+    id: "12",
     name: "dcm-logo",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/dev_change_maker.png",
+    icon: "/sponsors/dev_change_maker.webp",
     link: "https://www.linkedin.com/company/devchangemakers/",
   },
   {
-    id: "4",
+    id: "13",
     name: "tensorflow-user-group-bangladesh",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/tensorflow-user-group-bangladesh.png",
+    icon: "/sponsors/tensorflow-user-group-bangladesh.webp",
     link: "https://www.facebook.com/groups/tfugbd/",
   },
   {
-    id: "5",
+    id: "14",
     name: "BDSAF",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/BDSAF.png",
+    icon: "/sponsors/BDSAF_Logo.webp",
     link: "https://bdsaf.org",
   },
 ];
 
 const Media = [
   {
-    id: "1",
+    id: "15",
+    name: "kode-kloud",
+    icon: "/sponsors/kode-Kloud.svg",
+    link: "https://kode.wiki/4aCna7r",
+  },
+  {
+    id: "16",
     name: "kube",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/kube.svg",
+    icon: "/sponsors/kube_logo.svg",
     link: "https://kube.careers/",
   },
   {
-    id: "2",
+    id: "17",
     name: "kube-event",
-    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/kube-event.svg",
+    icon: "/sponsors/kube-event_logo.svg",
     link: "https://kube.events/",
   },
 ];
-
-("https://d2sycsl2hirrcd.cloudfront.net/sponsors/Upstra.png");
-("https://d2sycsl2hirrcd.cloudfront.net/sponsors/BDSAF.png");
