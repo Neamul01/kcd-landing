@@ -363,7 +363,7 @@ const SpeakersDetailsForm = ({
         {/* Display the uploaded image */}
         {updateImage && (
           <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/${updateImage}`}
+            src={`${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${updateImage}`}
             alt="Participant image"
             style={{ maxWidth: "40%", marginTop: 10 }}
             width={300}
