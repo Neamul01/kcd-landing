@@ -53,8 +53,9 @@ const WorkshopsDetailsForm = ({
     defaultValues: {
       title: selectedWorkshops?.title || "",
       description: selectedWorkshops?.description || "",
-      limit: selectedWorkshops?.limit || "",
-      minimumSkill: selectedWorkshops?.minimumSkill || "",
+      limit: selectedWorkshops?.limit || 1,
+      schedule: selectedWorkshops?.schedule || "",
+      level: selectedWorkshops?.level || "",
       sessionTime: selectedWorkshops?.sessionTime || "",
     },
     resolver: zodResolver(schema),
@@ -121,7 +122,8 @@ const WorkshopsDetailsForm = ({
         title: selectedWorkshops.title,
         description: selectedWorkshops.description,
         limit: selectedWorkshops.limit,
-        minimumSkill: selectedWorkshops.minimumSkill,
+        schedule: selectedWorkshops.schedule,
+        level: selectedWorkshops.level,
         sessionTime: selectedWorkshops.sessionTime,
       });
     }
@@ -190,31 +192,34 @@ const WorkshopsDetailsForm = ({
             )}
           />
 
-          {/* ['keynote-track', 'devops-track', 'security-track', 'startup-community-hub'] */}
           <Controller
             control={control}
-            name="minimumSkill"
+            name="schedule"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.minimumSkill)}>
-                <InputLabel size="small" id="demo-simple-select-label">
-                  Schedule Track
-                </InputLabel>
-                <Select
-                  {...field}
+              <FormControl error={Boolean(errors.schedule)}>
+                <InputLabel size="small">Schedule</InputLabel>
+                <OutlinedInput
                   size="small"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="Schedule Track"
-                >
-                  <MenuItem value={"keynote-track"}>Keynote Track</MenuItem>
-                  <MenuItem value={"devops-track"}>Devops Track</MenuItem>
-                  <MenuItem value={"security-track"}>Security Track</MenuItem>
-                  <MenuItem value={"startup-community-hub"}>
-                    Startup Community Hub
-                  </MenuItem>
-                </Select>
-                {errors.minimumSkill ? (
-                  <FormHelperText>{errors.minimumSkill.message}</FormHelperText>
+                  type="number"
+                  {...field}
+                  label="Schedule"
+                />
+                {errors.schedule ? (
+                  <FormHelperText>{errors.schedule.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="sessionTime"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.sessionTime)}>
+                <InputLabel size="small">Schedule Time</InputLabel>
+                <OutlinedInput size="small" {...field} label="sessionTime" />
+                {errors.sessionTime ? (
+                  <FormHelperText>{errors.sessionTime.message}</FormHelperText>
                 ) : null}
               </FormControl>
             )}
@@ -269,15 +274,48 @@ const WorkshopsDetailsForm = ({
             ) : null}
           </div> */}
           {/* ------------------- */}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          {/*  ['beginner', 'intermediate', 'advanced'] */}
           <Controller
             control={control}
-            name="sessionTime"
+            name="level"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.sessionTime)}>
-                <InputLabel size="small">Schedule Time</InputLabel>
-                <OutlinedInput size="small" {...field} label="sessionTime" />
-                {errors.sessionTime ? (
-                  <FormHelperText>{errors.sessionTime.message}</FormHelperText>
+              <FormControl error={Boolean(errors.level)}>
+                <InputLabel size="small" id="demo-simple-select-label">
+                  Level
+                </InputLabel>
+                <Select
+                  {...field}
+                  size="small"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Level"
+                >
+                  <MenuItem value={"beginner"}>Beginner</MenuItem>
+                  <MenuItem value={"intermediate"}>Intermediate</MenuItem>
+                  <MenuItem value={"advanced"}>Advanced</MenuItem>
+                </Select>
+                {errors.level ? (
+                  <FormHelperText>{errors.level.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+          <Controller
+            control={control}
+            name="limit"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.limit)}>
+                <InputLabel size="small">Limit</InputLabel>
+                <OutlinedInput
+                  size="small"
+                  type="number"
+                  {...field}
+                  label="Limit"
+                />
+                {errors.limit ? (
+                  <FormHelperText>{errors.limit.message}</FormHelperText>
                 ) : null}
               </FormControl>
             )}
