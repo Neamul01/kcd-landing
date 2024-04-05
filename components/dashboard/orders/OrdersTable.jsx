@@ -74,14 +74,18 @@ const OrdersTable = () => {
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Track</TableCell>
-              <TableCell>Workshop</TableCell>
+              {/* <TableCell>Workshop</TableCell> */}
               <TableCell>Tshirt</TableCell>
               <TableCell>Organization</TableCell>
-              <TableCell>Designation / Student</TableCell>
-              <TableCell>Tax</TableCell>
-              <TableCell>Shipping Fee</TableCell>
+              <TableCell>
+                <p className="flex flex-col">
+                  <span>Designation /</span> <span> Student Id</span>
+                </p>
+              </TableCell>
+              <TableCell>Status</TableCell>
+              {/* <TableCell>Shipping Fee</TableCell> */}
               <TableCell>Order Items</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -97,29 +101,28 @@ const OrdersTable = () => {
                   <span>{order.phone.promotion}</span>
                 </TableCell>
                 <TableCell>{order.track}</TableCell>
-                <TableCell>
+                {/* <TableCell>
                   {order.workshop.map((workshopId, index) => (
                     <React.Fragment key={workshopId}>
                       {index > 0 && <br />} <span>{workshopId}</span>
                     </React.Fragment>
                   ))}
-                </TableCell>
+                </TableCell> */}
                 <TableCell>{order.tshirt}</TableCell>
                 <TableCell>{order.organization}</TableCell>
                 <TableCell>
-                  {order.designation ? order.designation : "Student"}
+                  {order.designation ? order.designation : order.studentId}
                 </TableCell>
-                <TableCell>{order.tax}</TableCell>
-                <TableCell>{order.shippingFee}</TableCell>
+                <TableCell>{order.status}</TableCell>
+                {/* <TableCell>{order.shippingFee}</TableCell> */}
                 <TableCell>
                   {order.orderItems.map((item, index) => (
                     <React.Fragment key={index}>
                       <div>
                         <span>Title: {item.title}</span> <br />
                         <span>Price: {item.price}</span> <br />
-                        <span>Quantity: {item.quantity}</span> <br />
                         <span>Discount: {item.discountPercentage}</span> <br />
-                        <span>Ticket id: {item.ticket}</span>
+                        <span>Total: {order.total}</span>
                       </div>
                     </React.Fragment>
                   ))}
