@@ -33,7 +33,7 @@ export default function WorkshopsList() {
     try {
       setLoading(true);
 
-      let url = `/schedules?limit=${rowsPerPage}&page=${page}`;
+      let url = `/workshops?limit=20`;
 
       if (role) {
         url += `&role=${role}`;
