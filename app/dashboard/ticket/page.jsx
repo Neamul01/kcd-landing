@@ -20,7 +20,7 @@ const Page = () => {
     fetchTickets();
   }, []);
 
-  //  Get All tickets
+  //  -------------------Get All tickets
   const fetchTickets = async () => {
     try {
       const response = await axiosInstance.get("/tickets");
