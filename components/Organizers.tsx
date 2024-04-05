@@ -52,7 +52,7 @@ export default function Organizers() {
                       alt="Organizer"
                       src={
                         sponsor.photo
-                          ? `${process.env.NEXT_PUBLIC_BASE_URL}/${sponsor.photo}`
+                          ? `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${sponsor.photo}`
                           : "/download.jpeg"
                       }
                       height={170}
