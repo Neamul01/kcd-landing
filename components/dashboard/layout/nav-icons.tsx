@@ -4,6 +4,7 @@ import { GearSix as GearSixIcon } from "@phosphor-icons/react/dist/ssr/GearSix";
 import { PlugsConnected as PlugsConnectedIcon } from "@phosphor-icons/react/dist/ssr/PlugsConnected";
 import { Ticket as TicketIcon } from "@phosphor-icons/react/dist/ssr/Ticket";
 import { User as UserIcon } from "@phosphor-icons/react/dist/ssr/User";
+import { Record as OrderIcon } from "@phosphor-icons/react/dist/ssr/Record";
 import { Users as UsersIcon } from "@phosphor-icons/react/dist/ssr/Users";
 import { XSquare } from "@phosphor-icons/react/dist/ssr/XSquare";
 
@@ -15,4 +16,5 @@ export const navIcons = {
   user: UserIcon,
   users: UsersIcon,
   ticket: TicketIcon,
+  orders: OrderIcon,
 } as Record<string, Icon>;
