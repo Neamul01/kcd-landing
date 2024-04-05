@@ -146,7 +146,7 @@ export function WorkshopsTable({
               </TableCell>
               <TableCell>Title</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>schedule Time</TableCell>
+              <TableCell>Schedule Time</TableCell>
               <TableCell>Limit</TableCell>
               <TableCell>SessionTime</TableCell>
               <TableCell></TableCell>
