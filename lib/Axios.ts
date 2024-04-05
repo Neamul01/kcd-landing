@@ -8,7 +8,7 @@ import axios, {
 } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: "https://api.kcddhaka.org/api/v1",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
 axiosInstance.interceptors.request.use(
