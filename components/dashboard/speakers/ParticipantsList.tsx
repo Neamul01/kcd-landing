@@ -10,6 +10,7 @@ import { CustomersFilters } from "@/components/dashboard/customer/customers-filt
 import axiosInstance from "@/lib/Axios";
 import { Participant, ParticipantsTable } from "./ParticipantsTable";
 import Loader from "@/components/Shared/Loader";
+import { ParticipantsFilter } from "./ParticipantsFilter";
 
 export const metadata = {
   title: `Customers | Dashboard | ${config.site.name}`,
@@ -82,7 +83,7 @@ export default function ParticipantsList() {
 
   return (
     <Stack spacing={3}>
-      <CustomersFilters
+      <ParticipantsFilter
         setSelectedRole={setSelectedRole}
         selectedRole={selectedRole}
       />
