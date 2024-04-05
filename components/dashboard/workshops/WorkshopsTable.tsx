@@ -105,7 +105,7 @@ export function WorkshopsTable({
   const handleDelete = async () => {
     if (deleteParticipant) {
       await axiosInstance
-        .delete(`/participants/${deleteParticipant._id}`)
+        .delete(`/workshops/${deleteParticipant._id}`)
         .then(() => {
           setOpenDelete(false);
           toast.success("Successfully deleted participant");
@@ -238,8 +238,8 @@ export function WorkshopsTable({
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            If you delete {deleteParticipant?.title}. his/her all data will be
-            removed from database.
+            If you delete {deleteParticipant?.title}. All data will be removed
+            from database.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
