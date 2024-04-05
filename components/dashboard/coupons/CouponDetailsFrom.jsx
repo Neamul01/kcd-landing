@@ -19,6 +19,7 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z as zod } from "zod";
+import dayjs from "dayjs";
 
 const schema = zod.object({
   code: zod.string().min(1, { message: "Code is required" }),
@@ -64,34 +65,36 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
     try {
       setIsPending(true);
 
-      if (selectedSchedule && closeModal) {
-        return await axiosInstance
-          .put(`/schedules/${selectedSchedule._id}`, values)
-          .then((res) => {
-            toast.success("Schedule Updated Successfully.");
-            reset();
-          })
-          .catch(() => {
-            toast.error("Something went wrong please try again.");
-          })
-          .finally(() => {
-            setIsPending(false);
-            closeModal();
-          });
-      }
+      console.log("submit value", values);
 
-      await axiosInstance
-        .post("/schedules", values)
-        .then((res) => {
-          toast.success("Schedule Added Successfully.");
-          reset();
-        })
-        .catch(() => {
-          toast.error("Something went wrong please try again.");
-        })
-        .finally(() => {
-          setIsPending(false);
-        });
+      // if (selectedSchedule && closeModal) {
+      //   return await axiosInstance
+      //     .put(`/schedules/${selectedSchedule._id}`, values)
+      //     .then((res) => {
+      //       toast.success("Schedule Updated Successfully.");
+      //       reset();
+      //     })
+      //     .catch(() => {
+      //       toast.error("Something went wrong please try again.");
+      //     })
+      //     .finally(() => {
+      //       setIsPending(false);
+      //       closeModal();
+      //     });
+      // }
+
+      // await axiosInstance
+      //   .post("/schedules", values)
+      //   .then((res) => {
+      //     toast.success("Schedule Added Successfully.");
+      //     reset();
+      //   })
+      //   .catch(() => {
+      //     toast.error("Something went wrong please try again.");
+      //   })
+      //   .finally(() => {
+      //     setIsPending(false);
+      //   });
     } catch {
       () => {
         alert("Something went wrong please try again..");
@@ -186,31 +189,19 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
 
           <Controller
             control={control}
-            name="scheduleTrack"
+            name="limit"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.scheduleTrack)}>
-                <InputLabel size="small" id="demo-simple-select-label">
-                  Schedule Track
-                </InputLabel>
-                <Select
-                  {...field}
+              <FormControl error={Boolean(errors.limit)}>
+                <InputLabel size="small">Limit</InputLabel>
+                <OutlinedInput
                   size="small"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  label="Schedule Track"
-                >
-                  <MenuItem value={"keynote-track"}>Keynote Track</MenuItem>
-                  <MenuItem value={"devops-track"}>Devops Track</MenuItem>
-                  <MenuItem value={"security-track"}>Security Track</MenuItem>
-                  <MenuItem value={"startup-community-hub"}>
-                    Startup Community Hub
-                  </MenuItem>
-                </Select>
-                {errors.scheduleTrack ? (
-                  <FormHelperText>
-                    {errors.scheduleTrack.message}
-                  </FormHelperText>
-                ) : null}
+                  type="number"
+                  {...field}
+                  label="Limit"
+                />
+                {errors.limit && (
+                  <FormHelperText>{errors.limit.message}</FormHelperText>
+                )}
               </FormControl>
             )}
           />
@@ -266,11 +257,19 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
             name="scheduleTime"
             render={({ field }) => (
               <FormControl error={Boolean(errors.scheduleTime)}>
-                <InputLabel size="small">Schedule Time</InputLabel>
-                <OutlinedInput size="small" {...field} label="scheduleTime" />
-                {errors.scheduleTime ? (
-                  <FormHelperText>{errors.scheduleTime.message}</FormHelperText>
-                ) : null}
+                <TextField
+                  fullWidth
+                  label="Expiry Date"
+                  name="expiryDate"
+                  value={field.value}
+                  onChange={(date) => {
+                    field.onChange(date);
+                  }}
+                  variant="outlined"
+                  size="small"
+                  margin="none"
+                  type="date"
+                />
               </FormControl>
             )}
           />
