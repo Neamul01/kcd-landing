@@ -29,7 +29,7 @@ const schema = zod.object({
   limit: zod.number().min(1, { message: "Limit is required" }),
   schedule: zod.string().min(1, { message: "Schedule is required" }),
   level: zod.string().min(1, { message: "Level is required" }),
-  sessionTime: zod.string().min(1, { message: "SessionTime is required" }),
+  sessionTime: zod.string().min(1, { message: "Session Time is required" }),
 });
 
 type Values = zod.infer<typeof schema>;
@@ -75,26 +75,26 @@ const WorkshopsDetailsForm = ({
       if (selectedWorkshops && closeModal) {
         // ----------------edit form
         console.log("edit form", values);
-        return await axiosInstance
-          .put(`/schedules/${selectedWorkshops._id}`, values)
-          .then((res) => {
-            toast.success("Schedule Updated Successfully.");
-            console.log("res", res);
-            reset();
-          })
-          .catch((err) => {
-            console.log("err", err);
-            toast.error("Something went wrong please try again.");
-          })
-          .finally(() => {
-            setIsPending(false);
-            closeModal();
-          });
+        // return await axiosInstance
+        //   .put(`/workshops/${selectedWorkshops._id}`, values)
+        //   .then((res) => {
+        //     toast.success("Schedule Updated Successfully.");
+        //     console.log("res", res);
+        //     reset();
+        //   })
+        //   .catch((err) => {
+        //     console.log("err", err);
+        //     toast.error("Something went wrong please try again.");
+        //   })
+        //   .finally(() => {
+        //     setIsPending(false);
+        //     closeModal();
+        //   });
       }
-      console.log("add form");
+      console.log("add form", values);
 
       await axiosInstance
-        .post("/schedules", values)
+        .post("/workshops", values)
         .then((res) => {
           toast.success("Schedule Added Successfully.");
           console.log("res", res);
@@ -198,12 +198,7 @@ const WorkshopsDetailsForm = ({
             render={({ field }) => (
               <FormControl error={Boolean(errors.schedule)}>
                 <InputLabel size="small">Schedule</InputLabel>
-                <OutlinedInput
-                  size="small"
-                  type="number"
-                  {...field}
-                  label="Schedule"
-                />
+                <OutlinedInput size="small" {...field} label="Schedule" />
                 {errors.schedule ? (
                   <FormHelperText>{errors.schedule.message}</FormHelperText>
                 ) : null}
@@ -216,7 +211,7 @@ const WorkshopsDetailsForm = ({
             name="sessionTime"
             render={({ field }) => (
               <FormControl error={Boolean(errors.sessionTime)}>
-                <InputLabel size="small">Schedule Time</InputLabel>
+                <InputLabel size="small">Session Time</InputLabel>
                 <OutlinedInput size="small" {...field} label="sessionTime" />
                 {errors.sessionTime ? (
                   <FormHelperText>{errors.sessionTime.message}</FormHelperText>
@@ -309,9 +304,13 @@ const WorkshopsDetailsForm = ({
               <FormControl error={Boolean(errors.limit)}>
                 <InputLabel size="small">Limit</InputLabel>
                 <OutlinedInput
+                  {...field}
                   size="small"
                   type="number"
-                  {...field}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value, 10);
+                    field.onChange(value);
+                  }}
                   label="Limit"
                 />
                 {errors.limit ? (
