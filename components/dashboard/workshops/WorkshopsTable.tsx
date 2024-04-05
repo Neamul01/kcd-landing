@@ -31,37 +31,38 @@ import {
   Tooltip,
 } from "@mui/material";
 import { TfiReload } from "react-icons/tfi";
-import SpeakersDetailsForm from "./speakersDetailsForm";
 import axiosInstance from "@/lib/Axios";
 import { toast } from "react-toastify";
+import WorkshopsDetailsForm from "./WorkshopsDetailsForm";
 
 function noop(): void {
   // do nothing
 }
 
-export interface Participant {
-  createdAt: string;
-  designation: string;
-  name: string;
-  organization: string;
-  photo: string;
-  role: string;
-  sponsor_link: string;
-  sponsor_status: string;
+export interface Workshop {
+  title: string;
+  description: string;
+  limit: number;
+  schedule: string;
+  level?: string;
+  minimumSkill?: string;
+  sessionTime: string;
+  availability: boolean;
   _id: string;
+  createdAt: string;
 }
 
-interface CustomersTableProps {
+interface WorkshopsTableProps {
   handleReload: () => void;
   count?: number;
   page?: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  rows?: Participant[];
+  rows?: Workshop[];
   rowsPerPage?: number;
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export function ParticipantsTable({
+export function WorkshopsTable({
   handleReload,
   count = 0,
   rows = [],
@@ -69,12 +70,12 @@ export function ParticipantsTable({
   setPage,
   rowsPerPage = 0,
   setRowsPerPage,
-}: CustomersTableProps): React.JSX.Element {
+}: WorkshopsTableProps): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [deleteParticipant, setDeleteParticipant] =
-    React.useState<Participant | null>();
-  const [selectedRow, setSelectedRow] = React.useState<Participant>();
+    React.useState<Workshop | null>();
+  const [selectedRow, setSelectedRow] = React.useState<Workshop>();
 
   const rowIds = React.useMemo(() => {
     return rows.map((customer) => customer._id);
@@ -87,7 +88,7 @@ export function ParticipantsTable({
     (selected?.size ?? 0) > 0 && (selected?.size ?? 0) < rows.length;
   const selectedAll = rows.length > 0 && selected?.size === rows.length;
 
-  const handleEdit = (participant: Participant) => {
+  const handleEdit = (participant: Workshop) => {
     setOpen(true);
     setSelectedRow(participant);
   };
@@ -96,7 +97,7 @@ export function ParticipantsTable({
     setOpen(false);
   };
 
-  const handleDeleteClick = (participant: Participant) => {
+  const handleDeleteClick = (participant: Workshop) => {
     setDeleteParticipant(participant);
     setOpenDelete(true);
   };
@@ -104,7 +105,7 @@ export function ParticipantsTable({
   const handleDelete = async () => {
     if (deleteParticipant) {
       await axiosInstance
-        .delete(`/participants/${deleteParticipant._id}`)
+        .delete(`/workshops/${deleteParticipant._id}`)
         .then(() => {
           setOpenDelete(false);
           toast.success("Successfully deleted participant");
@@ -143,11 +144,11 @@ export function ParticipantsTable({
                   }}
                 />
               </TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Designation</TableCell>
-              <TableCell>Organization</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Created At</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Schedule Time</TableCell>
+              <TableCell>Limit</TableCell>
+              <TableCell>SessionTime</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -169,31 +170,16 @@ export function ParticipantsTable({
                       }}
                     />
                   </TableCell>
+                  <TableCell>{row.title}</TableCell>
+                  <TableCell>{row.description}</TableCell>
+                  <TableCell>{row.schedule}</TableCell>
                   <TableCell>
-                    <Stack
-                      sx={{ alignItems: "center" }}
-                      direction="row"
-                      spacing={2}
-                    >
-                      {row.photo ? (
-                        <Image
-                          width={40}
-                          height={40}
-                          src={`${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${row.photo}`}
-                          alt="Participant"
-                          className="bg-cover rounded-full border border-gray-500"
-                        />
-                      ) : (
-                        <Avatar />
-                      )}
-                      <Typography variant="subtitle2">{row.name}</Typography>
-                    </Stack>
+                    {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
+                    {row.limit}
                   </TableCell>
-                  <TableCell>{row.organization}</TableCell>
-                  <TableCell>{row.designation}</TableCell>
-                  <TableCell>{row.role}</TableCell>
                   <TableCell>
-                    {dayjs(row.createdAt).format("MMM D, YYYY")}
+                    {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
+                    {row.sessionTime}
                   </TableCell>
                   <TableCell>
                     <Button onClick={() => handleEdit(row)}>
@@ -210,7 +196,7 @@ export function ParticipantsTable({
         </Table>
       </Box>
       <Divider />
-      <TablePagination
+      {/* <TablePagination
         component="div"
         count={count}
         onPageChange={(e, newPage) => setPage(newPage)}
@@ -219,8 +205,8 @@ export function ParticipantsTable({
         }
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25, 35, 45, 55]}
-      />
+        rowsPerPageOptions={[5, 10, 25]}
+      /> */}
 
       {/* ------------------update modal------------- */}
       <Dialog
@@ -232,8 +218,8 @@ export function ParticipantsTable({
         <DialogTitle>Edit Participant</DialogTitle>
         <DialogContent>
           <div className="py-2">
-            <SpeakersDetailsForm
-              selectedParticipant={selectedRow as Participant}
+            <WorkshopsDetailsForm
+              selectedSchedule={selectedRow as Workshop}
               closeModal={closeModal}
             />
           </div>
@@ -248,12 +234,12 @@ export function ParticipantsTable({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Want to delete: {deleteParticipant?.name}
+          Want to delete: {deleteParticipant?.title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            If you delete {deleteParticipant?.name}. his/her all data will be
-            removed from database.
+            If you delete {deleteParticipant?.title}. All data will be removed
+            from database.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

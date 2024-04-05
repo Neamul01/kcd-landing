@@ -33,14 +33,13 @@ const schema = zod.object({
 
 type Values = zod.infer<typeof schema>;
 
-// const defaultValues = {
-//   name: "",
-//   designation: "",
-//   organization: "",
-//   role: "",
-//   sponsor_status: "",
-//   sponsor_link: "",
-// } satisfies Values;
+// type Roles =
+//   | "organizer"
+//   | "sponsor"
+//   | "speaker"
+//   | "key-note-speaker"
+//   | "event-speaker"
+//   | "volunteer";
 
 const SpeakersDetailsForm = ({
   selectedParticipant,
@@ -262,7 +261,10 @@ const SpeakersDetailsForm = ({
                   label="Role"
                   onChange={handleRoleSelection}
                 >
-                  <MenuItem value={"speaker"}>Speaker</MenuItem>
+                  <MenuItem value={"key-note-speaker"}>
+                    Keynote Speakers
+                  </MenuItem>
+                  <MenuItem value={"event-speaker"}>Event Speakers</MenuItem>
                   <MenuItem value={"organizer"}>Organizer</MenuItem>
                   <MenuItem value={"sponsor"}>Sponsor</MenuItem>
                   <MenuItem value={"volunteer"}>Volunteer</MenuItem>
@@ -345,8 +347,9 @@ const SpeakersDetailsForm = ({
           </Button>
           <p className="text-sm text-accent/80">
             {" "}
-            {role === "speaker" &&
-              "Speaker image size 160x216, please follow the resolution."}
+            {role === "event-speaker" ||
+              (role === "key-note-speaker" &&
+                "Speaker image size 160x216, please follow the resolution.")}
             {role === "organizer" &&
               "Organizer image size 160x216, please follow the resolution."}
             {role === "sponsor" &&
@@ -360,7 +363,7 @@ const SpeakersDetailsForm = ({
         {/* Display the uploaded image */}
         {updateImage && (
           <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/${updateImage}`}
+            src={`${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${updateImage}`}
             alt="Participant image"
             style={{ maxWidth: "40%", marginTop: 10 }}
             width={300}

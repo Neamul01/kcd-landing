@@ -117,89 +117,121 @@ export default function Sponsors() {
 const paymentPartner = [
   {
     id: "1",
-    name: "redhat",
-    icon: "/aamarpay.png",
+    name: "aamarpay",
+    icon: "/sponsors/aamarpay_logo.webp",
+    link: "https://www.aamarpay.com/",
   },
 ];
 const silverSponsors = [
   {
-    id: "1",
-    name: "redhat",
-    icon: "/sponsors/apps-code.png",
+    id: "2",
+    name: "apps-code",
+    icon: "/sponsors/apps-code-logo.png",
+    link: "https://appscode.com/",
   },
 ];
 
 const goldSponsors = [
   {
-    id: "1",
-    name: "redhat",
-    icon: "/sponsors/nhq.jpg",
+    id: "3",
+    name: "nhq",
+    icon: "/sponsors/nhq_logo.jpg",
+    link: "https://www.nhqbd.com/",
+  },
+  {
+    id: "4",
+    name: "nhq",
+    icon: "/sponsors/upstra_logo.webp",
+    link: "https://upstra.com/",
   },
 ];
 
 const bronzeSponsors = [
   {
-    id: "1",
-    name: "redhat",
-    icon: "/sponsors/brilliant-cloud.png",
+    id: "5",
+    name: "brilliant-cloud",
+    icon: "/sponsors/brilliant_cloud_logo.png",
+    link: "https://intercloud.com.bd/",
   },
 ];
 
 const platinumSponsors = [
   {
-    id: "1",
-    name: "24_7",
-    icon: "/sponsors/AES.png",
+    id: "6",
+    name: "aes",
+    icon: "/sponsors/anwar_enterprise_systems_ltd_logo.png",
+    link: "https://cloudaes.com/",
   },
   {
-    id: "2",
-    name: "prodevans",
-    icon: "/sponsors/astha.png",
+    id: "7",
+    name: "astha",
+    icon: "/sponsors/astha_logo.png",
+    link: "https://www.asthait.com/",
   },
   {
-    id: "3",
-    name: "prodevans",
-    icon: "/sponsors/klover.png",
+    id: "8",
+    name: "klover",
+    icon: "/sponsors/klover_logo.png",
+    link: "https://www.klovercloud.com/",
   },
   {
-    id: "4",
-    name: "prodevans",
-    icon: "/sponsors/f5.png",
+    id: "9",
+    name: "f5",
+    icon: "/sponsors/f5_logo.png",
+    link: "https://www.f5.com/",
   },
 ];
 
 const Community = [
   {
-    id: "1",
-    name: "woman",
-    icon: "/community/amazon-web-services.png",
+    id: "15d",
+    name: "kode-kloud",
+    icon: "/sponsors/kode-Kloud.svg",
+    link: "https://kode.wiki/4aCna7r",
   },
   {
-    id: "2",
-    name: "kong",
-    icon: "/community/cncf-logo.png",
+    id: "10",
+    name: "amazon-web-services",
+    icon: "/sponsors/amazon-web-services.webp",
+    link: "https://www.facebook.com/groups/AWSBangladesh/",
   },
   {
-    id: "3",
-    name: "soda",
-    icon: "/community/dcm-logo.png",
+    id: "11",
+    name: "cncf-logo",
+    icon: "/sponsors/cncf-logo.webp",
+    link: "https://community.cncf.io/cloud-native-dhaka/",
   },
   {
-    id: "4",
-    name: "ccici",
-    icon: "/community/tensorflow-user-group-bangladesh.png",
+    id: "12",
+    name: "dcm-logo",
+    icon: "/sponsors/dev_change_maker.webp",
+    link: "https://www.linkedin.com/company/devchangemakers/",
+  },
+  {
+    id: "13",
+    name: "tensorflow-user-group-bangladesh",
+    icon: "/sponsors/tensorflow-user-group-bangladesh.webp",
+    link: "https://www.facebook.com/groups/tfugbd/",
+  },
+  {
+    id: "14",
+    name: "BDSAF",
+    icon: "/sponsors/BDSAF_Logo.webp",
+    link: "https://bdsaf.org",
   },
 ];
 
 const Media = [
   {
-    id: "1",
-    name: "kube_events",
-    icon: "/media/kube.svg",
+    id: "16",
+    name: "kube",
+    icon: "/sponsors/kube_logo.svg",
+    link: "https://kube.careers/",
   },
   {
-    id: "2",
-    name: "kube_careers",
-    icon: "/media/kube-event.svg",
+    id: "17",
+    name: "kube-event",
+    icon: "/sponsors/kube-event_logo.svg",
+    link: "https://kube.events/",
   },
 ];

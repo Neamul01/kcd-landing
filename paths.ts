@@ -12,6 +12,8 @@ export const paths = {
     ticket: "/dashboard/ticket",
     schedules: "/dashboard/schedules",
     coupons: "/dashboard/coupons",
+    workshops: "/dashboard/workshops",
+    orders: "/dashboard/orders",
     customers: "/dashboard/customers",
     integrations: "/dashboard/integrations",
     settings: "/dashboard/settings",

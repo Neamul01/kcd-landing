@@ -8,19 +8,18 @@ import dayjs from "dayjs";
 import { config } from "@/config";
 import { CustomersFilters } from "@/components/dashboard/customer/customers-filters";
 import axiosInstance from "@/lib/Axios";
-import { Participant, ParticipantsTable } from "./ParticipantsTable";
+import { Workshop, WorkshopsTable } from "./WorkshopsTable";
 import Loader from "@/components/Shared/Loader";
-import { ParticipantsFilter } from "./ParticipantsFilter";
 
 export const metadata = {
   title: `Customers | Dashboard | ${config.site.name}`,
 } satisfies Metadata;
 
-export default function ParticipantsList() {
+export default function WorkshopsList() {
   const [page, setPage] = React.useState(0);
   const [count, setCount] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
-  const [participants, setParticipants] = React.useState<Participant[]>([]);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [participants, setParticipants] = React.useState<Workshop[]>([]);
   const [selectedRole, setSelectedRole] = React.useState<string>();
   const [loading, setLoading] = React.useState(false);
 
@@ -28,13 +27,13 @@ export default function ParticipantsList() {
 
   const fetchParticipants = async (
     role?: string,
-    rowsPerPage: number = 25,
+    rowsPerPage: number = 10,
     page = 0
   ) => {
     try {
       setLoading(true);
 
-      let url = `/participants?limit=${rowsPerPage}&page=${page + 1}`;
+      let url = `/workshops?limit=20`;
 
       if (role) {
         url += `&role=${role}`;
@@ -42,12 +41,12 @@ export default function ParticipantsList() {
 
       const response = await axiosInstance.get(url);
 
-      const formattedData: Participant[] = response.data.data.map(
-        (participant: Participant) => participant
+      const formattedData: Workshop[] = response.data.data.map(
+        (participant: Workshop) => participant
       );
 
       setCount(response.data.pagination.total);
-      // console.log("participants", response.data.pagination.total);
+      console.log("participants", response.data.pagination.total);
       // console.log("formattedData", formattedData);
       setParticipants(formattedData);
     } catch (error) {
@@ -83,16 +82,16 @@ export default function ParticipantsList() {
 
   return (
     <Stack spacing={3}>
-      <ParticipantsFilter
+      {/* <CustomersFilters
         setSelectedRole={setSelectedRole}
         selectedRole={selectedRole}
-      />
+      /> */}
       {loading ? (
         <div className="w-full flex items-center justify-center">
           <Loader />
         </div>
       ) : (
-        <ParticipantsTable
+        <WorkshopsTable
           handleReload={handleReload}
           count={count}
           page={page}
@@ -106,9 +105,9 @@ export default function ParticipantsList() {
   );
 }
 function applyPagination(
-  rows: Participant[],
+  rows: Workshop[],
   page: number,
   rowsPerPage: number
-): Participant[] {
+): Workshop[] {
   return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 }

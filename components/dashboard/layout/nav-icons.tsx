@@ -5,6 +5,7 @@ import { PlugsConnected as PlugsConnectedIcon } from "@phosphor-icons/react/dist
 import { Tag as TagIcon } from "@phosphor-icons/react/dist/ssr/Tag";
 import { Ticket as TicketIcon } from "@phosphor-icons/react/dist/ssr/Ticket";
 import { User as UserIcon } from "@phosphor-icons/react/dist/ssr/User";
+import { Record as OrderIcon } from "@phosphor-icons/react/dist/ssr/Record";
 import { Users as UsersIcon } from "@phosphor-icons/react/dist/ssr/Users";
 import { XSquare } from "@phosphor-icons/react/dist/ssr/XSquare";
 
@@ -17,4 +18,5 @@ export const navIcons = {
   users: UsersIcon,
   ticket: TicketIcon,
   coupon: TagIcon,
+  orders: OrderIcon,
 } as Record<string, Icon>;
