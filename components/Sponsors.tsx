@@ -223,12 +223,6 @@ const Community = [
 
 const Media = [
   {
-    id: "15",
-    name: "kode-kloud",
-    icon: "/sponsors/kode-Kloud.svg",
-    link: "https://kode.wiki/4aCna7r",
-  },
-  {
     id: "16",
     name: "kube",
     icon: "/sponsors/kube_logo.svg",
