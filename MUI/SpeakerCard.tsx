@@ -24,7 +24,7 @@ export default function SpeakerCard({ speaker }: { speaker: Participant }) {
             }
             height={170}
             width={160}
-            className="h-[170px] w-[160px] overflow-hidden rounded-full border border-gray-500"
+            className="h-[170px] w-[170px] overflow-hidden rounded-full border-8 border-primary"
           />
         </div>
         <CardContent className="max-w-[200px] px-1">

@@ -38,7 +38,6 @@ export default function Organizers() {
   return (
     <div id="organizers">
       <SectionLayout paddingBottom title={"Organizers"}>
-        {/* <Button onClick={() => getData()}>Get organizers</Button> */}
         <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
           <div className="flex flex-wrap items-center justify-center gap-y-10 md:gap-y-10">
             {organizers ? (
@@ -47,7 +46,7 @@ export default function Organizers() {
                   className="bg-transparent w-[300px] h-[354px] px-4 flex items-center justify-between flex-col"
                   key={sponsor._id}
                 >
-                  <div className="h-[170px] w-[160px] overflow-hidden rounded-full">
+                  <div className="h-[170px] w-[170px] overflow-hidden rounded-full">
                     <Image
                       alt="Organizer"
                       src={
@@ -56,8 +55,8 @@ export default function Organizers() {
                           : "/download.jpeg"
                       }
                       height={170}
-                      width={160}
-                      className="rounded-full border-2"
+                      width={170}
+                      className="rounded-full border-8 border-primary"
                     />
                   </div>
                   <div className="flex flex-col items-center justify-center gap-2">
