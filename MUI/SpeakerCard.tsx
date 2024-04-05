@@ -1,3 +1,4 @@
+import { Participant } from "@/components/dashboard/speakers/ParticipantsTable";
 import { CardActionArea } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -5,15 +6,7 @@ import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { FaLinkedinIn } from "react-icons/fa";
 
-type Speaker = {
-  _id: string;
-  name: string;
-  organization: string;
-  designation: string;
-  photo: string;
-  sponsor_link: string;
-};
-export default function SpeakerCard({ speaker }: { speaker: Speaker }) {
+export default function SpeakerCard({ speaker }: { speaker: Participant }) {
   return (
     <Card
       key={speaker._id}
@@ -26,7 +19,7 @@ export default function SpeakerCard({ speaker }: { speaker: Speaker }) {
             alt="Speaker"
             src={
               speaker.photo
-                ? `${process.env.NEXT_PUBLIC_BASE_URL}/${speaker.photo}`
+                ? `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${speaker.photo}`
                 : "/download.jpeg"
             }
             height={170}

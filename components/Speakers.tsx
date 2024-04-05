@@ -4,17 +4,11 @@ import axiosInstance from "@/lib/Axios";
 import { useEffect, useState } from "react";
 import Loader from "./Shared/Loader";
 import SectionLayout from "./layout/SectionLayout";
+import { Participant } from "./dashboard/speakers/ParticipantsTable";
 
-type Speaker = {
-  _id: string;
-  name: string;
-  organization: string;
-  designation: string;
-  photo: string;
-};
 export default function Speakers() {
-  const [keynoteSpeakers, setKeyNoteSpeakers] = useState<Speaker[]>([]);
-  const [eventSpeakers, setEventSpeakers] = useState<Speaker[]>([]);
+  const [keynoteSpeakers, setKeyNoteSpeakers] = useState<Participant[]>([]);
+  const [eventSpeakers, setEventSpeakers] = useState<Participant[]>([]);
 
   console.log(eventSpeakers);
 
