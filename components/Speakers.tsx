@@ -75,13 +75,23 @@ export default function Speakers() {
           </div>
         )}
       </SectionLayout>
-      <SectionLayout
-        paddingBottom
-        title={"Event Speakers"}
-        className="max-w-sectionLayout mx-auto mt-6 md:mt-12"
-      >
-        {eventSpeakers.length && (
-          <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
+      <SectionLayout paddingBottom title={"Event Speakers"}>
+        {
+          <>
+            {error && (
+              <div className="flex items-center justify-center">
+                <p className="text-center text-xs text-red-500">{error}</p>
+              </div>
+            )}
+            {!eventSpeakers && (
+              <div className="flex items-center justify-center">
+                <Loader />
+              </div>
+            )}
+          </>
+        }
+        {eventSpeakers && (
+          <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
             {eventSpeakers.map((speaker) => (
               <SpeakerCard key={speaker._id} speaker={speaker} />
             ))}
