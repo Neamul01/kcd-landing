@@ -3,26 +3,24 @@ import SpeakerCard from "@/MUI/SpeakerCard";
 import axiosInstance from "@/lib/Axios";
 import { useEffect, useState } from "react";
 import Loader from "./Shared/Loader";
-import SectionLayout from "./layout/SectionLayout";
 import { Participant } from "./dashboard/speakers/ParticipantsTable";
+import SectionLayout from "./layout/SectionLayout";
 
 export default function Speakers() {
   const [keynoteSpeakers, setKeyNoteSpeakers] = useState<Participant[]>([]);
   const [eventSpeakers, setEventSpeakers] = useState<Participant[]>([]);
+  const [error, setError] = useState<string>();
 
-  console.log(eventSpeakers);
-
+  // ------------------ Keynote Speakers --------------------------
   const getKeynoteSpeakers = async () => {
     try {
       const response = await axiosInstance.get(
         "/participants?role=key-note-speaker"
       );
-
-      // Handle the response data here
       setKeyNoteSpeakers(response.data.data);
+      console.log(response.data.data);
     } catch (error) {
-      // Handle the error here
-      console.error(error);
+      setError("Something went wrong");
     }
   };
 
@@ -30,17 +28,21 @@ export default function Speakers() {
     getKeynoteSpeakers();
   }, []);
 
+  // ------------------ Event Speakers --------------------------
   const getEventSpeakers = async () => {
     try {
-      const response = await axiosInstance.get(
-        "/participants?role=event-speaker"
-      );
-
-      // Handle the response data here
-      setEventSpeakers(response.data.data);
+      await axiosInstance
+        .get("/participants?role=event-speaker")
+        .then((res) => {
+          setEventSpeakers(res.data.data);
+          console.log(res.data.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+          setError("Something went wrong");
+        });
     } catch (error) {
-      // Handle the error here
-      console.error(error);
+      setError("Something went wrong");
     }
   };
 
@@ -50,15 +52,27 @@ export default function Speakers() {
 
   return (
     <div id="speakers ">
-      <SectionLayout title={"Keynote Speakers"} className="">
-        {keynoteSpeakers.length ? (
+      <SectionLayout title={"Keynote Speakers"}>
+        {
+          <>
+            {error && (
+              <div className="flex items-center justify-center">
+                <p className="text-center text-xs text-red-500">{error}</p>
+              </div>
+            )}
+            {!keynoteSpeakers && (
+              <div className="flex items-center justify-center">
+                <Loader />
+              </div>
+            )}
+          </>
+        }
+        {keynoteSpeakers && (
           <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
             {keynoteSpeakers.map((speaker) => (
               <SpeakerCard key={speaker._id} speaker={speaker} />
             ))}
           </div>
-        ) : (
-          <Loader />
         )}
       </SectionLayout>
       <SectionLayout
@@ -66,40 +80,14 @@ export default function Speakers() {
         title={"Event Speakers"}
         className="max-w-sectionLayout mx-auto mt-6 md:mt-12"
       >
-        {eventSpeakers.length ? (
+        {eventSpeakers.length && (
           <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
             {eventSpeakers.map((speaker) => (
               <SpeakerCard key={speaker._id} speaker={speaker} />
             ))}
           </div>
-        ) : (
-          <Loader />
         )}
       </SectionLayout>
     </div>
   );
 }
-
-const keynoteSpeakers = [
-  {
-    id: 1,
-    name: "MD Shahriyar Al Mustakim Mitul",
-    industry: "Cloud Native Dhaka, CNCF Ambassador",
-    position: "Lead Organizer",
-    imageUrl: "/download.jpeg",
-  },
-  {
-    id: 2,
-    name: "Amir Hossain",
-    industry: " BJIT Limited",
-    position: "Head of DevSecOps & Cloud Engineering",
-    imageUrl: "/download.jpeg",
-  },
-  {
-    id: 3,
-    name: "Md Arif Hossen",
-    industry: "Banglalink",
-    position: "Technical Cloud Architect Consultant",
-    imageUrl: "/download.jpeg",
-  },
-];

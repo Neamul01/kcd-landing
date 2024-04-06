@@ -1,10 +1,10 @@
 // axiosInterceptorInstance.ts
 
 import axios, {
+  AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
-  AxiosError,
 } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
