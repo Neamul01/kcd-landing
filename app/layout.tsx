@@ -5,6 +5,7 @@ import Navbar from "@/MUI/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,20 @@ export default function RootLayout({
         {children}
         <ToastContainer />
         <Footer />
+
+        {/* ----------google analytics---------- */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-X0V0S469ZL"
+        ></Script>
+        <Script id="google-analytics">
+          {` 
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments)}
+         gtag('js', new Date());
+         
+         gtag('config', 'G-X0V0S469ZL')`}
+        </Script>
       </body>
     </html>
   );
