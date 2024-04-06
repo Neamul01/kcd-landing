@@ -118,7 +118,7 @@ const paymentPartner = [
   {
     id: "1",
     name: "aamarpay",
-    icon: "/sponsors/aamarpay_logo.webp",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/aamarpay.png",
     link: "https://www.aamarpay.com/",
   },
 ];
@@ -126,7 +126,7 @@ const silverSponsors = [
   {
     id: "2",
     name: "apps-code",
-    icon: "/sponsors/apps-code-logo.png",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/apps-code.png",
     link: "https://appscode.com/",
   },
 ];
@@ -135,13 +135,13 @@ const goldSponsors = [
   {
     id: "3",
     name: "nhq",
-    icon: "/sponsors/nhq_logo.jpg",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/nhq.jpg",
     link: "https://www.nhqbd.com/",
   },
   {
     id: "4",
     name: "nhq",
-    icon: "/sponsors/upstra_logo.webp",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/Upstra.png",
     link: "https://upstra.com/",
   },
 ];
@@ -150,7 +150,7 @@ const bronzeSponsors = [
   {
     id: "5",
     name: "brilliant-cloud",
-    icon: "/sponsors/brilliant_cloud_logo.png",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/brilliant-cloud.png",
     link: "https://intercloud.com.bd/",
   },
 ];
@@ -159,25 +159,25 @@ const platinumSponsors = [
   {
     id: "6",
     name: "aes",
-    icon: "/sponsors/anwar_enterprise_systems_ltd_logo.png",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/anwar_enterprise_systems_ltd.png",
     link: "https://cloudaes.com/",
   },
   {
     id: "7",
     name: "astha",
-    icon: "/sponsors/astha_logo.png",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/astha_it.png",
     link: "https://www.asthait.com/",
   },
   {
     id: "8",
     name: "klover",
-    icon: "/sponsors/klover_logo.png",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/klover.png",
     link: "https://www.klovercloud.com/",
   },
   {
     id: "9",
     name: "f5",
-    icon: "/sponsors/f5_logo.png",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/f5.png",
     link: "https://www.f5.com/",
   },
 ];
@@ -192,31 +192,31 @@ const Community = [
   {
     id: "10",
     name: "amazon-web-services",
-    icon: "/sponsors/amazon-web-services.webp",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/amazon-web-services.png",
     link: "https://www.facebook.com/groups/AWSBangladesh/",
   },
   {
     id: "11",
     name: "cncf-logo",
-    icon: "/sponsors/cncf-logo.webp",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/cncf-logo.png",
     link: "https://community.cncf.io/cloud-native-dhaka/",
   },
   {
     id: "12",
     name: "dcm-logo",
-    icon: "/sponsors/dev_change_maker.webp",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/dev_change_maker.png",
     link: "https://www.linkedin.com/company/devchangemakers/",
   },
   {
     id: "13",
     name: "tensorflow-user-group-bangladesh",
-    icon: "/sponsors/tensorflow-user-group-bangladesh.webp",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/tensorflow-user-group-bangladesh.png",
     link: "https://www.facebook.com/groups/tfugbd/",
   },
   {
     id: "14",
     name: "BDSAF",
-    icon: "/sponsors/BDSAF_Logo.webp",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/BDSAF.png",
     link: "https://bdsaf.org",
   },
 ];
@@ -225,13 +225,13 @@ const Media = [
   {
     id: "16",
     name: "kube",
-    icon: "/sponsors/kube_logo.svg",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/kube.svg",
     link: "https://kube.careers/",
   },
   {
     id: "17",
     name: "kube-event",
-    icon: "/sponsors/kube-event_logo.svg",
+    icon: "https://d2sycsl2hirrcd.cloudfront.net/sponsors/kube-event.svg",
     link: "https://kube.events/",
   },
 ];
