@@ -17,7 +17,7 @@ export const useTimerStore = create<TimerStore>((set) => ({
   timerFinished: false,
   intervalId: null,
   startTimer: () => {
-    const initialTime = 0.5 * 60; // 15 minutes in seconds
+    const initialTime = 15 * 60; // 15 minutes in seconds
     let currentTime = initialTime;
     const intervalId = setInterval(() => {
       currentTime--;
