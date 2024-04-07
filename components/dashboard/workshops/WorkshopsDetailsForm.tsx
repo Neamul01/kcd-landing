@@ -75,21 +75,21 @@ const WorkshopsDetailsForm = ({
       if (selectedWorkshops && closeModal) {
         // ----------------edit form
         console.log("edit form", values);
-        // return await axiosInstance
-        //   .put(`/workshops/${selectedWorkshops._id}`, values)
-        //   .then((res) => {
-        //     toast.success("Schedule Updated Successfully.");
-        //     console.log("res", res);
-        //     reset();
-        //   })
-        //   .catch((err) => {
-        //     console.log("err", err);
-        //     toast.error("Something went wrong please try again.");
-        //   })
-        //   .finally(() => {
-        //     setIsPending(false);
-        //     closeModal();
-        //   });
+        return await axiosInstance
+          .put(`/workshops/${selectedWorkshops._id}`, values)
+          .then((res) => {
+            toast.success("Schedule Updated Successfully.");
+            console.log("res", res);
+            reset();
+          })
+          .catch((err) => {
+            console.log("err", err);
+            toast.error("Something went wrong please try again.");
+          })
+          .finally(() => {
+            setIsPending(false);
+            closeModal();
+          });
       }
       console.log("add form", values);
 
