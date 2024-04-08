@@ -48,6 +48,7 @@ export interface Participant {
   role: string;
   sponsor_link: string;
   sponsor_status: string;
+  speaking_topic: string;
   _id: string;
 }
 
