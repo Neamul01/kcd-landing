@@ -130,8 +130,8 @@ const EditTicketModal = ({ open, onClose, ticket = {}, onUpdate }) => {
                 onChange={handleChange}
                 label="Available status"
               >
-                <MenuItem value={true}>Yes</MenuItem>
-                <MenuItem value={false}>No</MenuItem>
+                <MenuItem value={"true"}>Yes</MenuItem>
+                <MenuItem value={"false"}>No</MenuItem>
               </Select>
             </FormControl>
           </div>
