@@ -74,12 +74,12 @@ const OrdersTable = () => {
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Track</TableCell>
-              {/* <TableCell>Workshop</TableCell> */}
+              <TableCell>Workshop</TableCell>
               <TableCell>Tshirt</TableCell>
               <TableCell>Organization</TableCell>
               <TableCell>
                 <p className="flex flex-col">
-                  <span>Designation /</span> <span> Student Id</span>
+                  <span>Designation/</span> <span>Student Id</span>
                 </p>
               </TableCell>
               <TableCell>Status</TableCell>
@@ -101,13 +101,13 @@ const OrdersTable = () => {
                   <span>{order.phone.promotion}</span>
                 </TableCell>
                 <TableCell>{order.track}</TableCell>
-                {/* <TableCell>
-                  {order.workshop.map((workshopId, index) => (
-                    <React.Fragment key={workshopId}>
-                      {index > 0 && <br />} <span>{workshopId}</span>
+                <TableCell>
+                  {order.workshop.map((workshop, index) => (
+                    <React.Fragment key={workshop._id}>
+                      {index > 0 && <br />} <span>`{workshop?.title}`</span>
                     </React.Fragment>
                   ))}
-                </TableCell> */}
+                </TableCell>
                 <TableCell>{order.tshirt}</TableCell>
                 <TableCell>{order.organization}</TableCell>
                 <TableCell>
