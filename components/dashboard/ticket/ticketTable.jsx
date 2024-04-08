@@ -36,7 +36,6 @@ const TicketTable = ({ tickets, onDelete, handleReload }) => {
   }
 
   const handleUpdate = async (updatedTicket) => {
-    console.log("update ticket", updatedTicket);
     try {
       await axiosInstance.put(`/tickets/${updatedTicket._id}`, updatedTicket);
       const updatedTickets = tickets.map((ticket) =>
