@@ -29,6 +29,7 @@ const schema = zod.object({
   role: zod.string().min(1, { message: "Role is required" }).optional(),
   sponsor_status: zod.string().optional(),
   sponsor_link: zod.string().min(1, { message: "Sponsor Link is required" }),
+  speaking_topic: zod.string().optional(),
 });
 
 type Values = zod.infer<typeof schema>;
@@ -60,6 +61,7 @@ const SpeakersDetailsForm = ({
     control,
     setValue,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -69,9 +71,11 @@ const SpeakersDetailsForm = ({
       role: selectedParticipant?.role || "",
       sponsor_status: selectedParticipant?.sponsor_status || "",
       sponsor_link: selectedParticipant?.sponsor_link || "",
+      speaking_topic: selectedParticipant?.speaking_topic || "",
     },
     resolver: zodResolver(schema),
   });
+  const selectedRole = watch("role");
 
   const onSubmit = async (values: Values): Promise<void> => {
     try {
@@ -191,6 +195,7 @@ const SpeakersDetailsForm = ({
         role: selectedParticipant.role,
         sponsor_link: selectedParticipant.sponsor_link,
         sponsor_status: selectedParticipant.sponsor_status,
+        speaking_topic: selectedParticipant.speaking_topic,
       });
       setUpdateImage(selectedParticipant.photo);
       // @ts-ignore
@@ -276,6 +281,30 @@ const SpeakersDetailsForm = ({
             )}
           />
 
+          {(selectedRole === "event-speaker" ||
+            selectedRole === "key-note-speaker") && (
+            <Controller
+              control={control}
+              name="speaking_topic"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.speaking_topic)}>
+                  <InputLabel size="small">speaking topic</InputLabel>
+                  <OutlinedInput
+                    size="small"
+                    {...field}
+                    // value={selectedParticipant?.speaking_topic || ""}
+                    label="speaking topic"
+                  />
+                  {errors.speaking_topic ? (
+                    <FormHelperText>
+                      {errors.speaking_topic.message}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+          )}
+
           {role === "sponsor" && (
             <Controller
               control={control}
@@ -347,16 +376,17 @@ const SpeakersDetailsForm = ({
           </Button>
           <p className="text-sm text-accent/80">
             {" "}
-            {role === "event-speaker" ||
-              (role === "key-note-speaker" &&
+            {selectedRole === "event-speaker" ||
+              (selectedRole === "key-note-speaker" &&
                 "Speaker image size 160x216, please follow the resolution.")}
-            {role === "organizer" &&
+            {selectedRole === "organizer" &&
               "Organizer image size 160x216, please follow the resolution."}
-            {role === "sponsor" &&
+            {selectedRole === "sponsor" &&
               "Sponsor image size 240x111, please follow the resolution."}
-            {role === "volunteer" &&
+            {selectedRole === "volunteer" &&
               "Volunteer image size 160x216, please follow the resolution."}
-            {!role && "Please select `Role` to see image resolution guide."}
+            {!selectedRole &&
+              "Please select `Role` to see image resolution guide."}
           </p>
         </div>
 
