@@ -32,7 +32,7 @@ export default function SpeakerCard({ speaker }: { speaker: Participant }) {
             gutterBottom
             variant="h5"
             component="p"
-            className="font-bold text-lg text-center"
+            className="font-bold text-lg text-center capitalize"
           >
             {speaker.name}
           </Typography>
@@ -60,6 +60,7 @@ export default function SpeakerCard({ speaker }: { speaker: Participant }) {
               <FaLinkedinIn size={25} />
             </a>
           </a>
+          <p className="text-center capitalize">{speaker.speaking_topic}</p>
         </CardContent>
       </CardActionArea>
     </Card>
