@@ -9,6 +9,7 @@ export type Ticket = {
   createdAt: string;
   quantity: number;
   ticketType: string;
+  timing: string;
 };
 
 export type CartItem = {
