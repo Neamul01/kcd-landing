@@ -102,11 +102,15 @@ const OrdersTable = () => {
                 </TableCell>
                 <TableCell>{order.track}</TableCell>
                 <TableCell>
-                  {order.workshop.map((workshop, index) => (
-                    <React.Fragment key={workshop._id}>
-                      {index > 0 && <br />} <span>`{workshop?.title}`</span>
-                    </React.Fragment>
-                  ))}
+                  <ul
+                    style={{
+                      listStyleType: "circle",
+                    }}
+                  >
+                    {order.workshop.map((workshop, index) => (
+                      <li key={workshop._id}>{workshop?.title}</li>
+                    ))}
+                  </ul>
                 </TableCell>
                 <TableCell>{order.tshirt}</TableCell>
                 <TableCell>{order.organization}</TableCell>
