@@ -19,20 +19,22 @@ import { MdDeleteOutline } from "react-icons/md";
 import { TfiReload } from "react-icons/tfi";
 import { toast } from "react-toastify";
 
-const OrdersTable = () => {
+const OrdersTable = ({ selectedTrack }) => {
   const [orders, setOrders] = useState([]);
   console.log(orders);
 
   //-------------------- Get all orders ---------------------
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-
-  const fetchOrders = async () => {
+  const fetchOrders = async (selectedTrack) => {
     try {
-      const res = await axiosInstance.get("/orders");
-      console.log(res);
+      let url = `/orders`;
+
+      if (selectedTrack !== "all") {
+        url += `?track=${selectedTrack}`;
+      }
+
+      const res = await axiosInstance.get(url);
+      // console.log(res);
       setOrders(res.data.data);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -57,6 +59,17 @@ const OrdersTable = () => {
       }
     }
   };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  useEffect(() => {
+    if (selectedTrack) {
+      fetchOrders(selectedTrack);
+    }
+  }, [selectedTrack]);
+
   return (
     <Card>
       <div className="flex justify-end px-9 cursor-pointer ">

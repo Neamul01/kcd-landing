@@ -2,6 +2,7 @@
 
 import { Discounts } from "@/components/dashboard/orders/Discounts";
 import { NumberOfSales } from "@/components/dashboard/orders/NumberOfSales";
+import { OrderFilter } from "@/components/dashboard/orders/OrderFilter";
 import OrdersTable from "@/components/dashboard/orders/OrdersTable";
 import { Revenue } from "@/components/dashboard/orders/Revenue";
 import { TotalSales } from "@/components/dashboard/orders/TotalSales";
@@ -11,6 +12,7 @@ import { useEffect, useState } from "react";
 
 const Page = () => {
   const [orderSummery, setOrderSummery] = useState([]);
+  const [selectedTrack, setSelectedTrack] = useState("");
 
   useEffect(() => {
     fetchOrderSummery();
@@ -74,13 +76,16 @@ const Page = () => {
         </Grid>
       </Grid>
       <Grid container spacing={2}>
-        <Grid lg={8} md={6} xs={12}>
-          {/* <OrdersForm /> */}
+        <Grid xs={12}>
+          <OrderFilter
+            setSelectedTrack={setSelectedTrack}
+            selectedTrack={selectedTrack}
+          />
         </Grid>
       </Grid>
       <Grid container spacing={5}>
         <Grid xs={12}>
-          <OrdersTable />
+          <OrdersTable selectedTrack={selectedTrack} />
         </Grid>
       </Grid>
     </Stack>
