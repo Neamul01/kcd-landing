@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 const Page = () => {
   const [orderSummery, setOrderSummery] = useState([]);
   const [selectedTrack, setSelectedTrack] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   useEffect(() => {
     fetchOrderSummery();
@@ -80,12 +81,17 @@ const Page = () => {
           <OrderFilter
             setSelectedTrack={setSelectedTrack}
             selectedTrack={selectedTrack}
+            setSelectedStatus={setSelectedStatus}
+            selectedStatus={selectedStatus}
           />
         </Grid>
       </Grid>
       <Grid container spacing={5}>
         <Grid xs={12}>
-          <OrdersTable selectedTrack={selectedTrack} />
+          <OrdersTable
+            selectedTrack={selectedTrack}
+            selectedStatus={selectedStatus}
+          />
         </Grid>
       </Grid>
     </Stack>

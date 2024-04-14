@@ -19,29 +19,40 @@ import { MdDeleteOutline } from "react-icons/md";
 import { TfiReload } from "react-icons/tfi";
 import { toast } from "react-toastify";
 
-const OrdersTable = ({ selectedTrack }) => {
+const OrdersTable = ({ selectedTrack, selectedStatus }) => {
   const [orders, setOrders] = useState([]);
   console.log(orders);
 
   //-------------------- Get all orders ---------------------
 
-  const fetchOrders = async (selectedTrack) => {
+  const fetchOrders = async (selectedTrack, selectedStatus) => {
     try {
-      let url = `/orders`;
+      let url = "/orders";
 
-      if (selectedTrack !== "all") {
-        url += `?track=${selectedTrack}`;
+      // Append both track and status query parameters if they are provided
+      if (selectedTrack && selectedStatus) {
+        url += `?track=${selectedTrack}&status=${selectedStatus}`;
+      } else {
+        // Append only track query parameter if selectedTrack is provided
+        if (selectedTrack) {
+          url += `?track=${selectedTrack}`;
+        }
+
+        // Append only status query parameter if selectedStatus is provided
+        if (selectedStatus) {
+          url += `?status=${selectedStatus}`;
+        }
       }
 
       const res = await axiosInstance.get(url);
-      // console.log(res);
       setOrders(res.data.data);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
   };
+
   const handleReload = () => {
-    fetchOrders();
+    fetchOrders(selectedTrack, selectedStatus);
   };
 
   //-------------------- Delete order ---------------------
@@ -65,10 +76,8 @@ const OrdersTable = ({ selectedTrack }) => {
   }, []);
 
   useEffect(() => {
-    if (selectedTrack) {
-      fetchOrders(selectedTrack);
-    }
-  }, [selectedTrack]);
+    fetchOrders(selectedTrack, selectedStatus);
+  }, [selectedTrack, selectedStatus]);
 
   return (
     <Card>
