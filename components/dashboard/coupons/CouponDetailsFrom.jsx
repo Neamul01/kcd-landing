@@ -29,7 +29,8 @@ const schema = zod.object({
   limit: zod.string().min(1, { message: "Limit is required" }),
   products: zod
     .array(zod.string())
-    .min(1, { message: "At least one product is required" }),
+    .min(1, { message: "At least one product is required" })
+    .optional(),
   expiryDate: zod.string().min(1, { message: "Expiry date is required" }),
   description: zod.string().min(1, { message: "Description is required" }),
 });
@@ -54,7 +55,7 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
       code: "Kodekloud",
       discountPercentage: "20",
       limit: "1",
-      products: ["productId"], // Ensure it's an array of strings
+      products: [" d"], // Ensure it's an array of strings
       expiryDate: new Date().toISOString().split("T")[0],
       description: "This coupon will be used by Kodekloud users",
     },
@@ -62,39 +63,40 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
   });
 
   const onSubmit = async (values) => {
+    console.log("submit value");
     try {
       setIsPending(true);
 
       console.log("submit value", values);
 
-      // if (selectedSchedule && closeModal) {
-      //   return await axiosInstance
-      //     .put(`/schedules/${selectedSchedule._id}`, values)
-      //     .then((res) => {
-      //       toast.success("Schedule Updated Successfully.");
-      //       reset();
-      //     })
-      //     .catch(() => {
-      //       toast.error("Something went wrong please try again.");
-      //     })
-      //     .finally(() => {
-      //       setIsPending(false);
-      //       closeModal();
-      //     });
-      // }
+      if (selectedSchedule && closeModal) {
+        return await axiosInstance
+          .put(`/coupons/${selectedSchedule._id}`, values)
+          .then((res) => {
+            toast.success("Ticket Updated Successfully.");
+            reset();
+          })
+          .catch(() => {
+            toast.error("Something went wrong please try again.");
+          })
+          .finally(() => {
+            setIsPending(false);
+            closeModal();
+          });
+      }
 
-      // await axiosInstance
-      //   .post("/schedules", values)
-      //   .then((res) => {
-      //     toast.success("Schedule Added Successfully.");
-      //     reset();
-      //   })
-      //   .catch(() => {
-      //     toast.error("Something went wrong please try again.");
-      //   })
-      //   .finally(() => {
-      //     setIsPending(false);
-      //   });
+      await axiosInstance
+        .post("/coupons", values)
+        .then((res) => {
+          toast.success("Ticket Added Successfully.");
+          reset();
+        })
+        .catch(() => {
+          toast.error("Something went wrong please try again.");
+        })
+        .finally(() => {
+          setIsPending(false);
+        });
     } catch {
       () => {
         alert("Something went wrong please try again..");
@@ -111,24 +113,26 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
         description: selectedSchedule.description,
         scheduleTrack: selectedSchedule.scheduleTrack,
         scheduleTime: selectedSchedule.scheduleTime,
-        speaker: selectedSchedule.speaker._id,
+        products: selectedSchedule.products._id,
       });
     }
   }, [selectedSchedule, reset]);
 
-  const handleOptionSelect = (value) => {
-    if (value) {
-      setValue("speaker", value._id);
-      clearErrors("speaker");
+  const handleOptionSelect = (values) => {
+    if (values && values.length > 0) {
+      const productIds = values.map((value) => value._id); // Extract IDs from each object
+      console.log("Selected product IDs:", productIds);
+      setValue("products", productIds); // Set IDs to the hook-form field
+      clearErrors("products");
     } else {
-      setValue("speaker", "");
+      setValue("products", []); // Set empty array if no value selected
     }
   };
 
   const fetchAllParticipants = async () => {
     try {
       setLoading(true);
-      const response = await axiosInstance.get(`/coupons`);
+      const response = await axiosInstance.get(`/tickets`);
       const data = response.data.data.map((participant) => participant);
       setFetchedData(data);
       setOptions(data);
@@ -208,6 +212,7 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
 
           <div className="">
             <Autocomplete
+              multiple
               id="asynchronous-demo"
               open={open}
               onOpen={() => {
@@ -223,8 +228,9 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
                 handleInputChange(event, value, reason)
               }
               onChange={(event, value) => handleOptionSelect(value)}
+              isOptionEqualToValue={(option, value) => option._id === value._id}
               getOptionLabel={(option) => {
-                const code = option.code || "";
+                const code = option.title || "";
 
                 return `${code}`;
               }}
@@ -247,8 +253,8 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
                 />
               )}
             />
-            {errors.speaker ? (
-              <FormHelperText error>{errors.speaker.message}</FormHelperText>
+            {errors.products ? (
+              <FormHelperText error>{errors.products.message}</FormHelperText>
             ) : null}
           </div>
 

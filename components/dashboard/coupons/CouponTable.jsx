@@ -5,6 +5,9 @@ import {
   Button,
   Card,
   Checkbox,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Table,
   TableBody,
   TableCell,
@@ -18,9 +21,11 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { TfiReload } from "react-icons/tfi";
 import { toast } from "react-toastify";
+import CouponDetailsForm from "./CouponDetailsFrom";
 
 const CouponTable = ({ coupons, handleReload, onDelete }) => {
   const [editingCoupon, setEditingCoupon] = useState(null);
+  const [open, setOpen] = useState(false);
 
   if (!Array.isArray(coupons) || coupons.length === 0) {
     return (
@@ -58,11 +63,12 @@ const CouponTable = ({ coupons, handleReload, onDelete }) => {
   };
 
   const handleEditClick = (coupon) => {
+    setOpen(true);
     setEditingCoupon(coupon);
   };
 
-  const handleCloseModal = () => {
-    setEditingCoupon(null);
+  const onClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -85,7 +91,7 @@ const CouponTable = ({ coupons, handleReload, onDelete }) => {
               <TableCell>Products</TableCell>
               <TableCell>Description</TableCell>
               <TableCell>Expiry Date</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -97,15 +103,18 @@ const CouponTable = ({ coupons, handleReload, onDelete }) => {
                 <TableCell>{coupon.code}</TableCell>
                 <TableCell>{coupon.discountPercentage}</TableCell>
                 <TableCell>{coupon.limit}</TableCell>
-                {coupon.products.map((product, index) => (
-                  <TableCell key={index}>{product}</TableCell>
-                ))}
+                <TableCell>
+                  {coupon.products.map((product, index) => (
+                    <p key={index}>{product}</p>
+                  ))}
+                </TableCell>
+
                 <TableCell>{coupon.description}</TableCell>
                 <TableCell>
                   {dayjs(coupon.expiryDate).format("MMM D, YYYY")}
                 </TableCell>
                 <TableCell>
-                  {dayjs(coupon.createdAt).format("MMM D, YYYY")}
+                  {/* {dayjs(coupon.createdAt).format("MMM D, YYYY")} */}
                 </TableCell>
                 <TableCell>
                   <Button>
@@ -122,12 +131,30 @@ const CouponTable = ({ coupons, handleReload, onDelete }) => {
             ))}
           </TableBody>
         </Table>
-        <EditCouponModal
+        {/* <EditCouponModal
           open={!!editingCoupon}
           onClose={handleCloseModal}
           coupon={editingCoupon}
           onUpdate={handleUpdate}
-        />
+        /> */}
+
+        {/* -----------edit modal */}
+        <Dialog
+          open={open}
+          onClose={() => setOpen(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle>Edit Participant</DialogTitle>
+          <DialogContent>
+            <div className="py-2">
+              <CouponDetailsForm
+                selectedSchedule={editingCoupon}
+                closeModal={onClose}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
       </Box>
     </Card>
   );
