@@ -48,6 +48,7 @@ export interface Participant {
   role: string;
   sponsor_link: string;
   sponsor_status: string;
+  speaking_topic: string;
   _id: string;
 }
 
@@ -146,6 +147,7 @@ export function ParticipantsTable({
               <TableCell>Name</TableCell>
               <TableCell>Designation</TableCell>
               <TableCell>Organization</TableCell>
+              <TableCell>Topic</TableCell>
               <TableCell>Role</TableCell>
               <TableCell>Created At</TableCell>
               <TableCell></TableCell>
@@ -189,8 +191,9 @@ export function ParticipantsTable({
                       <Typography variant="subtitle2">{row.name}</Typography>
                     </Stack>
                   </TableCell>
-                  <TableCell>{row.organization}</TableCell>
                   <TableCell>{row.designation}</TableCell>
+                  <TableCell>{row.organization}</TableCell>
+                  <TableCell>{row.speaking_topic}</TableCell>
                   <TableCell>{row.role}</TableCell>
                   <TableCell>
                     {dayjs(row.createdAt).format("MMM D, YYYY")}

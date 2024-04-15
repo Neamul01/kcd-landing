@@ -2,6 +2,7 @@
 import { useUser } from "@/hooks/use-user";
 import axiosInstance from "@/lib/Axios";
 import { useDetailsStore } from "@/store/useDetailsStore";
+import { useTimerStore } from "@/store/useTimerStore";
 import { Coupon, Order, Ticket, TicketSummery } from "@/types/types";
 import { Button, TextField } from "@mui/material";
 import Link from "next/link";
@@ -30,6 +31,7 @@ export default function BuyTicketSummery({
   const [coupon, setCoupon] = useState("");
   const { data, setIsSubmit, errors, setErrors, clearErrors } =
     useDetailsStore();
+  const { timeLeft, timerFinished, startTimer, formatTime } = useTimerStore();
 
   const makeOrder = async (orderData: Order) => {
     try {
@@ -40,6 +42,7 @@ export default function BuyTicketSummery({
       // console.log("order placed", response.data.data._id);
       setOrderId(response.data.data._id);
       setLoading(false);
+      startTimer();
       return null;
     } catch (err: any) {
       setLoading(false);
@@ -160,6 +163,25 @@ export default function BuyTicketSummery({
       <div className="h-full w-full flex flex-col justify-between gap-3">
         {selectedTickets ? (
           <div className="w-full  bg-white flex gap-4 flex-col rounded-xl p-4">
+            <div className="">
+              {timeLeft && !timerFinished && (
+                <div className="flex flex-col items-center justify-center border rounded-lg py-3">
+                  <>
+                    <p className="text-center font-medium text-2xl text-accent">
+                      {formatTime(timeLeft as number)}
+                    </p>
+                    <p className="text-center text-xs">
+                      Please make payment within this time.
+                    </p>
+                  </>
+                </div>
+              )}
+              {timerFinished && (
+                <p className="text-center text-sm text-accent">
+                  Time left, please buy ticket again.
+                </p>
+              )}
+            </div>
             <h3 className="font-semibold text-xl tracking-wide">
               Ticket Summary
             </h3>
@@ -239,7 +261,7 @@ export default function BuyTicketSummery({
           {/* {user ? ( */}
           <Button
             onClick={handleProceed}
-            disabled={!selectedTickets || loading}
+            disabled={!selectedTickets || loading || timerFinished}
             variant="contained"
             size="large"
             className="w-full bg-accent/60 hover:bg-accent/80 disabled:bg-accent/40 !disabled:cursor-not-allowed  py-3 shadow-none"

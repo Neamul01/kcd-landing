@@ -10,8 +10,8 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "KCD DHAKA",
-  description: "Kubernetes Community Dhaka Bngladesh",
+  title: "Kubernetes Community Day (KCD) Dhaka",
+  description: "Kubernetes Community Day (KCD) Dhaka",
 };
 
 export default function RootLayout({

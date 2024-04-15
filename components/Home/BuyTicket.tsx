@@ -11,6 +11,7 @@ import { Ticket, TicketSummery } from "@/types/types";
 import axiosInstance from "@/lib/Axios";
 import Loader from "../Shared/Loader";
 import BuyTicketPaymentCard from "./BuyTicketPaymentCard";
+import { useTimerStore } from "@/store/useTimerStore";
 
 export default function BuyTicket() {
   const [tab, setTab] = useState(1);
@@ -18,6 +19,7 @@ export default function BuyTicket() {
   const [selectedTickets, setSelectedTickets] = useState<Ticket>();
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [error, setError] = useState<string>();
+  const { setTimerFinished, resetTimer } = useTimerStore();
   const [ticketSummary, setTicketSummary] = useState<TicketSummery>({
     price: 0,
     discount: 0,
@@ -26,6 +28,8 @@ export default function BuyTicket() {
   });
 
   const handleBack = () => {
+    setTimerFinished(false);
+    resetTimer();
     if (tab > 1) {
       setTab(tab - 1);
     } else {
