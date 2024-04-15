@@ -33,6 +33,12 @@ export const navItems = [
     icon: "user",
   },
   {
+    key: "Coupon",
+    title: "Coupon",
+    href: paths.dashboard.coupons,
+    icon: "coupon",
+  },
+  {
     key: "workshops",
     title: "Workshops",
     href: paths.dashboard.workshops,
