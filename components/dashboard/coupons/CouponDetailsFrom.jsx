@@ -35,7 +35,10 @@ const schema = zod.object({
   description: zod.string().min(1, { message: "Description is required" }),
 });
 
-const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
+const CouponDetailsForm = ({
+  selectedSchedule: selectedCoupon,
+  closeModal,
+}) => {
   const [isPending, setIsPending] = useState(false);
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
@@ -72,9 +75,9 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
 
       console.log("submit value", values);
 
-      if (selectedSchedule && closeModal) {
+      if (selectedCoupon && closeModal) {
         return await axiosInstance
-          .put(`/coupons/${selectedSchedule._id}`, values)
+          .put(`/coupons/${selectedCoupon._id}`, values)
           .then((res) => {
             toast.success("Ticket Updated Successfully.");
             reset();
@@ -113,16 +116,18 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
   };
 
   useEffect(() => {
-    if (selectedSchedule) {
+    if (selectedCoupon) {
+      console.log("selected coupon", selectedCoupon);
       reset({
-        title: selectedSchedule.title,
-        description: selectedSchedule.description,
-        scheduleTrack: selectedSchedule.scheduleTrack,
-        scheduleTime: selectedSchedule.scheduleTime,
-        products: selectedSchedule.products._id,
+        code: selectedCoupon.code,
+        description: selectedCoupon.description,
+        discountPercentage: `${selectedCoupon.discountPercentage}`,
+        expiryDate: selectedCoupon.expiryDate,
+        products: selectedCoupon.products,
+        limit: `${selectedCoupon.limit}`,
       });
     }
-  }, [selectedSchedule, reset]);
+  }, [selectedCoupon, reset]);
 
   const handleOptionSelect = (values) => {
     if (values && values.length > 0) {
@@ -163,6 +168,20 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
     );
     setOptions(filteredOptions);
   };
+
+  const [expiryDate, setExpiryDate] = useState(
+    selectedCoupon?.expiryDate
+      ? dayjs(selectedCoupon?.expiryDate).format("YYYY-MM-DD")
+      : ""
+  );
+
+  useEffect(() => {
+    setExpiryDate(
+      selectedCoupon?.expiryDate
+        ? dayjs(selectedCoupon?.expiryDate).format("YYYY-MM-DD")
+        : ""
+    );
+  }, [selectedCoupon]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -273,13 +292,19 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
             control={control}
             name="expiryDate"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.scheduleTime)}>
+              <FormControl error={Boolean(errors.expiryDate)}>
                 <TextField
                   fullWidth
                   label="Expiry Date"
                   name="expiryDate"
-                  value={field.value}
+                  value={
+                    selectedCoupon?.expiryDate
+                      ? dayjs(selectedCoupon?.expiryDate).format("YYYY-MM-DD")
+                      : ""
+                  }
                   onChange={(event) => {
+                    console.log("event", event.target.value);
+                    console.log("event default", selectedCoupon?.expiryDate);
                     field.onChange(event.target.value);
                   }}
                   variant="outlined"
@@ -320,7 +345,7 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
           variant="contained"
           className="bg-primary/80"
         >
-          {isPending ? "Loading..." : selectedSchedule ? "Update" : "Add"}
+          {isPending ? "Loading..." : selectedCoupon ? "Update" : "Add"}
         </Button>
       </Stack>
     </form>
