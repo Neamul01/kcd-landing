@@ -67,6 +67,8 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
     console.log("submit value");
     try {
       setIsPending(true);
+      // setInputValue("");
+      // reset()
 
       console.log("submit value", values);
 
@@ -76,6 +78,9 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
           .then((res) => {
             toast.success("Ticket Updated Successfully.");
             reset();
+            setInputValue("");
+            setOptions("");
+            setFetchedData("");
           })
           .catch(() => {
             toast.error("Something went wrong please try again.");
