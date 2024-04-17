@@ -113,9 +113,9 @@ const CouponTable = ({ coupons, handleReload, onDelete }) => {
                 <TableCell>
                   {dayjs(coupon.expiryDate).format("MMM D, YYYY")}
                 </TableCell>
-                <TableCell>
-                  {/* {dayjs(coupon.createdAt).format("MMM D, YYYY")} */}
-                </TableCell>
+                {/* <TableCell>
+                  {dayjs(coupon.createdAt).format("MMM D, YYYY")}
+                </TableCell> */}
                 <TableCell>
                   <Button>
                     <CiEdit size={20} onClick={() => handleEditClick(coupon)} />
