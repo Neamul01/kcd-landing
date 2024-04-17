@@ -52,12 +52,13 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      code: "Kodekloud",
-      discountPercentage: "20",
-      limit: "1",
-      products: [" d"], // Ensure it's an array of strings
-      expiryDate: new Date().toISOString().split("T")[0],
-      description: "This coupon will be used by Kodekloud users",
+      code: "",
+      discountPercentage: "",
+      limit: "",
+      products: [""],
+      // expiryDate: new Date().toISOString().split("T")[0],
+      expiryDate: "",
+      description: "",
     },
     resolver: zodResolver(schema),
   });
@@ -180,8 +181,13 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
             name="discountPercentage"
             render={({ field }) => (
               <FormControl error={Boolean(errors.discountPercentage)}>
-                <InputLabel size="small">Discount</InputLabel>
-                <OutlinedInput size="small" {...field} label="Discount" />
+                <InputLabel size="small">Discount (%)</InputLabel>
+                <OutlinedInput
+                  size="small"
+                  type="number"
+                  {...field}
+                  label="Discount (%)"
+                />
                 {errors.discountPercentage && (
                   <FormHelperText>
                     {errors.discountPercentage.message}
@@ -260,7 +266,7 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
 
           <Controller
             control={control}
-            name="scheduleTime"
+            name="expiryDate"
             render={({ field }) => (
               <FormControl error={Boolean(errors.scheduleTime)}>
                 <TextField
@@ -268,8 +274,8 @@ const CouponDetailsForm = ({ selectedSchedule, closeModal }) => {
                   label="Expiry Date"
                   name="expiryDate"
                   value={field.value}
-                  onChange={(date) => {
-                    field.onChange(date);
+                  onChange={(event) => {
+                    field.onChange(event.target.value);
                   }}
                   variant="outlined"
                   size="small"
