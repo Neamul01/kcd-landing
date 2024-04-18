@@ -29,10 +29,10 @@ const schema = zod.object({
   limit: zod.string().min(1, { message: "Limit is required" }),
   products: zod
     .array(zod.string())
-    .min(1, { message: "At least one product is required" })
-    .optional(),
+    .min(1, { message: "At least one ticket is required" }),
   expiryDate: zod.string().min(1, { message: "Expiry date is required" }),
   description: zod.string().min(1, { message: "Description is required" }),
+  isAvailable: zod.boolean(),
 });
 
 const CouponDetailsForm = ({
@@ -58,8 +58,8 @@ const CouponDetailsForm = ({
       code: "",
       discountPercentage: "",
       limit: "",
-      products: [""],
-      // expiryDate: new Date().toISOString().split("T")[0],
+      products: [],
+      isAvailable: false,
       expiryDate: "",
       description: "",
     },
@@ -67,13 +67,10 @@ const CouponDetailsForm = ({
   });
 
   const onSubmit = async (values) => {
-    console.log("submit value");
     try {
       setIsPending(true);
       // setInputValue("");
       // reset()
-
-      console.log("submit value", values);
 
       if (selectedCoupon && closeModal) {
         return await axiosInstance
@@ -118,26 +115,27 @@ const CouponDetailsForm = ({
   useEffect(() => {
     if (selectedCoupon) {
       console.log("selected coupon", selectedCoupon);
+
+      const productIds = selectedCoupon.products.map((product) =>
+        product._id.toString()
+      );
+
       reset({
         code: selectedCoupon.code,
         description: selectedCoupon.description,
         discountPercentage: `${selectedCoupon.discountPercentage}`,
         expiryDate: selectedCoupon.expiryDate,
-        products: selectedCoupon.products,
+        products: productIds,
         limit: `${selectedCoupon.limit}`,
+        isAvailable: selectedCoupon.isAvailable,
       });
     }
   }, [selectedCoupon, reset]);
 
   const handleOptionSelect = (values) => {
-    if (values && values.length > 0) {
-      const productIds = values.map((value) => value._id); // Extract IDs from each object
-      console.log("Selected product IDs:", productIds);
-      setValue("products", productIds); // Set IDs to the hook-form field
-      clearErrors("products");
-    } else {
-      setValue("products", []); // Set empty array if no value selected
-    }
+    const productIds = values ? values.map((value) => value._id) : []; // Extract IDs from each object or set to empty array
+    setValue("products", productIds); // Set IDs to the hook-form field
+    clearErrors("products");
   };
 
   const fetchAllParticipants = async () => {
@@ -168,20 +166,6 @@ const CouponDetailsForm = ({
     );
     setOptions(filteredOptions);
   };
-
-  const [expiryDate, setExpiryDate] = useState(
-    selectedCoupon?.expiryDate
-      ? dayjs(selectedCoupon?.expiryDate).format("YYYY-MM-DD")
-      : ""
-  );
-
-  useEffect(() => {
-    setExpiryDate(
-      selectedCoupon?.expiryDate
-        ? dayjs(selectedCoupon?.expiryDate).format("YYYY-MM-DD")
-        : ""
-    );
-  }, [selectedCoupon]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -251,6 +235,8 @@ const CouponDetailsForm = ({
               onClose={() => {
                 setOpen(false);
               }}
+              getOptionSelected={(option, value) => option._id === value._id}
+              defaultValue={selectedCoupon?.products || []}
               options={options}
               loading={loading}
               inputValue={inputValue}
@@ -260,15 +246,13 @@ const CouponDetailsForm = ({
               onChange={(event, value) => handleOptionSelect(value)}
               isOptionEqualToValue={(option, value) => option._id === value._id}
               getOptionLabel={(option) => {
-                const code = option.title || "";
-
-                return `${code}`;
+                return option.title || "";
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   size="small"
-                  label="Select Coupon"
+                  label="Select Ticket"
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (
@@ -284,37 +268,74 @@ const CouponDetailsForm = ({
               )}
             />
             {errors.products ? (
-              <FormHelperText error>{errors.products.message}</FormHelperText>
+              <FormHelperText error>
+                {errors.products.message
+                  ? errors.products.message
+                  : "Please select at least a ticket"}
+              </FormHelperText>
             ) : null}
           </div>
 
+          <div className="">
+            <Controller
+              control={control}
+              name="expiryDate"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.expiryDate)}>
+                  <TextField
+                    fullWidth
+                    label="Expiry Date"
+                    name="expiryDate"
+                    value={
+                      selectedCoupon?.expiryDate
+                        ? dayjs(selectedCoupon?.expiryDate).format("YYYY-MM-DD")
+                        : field.value
+                    }
+                    onChange={(event) => {
+                      field.onChange(event.target.value);
+                    }}
+                    variant="outlined"
+                    size="small"
+                    margin="none"
+                    type="date"
+                  />
+                </FormControl>
+              )}
+            />
+            {errors.expiryDate ? (
+              <FormHelperText error>{errors.expiryDate.message}</FormHelperText>
+            ) : null}
+          </div>
+
+          {/* <div className="w-full"> */}
           <Controller
             control={control}
-            name="expiryDate"
+            name="isAvailable"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.expiryDate)}>
-                <TextField
-                  fullWidth
-                  label="Expiry Date"
-                  name="expiryDate"
-                  value={
-                    selectedCoupon?.expiryDate
-                      ? dayjs(selectedCoupon?.expiryDate).format("YYYY-MM-DD")
-                      : ""
-                  }
-                  onChange={(event) => {
-                    console.log("event", event.target.value);
-                    console.log("event default", selectedCoupon?.expiryDate);
-                    field.onChange(event.target.value);
-                  }}
-                  variant="outlined"
+              <FormControl error={Boolean(errors.isAvailable)}>
+                <InputLabel size="small" id="demo-simple-select-label">
+                  Available
+                </InputLabel>
+                <Select
+                  {...field}
                   size="small"
-                  margin="none"
-                  type="date"
-                />
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Available"
+                >
+                  <MenuItem value={true}>Yes</MenuItem>
+                  <MenuItem value={false}>No</MenuItem>
+                </Select>
+                {errors.isAvailable ? (
+                  <FormHelperText>{errors.isAvailable.message}</FormHelperText>
+                ) : null}
               </FormControl>
             )}
           />
+          {errors.isAvailable ? (
+            <FormHelperText error>{errors.isAvailable.message}</FormHelperText>
+          ) : null}
+          {/* </div> */}
         </div>
 
         <div className="grid grid-cols-1">

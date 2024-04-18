@@ -88,9 +88,10 @@ const CouponTable = ({ coupons, handleReload, onDelete }) => {
               <TableCell>Code</TableCell>
               <TableCell>Discount (%)</TableCell>
               <TableCell>Limit</TableCell>
-              <TableCell>Products</TableCell>
+              <TableCell>Tickets</TableCell>
               <TableCell>Description</TableCell>
               <TableCell>Expiry Date</TableCell>
+              <TableCell>Availability</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -105,13 +106,16 @@ const CouponTable = ({ coupons, handleReload, onDelete }) => {
                 <TableCell>{coupon.limit}</TableCell>
                 <TableCell>
                   {coupon.products.map((product, index) => (
-                    <p key={index}>{product}</p>
+                    <p key={index}>{product.title}</p>
                   ))}
                 </TableCell>
 
                 <TableCell>{coupon.description}</TableCell>
                 <TableCell>
                   {dayjs(coupon.expiryDate).format("MMM D, YYYY")}
+                </TableCell>
+                <TableCell>
+                  {coupon.isAvailable ? "Available" : "unAvailable"}
                 </TableCell>
                 {/* <TableCell>
                   {dayjs(coupon.createdAt).format("MMM D, YYYY")}

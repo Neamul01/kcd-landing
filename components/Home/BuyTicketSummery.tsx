@@ -3,7 +3,7 @@ import { useUser } from "@/hooks/use-user";
 import axiosInstance from "@/lib/Axios";
 import { useDetailsStore } from "@/store/useDetailsStore";
 import { useTimerStore } from "@/store/useTimerStore";
-import { Coupon, Order, Ticket, TicketSummery } from "@/types/types";
+import { Coupon, GetOrder, Order, Ticket, TicketSummery } from "@/types/types";
 import { Button, TextField } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -27,11 +27,13 @@ export default function BuyTicketSummery({
 }) {
   // const { data: user } = useUser();
   const [loading, setLoading] = useState(false);
-  const [orderId, setOrderId] = useState("");
+  const [order, setOrder] = useState<GetOrder>();
   const [coupon, setCoupon] = useState("");
   const { data, setIsSubmit, errors, setErrors, clearErrors } =
     useDetailsStore();
   const { timeLeft, timerFinished, startTimer, formatTime } = useTimerStore();
+
+  const router = useRouter();
 
   const makeOrder = async (orderData: Order) => {
     try {
@@ -39,17 +41,17 @@ export default function BuyTicketSummery({
       clearErrors();
       const orderUrl = coupon ? `/orders?coupon=${coupon}` : `/orders`;
       const response = await axiosInstance.post(orderUrl, orderData);
-      // console.log("order placed", response.data.data._id);
-      setOrderId(response.data.data._id);
-      setLoading(false);
+      console.log("order placed", response.data.data);
+      setOrder(response.data.data);
       startTimer();
       return null;
     } catch (err: any) {
-      setLoading(false);
       toast.error(err.response.data.error);
       setErrors(err.response.data.error);
       console.log("make order error", err.response.data.error);
       return err.response.data.error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,12 +78,23 @@ export default function BuyTicketSummery({
   const handleCheckout = async () => {
     try {
       setLoading(true);
-      await axiosInstance.get(`/orders/payment/${orderId}`).then((res) => {
-        console.log("res", res.data.data.payment_url);
-        window.location.href = res.data.data.payment_url;
-      });
+      if (order && order?.total <= 0) {
+        // Handle case when total is 0
+        const response = await axiosInstance.get(
+          `/orders/payment/${order?._id}`
+        );
+        const htmlContent = response.data;
+        router.push(`/render?content=${encodeURIComponent(htmlContent)}`);
+      } else {
+        // Case when total is greater than 0, redirect to payment URL
+        const response = await axiosInstance.get(
+          `/orders/payment/${order?._id}`
+        );
+        const paymentUrl = response.data.data.payment_url;
+        window.location.href = paymentUrl;
+      }
     } catch {
-      () => toast.error("something went wrong, please try again");
+      toast.error("Something went wrong, please try again");
     } finally {
       setLoading(false);
     }
@@ -276,19 +289,6 @@ export default function BuyTicketSummery({
                     : "Proceed"}
             </span>
           </Button>
-          {/* // ) : (
-          //   <Button
-          //     onClick={() => router.push("/auth/sign-in")}
-          //     // disabled
-          //     variant="outlined"
-          //     size="large"
-          //     className="w-full  disabled:bg-accent/40 !disabled:cursor-not-allowed border-accent  py-3 shadow-none"
-          //   >
-          //     <span className="text-lg capitalize font-bold text-black">
-          //       Sign In
-          //     </span>
-          //   </Button>
-          // )} */}
         </div>
         {tab === 3 && (
           <p className="text-sm text-center text-black/60">
