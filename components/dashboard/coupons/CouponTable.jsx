@@ -88,7 +88,7 @@ const CouponTable = ({ coupons, handleReload, onDelete }) => {
               <TableCell>Code</TableCell>
               <TableCell>Discount (%)</TableCell>
               <TableCell>Limit</TableCell>
-              <TableCell>Products</TableCell>
+              <TableCell>Tickets</TableCell>
               <TableCell>Description</TableCell>
               <TableCell>Expiry Date</TableCell>
               <TableCell></TableCell>
