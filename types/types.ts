@@ -19,7 +19,7 @@ export type CartItem = {
   ticket: string | undefined;
 };
 
-export type Order = {
+export type OrderMain = {
   name: string;
   email: string;
   phone: {
@@ -31,7 +31,13 @@ export type Order = {
   tshirt: string;
   address: string;
   cartItems: CartItem[];
+  total: number;
+  _id: string;
 };
+
+export type Order = Omit<OrderMain, "total" | "_id">;
+
+export type GetOrder = Pick<OrderMain, "total" | "_id">;
 
 export type Workshop = {
   _id: string;

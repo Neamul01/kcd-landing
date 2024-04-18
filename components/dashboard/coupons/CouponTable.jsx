@@ -91,6 +91,7 @@ const CouponTable = ({ coupons, handleReload, onDelete }) => {
               <TableCell>Tickets</TableCell>
               <TableCell>Description</TableCell>
               <TableCell>Expiry Date</TableCell>
+              <TableCell>Availability</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -112,6 +113,9 @@ const CouponTable = ({ coupons, handleReload, onDelete }) => {
                 <TableCell>{coupon.description}</TableCell>
                 <TableCell>
                   {dayjs(coupon.expiryDate).format("MMM D, YYYY")}
+                </TableCell>
+                <TableCell>
+                  {coupon.isAvailable ? "Available" : "unAvailable"}
                 </TableCell>
                 {/* <TableCell>
                   {dayjs(coupon.createdAt).format("MMM D, YYYY")}
