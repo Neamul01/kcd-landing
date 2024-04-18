@@ -32,6 +32,7 @@ const schema = zod.object({
     .min(1, { message: "At least one ticket is required" }),
   expiryDate: zod.string().min(1, { message: "Expiry date is required" }),
   description: zod.string().min(1, { message: "Description is required" }),
+  isAvailable: zod.boolean(),
 });
 
 const CouponDetailsForm = ({
@@ -58,7 +59,7 @@ const CouponDetailsForm = ({
       discountPercentage: "",
       limit: "",
       products: [],
-      // expiryDate: new Date().toISOString().split("T")[0],
+      isAvailable: false,
       expiryDate: "",
       description: "",
     },
@@ -113,7 +114,7 @@ const CouponDetailsForm = ({
 
   useEffect(() => {
     if (selectedCoupon) {
-      console.log("selected coupon", selectedCoupon.products);
+      console.log("selected coupon", selectedCoupon);
 
       const productIds = selectedCoupon.products.map((product) =>
         product._id.toString()
@@ -126,6 +127,7 @@ const CouponDetailsForm = ({
         expiryDate: selectedCoupon.expiryDate,
         products: productIds,
         limit: `${selectedCoupon.limit}`,
+        isAvailable: selectedCoupon.isAvailable,
       });
     }
   }, [selectedCoupon, reset]);
@@ -304,6 +306,36 @@ const CouponDetailsForm = ({
               <FormHelperText error>{errors.expiryDate.message}</FormHelperText>
             ) : null}
           </div>
+
+          {/* <div className="w-full"> */}
+          <Controller
+            control={control}
+            name="isAvailable"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.isAvailable)}>
+                <InputLabel size="small" id="demo-simple-select-label">
+                  Available
+                </InputLabel>
+                <Select
+                  {...field}
+                  size="small"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Available"
+                >
+                  <MenuItem value={true}>Yes</MenuItem>
+                  <MenuItem value={false}>No</MenuItem>
+                </Select>
+                {errors.isAvailable ? (
+                  <FormHelperText>{errors.isAvailable.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+          {errors.isAvailable ? (
+            <FormHelperText error>{errors.isAvailable.message}</FormHelperText>
+          ) : null}
+          {/* </div> */}
         </div>
 
         <div className="grid grid-cols-1">
