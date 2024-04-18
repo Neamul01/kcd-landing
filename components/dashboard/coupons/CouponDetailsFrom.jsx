@@ -268,7 +268,7 @@ const CouponDetailsForm = ({
                 <TextField
                   {...params}
                   size="small"
-                  label="Select Coupon"
+                  label="Select Ticket"
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (
