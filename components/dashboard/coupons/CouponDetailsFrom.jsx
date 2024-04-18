@@ -66,7 +66,6 @@ const CouponDetailsForm = ({
   });
 
   const onSubmit = async (values) => {
-    console.log("submit value");
     try {
       setIsPending(true);
       // setInputValue("");
@@ -291,8 +290,6 @@ const CouponDetailsForm = ({
                         : field.value
                     }
                     onChange={(event) => {
-                      console.log("event", event.target.value);
-                      console.log("event default", selectedCoupon?.expiryDate);
                       field.onChange(event.target.value);
                     }}
                     variant="outlined"
