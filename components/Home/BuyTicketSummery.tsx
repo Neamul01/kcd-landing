@@ -27,11 +27,14 @@ export default function BuyTicketSummery({
 }) {
   // const { data: user } = useUser();
   const [loading, setLoading] = useState(false);
-  const [orderId, setOrderId] = useState("");
+  const [order, setOrder] = useState<Order>();
   const [coupon, setCoupon] = useState("");
+  const [htmlContent, setHtmlContent] = useState("");
   const { data, setIsSubmit, errors, setErrors, clearErrors } =
     useDetailsStore();
   const { timeLeft, timerFinished, startTimer, formatTime } = useTimerStore();
+
+  const router = useRouter();
 
   const makeOrder = async (orderData: Order) => {
     try {
@@ -39,8 +42,8 @@ export default function BuyTicketSummery({
       clearErrors();
       const orderUrl = coupon ? `/orders?coupon=${coupon}` : `/orders`;
       const response = await axiosInstance.post(orderUrl, orderData);
-      // console.log("order placed", response.data.data._id);
-      setOrderId(response.data.data._id);
+      console.log("order placed", response.data.data);
+      setOrder(response.data.data);
       setLoading(false);
       startTimer();
       return null;
@@ -76,12 +79,23 @@ export default function BuyTicketSummery({
   const handleCheckout = async () => {
     try {
       setLoading(true);
-      await axiosInstance.get(`/orders/payment/${orderId}`).then((res) => {
-        console.log("res", res.data.data.payment_url);
-        window.location.href = res.data.data.payment_url;
-      });
+      if (order && order?.total <= 0) {
+        // Handle case when total is 0
+        const response = await axiosInstance.get(
+          `/orders/payment/${order?._id}`
+        );
+        const htmlContent = response.data;
+        router.push(`/render?content=${encodeURIComponent(htmlContent)}`);
+      } else {
+        // Case when total is greater than 0, redirect to payment URL
+        const response = await axiosInstance.get(
+          `/orders/payment/${order?._id}`
+        );
+        const paymentUrl = response.data.data.payment_url;
+        window.location.href = paymentUrl;
+      }
     } catch {
-      () => toast.error("something went wrong, please try again");
+      toast.error("Something went wrong, please try again");
     } finally {
       setLoading(false);
     }
