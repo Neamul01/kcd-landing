@@ -19,7 +19,7 @@ export const metadata = {
 export default function ParticipantsList() {
   const [page, setPage] = React.useState(0);
   const [count, setCount] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [participants, setParticipants] = React.useState<Participant[]>([]);
   const [selectedRole, setSelectedRole] = React.useState<string>();
   const [loading, setLoading] = React.useState(false);
@@ -28,7 +28,7 @@ export default function ParticipantsList() {
 
   const fetchParticipants = async (
     role?: string,
-    rowsPerPage: number = 5,
+    rowsPerPage: number = 10,
     page = 0
   ) => {
     try {
