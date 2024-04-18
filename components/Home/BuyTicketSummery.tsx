@@ -3,7 +3,7 @@ import { useUser } from "@/hooks/use-user";
 import axiosInstance from "@/lib/Axios";
 import { useDetailsStore } from "@/store/useDetailsStore";
 import { useTimerStore } from "@/store/useTimerStore";
-import { Coupon, Order, Ticket, TicketSummery } from "@/types/types";
+import { Coupon, GetOrder, Order, Ticket, TicketSummery } from "@/types/types";
 import { Button, TextField } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,7 @@ export default function BuyTicketSummery({
 }) {
   // const { data: user } = useUser();
   const [loading, setLoading] = useState(false);
-  const [order, setOrder] = useState<Order>();
+  const [order, setOrder] = useState<GetOrder>();
   const [coupon, setCoupon] = useState("");
   const [htmlContent, setHtmlContent] = useState("");
   const { data, setIsSubmit, errors, setErrors, clearErrors } =
