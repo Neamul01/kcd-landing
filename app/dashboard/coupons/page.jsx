@@ -11,7 +11,7 @@ const Page = () => {
   const [responseData, setResponseData] = useState([]);
   const [coupons, setCoupons] = useState([]);
 
-  console.log(responseData);
+  // console.log(responseData);
 
   const getResData = (data) => {
     setResponseData(data);
