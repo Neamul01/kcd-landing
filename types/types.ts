@@ -31,6 +31,8 @@ export type Order = {
   tshirt: string;
   address: string;
   cartItems: CartItem[];
+  total: number;
+  _id: string;
 };
 
 export type Workshop = {
