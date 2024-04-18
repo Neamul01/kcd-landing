@@ -29,8 +29,7 @@ const schema = zod.object({
   limit: zod.string().min(1, { message: "Limit is required" }),
   products: zod
     .array(zod.string())
-    .min(1, { message: "At least one product is required" })
-    .optional(),
+    .min(1, { message: "At least one product is required" }),
   expiryDate: zod.string().min(1, { message: "Expiry date is required" }),
   description: zod.string().min(1, { message: "Description is required" }),
 });
@@ -126,6 +125,7 @@ const CouponDetailsForm = ({
         products: selectedCoupon.products,
         limit: `${selectedCoupon.limit}`,
       });
+      // setValue("products", selectedCoupon.products);
     }
   }, [selectedCoupon, reset]);
 
@@ -168,20 +168,6 @@ const CouponDetailsForm = ({
     );
     setOptions(filteredOptions);
   };
-
-  const [expiryDate, setExpiryDate] = useState(
-    selectedCoupon?.expiryDate
-      ? dayjs(selectedCoupon?.expiryDate).format("YYYY-MM-DD")
-      : ""
-  );
-
-  useEffect(() => {
-    setExpiryDate(
-      selectedCoupon?.expiryDate
-        ? dayjs(selectedCoupon?.expiryDate).format("YYYY-MM-DD")
-        : ""
-    );
-  }, [selectedCoupon]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -284,37 +270,44 @@ const CouponDetailsForm = ({
               )}
             />
             {errors.products ? (
-              <FormHelperText error>{errors.products.message}</FormHelperText>
+              <FormHelperText error>
+                {errors.products.message}Please select Ticket
+              </FormHelperText>
             ) : null}
           </div>
 
-          <Controller
-            control={control}
-            name="expiryDate"
-            render={({ field }) => (
-              <FormControl error={Boolean(errors.expiryDate)}>
-                <TextField
-                  fullWidth
-                  label="Expiry Date"
-                  name="expiryDate"
-                  value={
-                    selectedCoupon?.expiryDate
-                      ? dayjs(selectedCoupon?.expiryDate).format("YYYY-MM-DD")
-                      : ""
-                  }
-                  onChange={(event) => {
-                    console.log("event", event.target.value);
-                    console.log("event default", selectedCoupon?.expiryDate);
-                    field.onChange(event.target.value);
-                  }}
-                  variant="outlined"
-                  size="small"
-                  margin="none"
-                  type="date"
-                />
-              </FormControl>
-            )}
-          />
+          <div className="">
+            <Controller
+              control={control}
+              name="expiryDate"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.expiryDate)}>
+                  <TextField
+                    fullWidth
+                    label="Expiry Date"
+                    name="expiryDate"
+                    value={
+                      selectedCoupon?.expiryDate
+                        ? dayjs(selectedCoupon?.expiryDate).format("YYYY-MM-DD")
+                        : field.value
+                    }
+                    onChange={(event) => {
+                      console.log("event", event.target.value);
+                      console.log("event default", selectedCoupon?.expiryDate);
+                      field.onChange(event.target.value);
+                    }}
+                    variant="outlined"
+                    size="small"
+                    margin="none"
+                    type="date"
+                  />
+                </FormControl>
+              )}
+            />
+            {errors.expiryDate ? (
+              <FormHelperText error>{errors.expiryDate.message}</FormHelperText>
+            ) : null}
+          </div>
         </div>
 
         <div className="grid grid-cols-1">
