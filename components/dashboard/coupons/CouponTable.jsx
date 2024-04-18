@@ -105,7 +105,7 @@ const CouponTable = ({ coupons, handleReload, onDelete }) => {
                 <TableCell>{coupon.limit}</TableCell>
                 <TableCell>
                   {coupon.products.map((product, index) => (
-                    <p key={index}>{product}</p>
+                    <p key={index}>{product.title}</p>
                   ))}
                 </TableCell>
 
