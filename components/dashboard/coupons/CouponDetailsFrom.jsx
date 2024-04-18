@@ -29,7 +29,7 @@ const schema = zod.object({
   limit: zod.string().min(1, { message: "Limit is required" }),
   products: zod
     .array(zod.string())
-    .min(1, { message: "At least one product is required" }),
+    .min(1, { message: "At least one ticket is required" }),
   expiryDate: zod.string().min(1, { message: "Expiry date is required" }),
   description: zod.string().min(1, { message: "Description is required" }),
 });
@@ -57,7 +57,7 @@ const CouponDetailsForm = ({
       code: "",
       discountPercentage: "",
       limit: "",
-      products: [""],
+      products: [],
       // expiryDate: new Date().toISOString().split("T")[0],
       expiryDate: "",
       description: "",
@@ -71,8 +71,6 @@ const CouponDetailsForm = ({
       setIsPending(true);
       // setInputValue("");
       // reset()
-
-      console.log("submit value", values);
 
       if (selectedCoupon && closeModal) {
         return await axiosInstance
@@ -116,28 +114,27 @@ const CouponDetailsForm = ({
 
   useEffect(() => {
     if (selectedCoupon) {
-      console.log("selected coupon", selectedCoupon);
+      console.log("selected coupon", selectedCoupon.products);
+
+      const productIds = selectedCoupon.products.map((product) =>
+        product._id.toString()
+      );
+
       reset({
         code: selectedCoupon.code,
         description: selectedCoupon.description,
         discountPercentage: `${selectedCoupon.discountPercentage}`,
         expiryDate: selectedCoupon.expiryDate,
-        products: selectedCoupon.products,
+        products: productIds,
         limit: `${selectedCoupon.limit}`,
       });
-      // setValue("products", selectedCoupon.products);
     }
   }, [selectedCoupon, reset]);
 
   const handleOptionSelect = (values) => {
-    if (values && values.length > 0) {
-      const productIds = values.map((value) => value._id); // Extract IDs from each object
-      console.log("Selected product IDs:", productIds);
-      setValue("products", productIds); // Set IDs to the hook-form field
-      clearErrors("products");
-    } else {
-      setValue("products", []); // Set empty array if no value selected
-    }
+    const productIds = values ? values.map((value) => value._id) : []; // Extract IDs from each object or set to empty array
+    setValue("products", productIds); // Set IDs to the hook-form field
+    clearErrors("products");
   };
 
   const fetchAllParticipants = async () => {
@@ -237,6 +234,8 @@ const CouponDetailsForm = ({
               onClose={() => {
                 setOpen(false);
               }}
+              getOptionSelected={(option, value) => option._id === value._id}
+              defaultValue={selectedCoupon?.products || []}
               options={options}
               loading={loading}
               inputValue={inputValue}
@@ -246,9 +245,7 @@ const CouponDetailsForm = ({
               onChange={(event, value) => handleOptionSelect(value)}
               isOptionEqualToValue={(option, value) => option._id === value._id}
               getOptionLabel={(option) => {
-                const code = option.title || "";
-
-                return `${code}`;
+                return option.title || "";
               }}
               renderInput={(params) => (
                 <TextField
@@ -271,7 +268,9 @@ const CouponDetailsForm = ({
             />
             {errors.products ? (
               <FormHelperText error>
-                {errors.products.message}Please select Ticket
+                {errors.products.message
+                  ? errors.products.message
+                  : "Please select at least a ticket"}
               </FormHelperText>
             ) : null}
           </div>
