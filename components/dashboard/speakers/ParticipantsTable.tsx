@@ -218,7 +218,7 @@ export function ParticipantsTable({
         count={count}
         onPageChange={(e, newPage) => setPage(newPage)}
         onRowsPerPageChange={(event) =>
-          setRowsPerPage(parseInt(event.target.value, 10))
+          setRowsPerPage(parseInt(event.target.value))
         }
         page={page}
         rowsPerPage={rowsPerPage}
