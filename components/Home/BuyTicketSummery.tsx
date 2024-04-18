@@ -29,7 +29,6 @@ export default function BuyTicketSummery({
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState<GetOrder>();
   const [coupon, setCoupon] = useState("");
-  const [htmlContent, setHtmlContent] = useState("");
   const { data, setIsSubmit, errors, setErrors, clearErrors } =
     useDetailsStore();
   const { timeLeft, timerFinished, startTimer, formatTime } = useTimerStore();
@@ -44,15 +43,15 @@ export default function BuyTicketSummery({
       const response = await axiosInstance.post(orderUrl, orderData);
       console.log("order placed", response.data.data);
       setOrder(response.data.data);
-      setLoading(false);
       startTimer();
       return null;
     } catch (err: any) {
-      setLoading(false);
       toast.error(err.response.data.error);
       setErrors(err.response.data.error);
       console.log("make order error", err.response.data.error);
       return err.response.data.error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -290,19 +289,6 @@ export default function BuyTicketSummery({
                     : "Proceed"}
             </span>
           </Button>
-          {/* // ) : (
-          //   <Button
-          //     onClick={() => router.push("/auth/sign-in")}
-          //     // disabled
-          //     variant="outlined"
-          //     size="large"
-          //     className="w-full  disabled:bg-accent/40 !disabled:cursor-not-allowed border-accent  py-3 shadow-none"
-          //   >
-          //     <span className="text-lg capitalize font-bold text-black">
-          //       Sign In
-          //     </span>
-          //   </Button>
-          // )} */}
         </div>
         {tab === 3 && (
           <p className="text-sm text-center text-black/60">
