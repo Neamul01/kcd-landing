@@ -19,16 +19,16 @@ export const metadata = {
 export default function ParticipantsList() {
   const [page, setPage] = React.useState(0);
   const [count, setCount] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [participants, setParticipants] = React.useState<Participant[]>([]);
   const [selectedRole, setSelectedRole] = React.useState<string>();
   const [loading, setLoading] = React.useState(false);
 
-  const paginatedCustomers = applyPagination(participants, page, rowsPerPage);
+  // const paginatedCustomers = applyPagination(participants, page, rowsPerPage);
 
   const fetchParticipants = async (
     role?: string,
-    rowsPerPage: number = 25,
+    rowsPerPage: number = 5,
     page = 0
   ) => {
     try {
@@ -97,7 +97,7 @@ export default function ParticipantsList() {
           count={count}
           page={page}
           setPage={setPage}
-          rows={paginatedCustomers}
+          rows={participants}
           rowsPerPage={rowsPerPage}
           setRowsPerPage={setRowsPerPage}
         />
@@ -105,10 +105,10 @@ export default function ParticipantsList() {
     </Stack>
   );
 }
-function applyPagination(
-  rows: Participant[],
-  page: number,
-  rowsPerPage: number
-): Participant[] {
-  return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-}
+// function applyPagination(
+//   rows: Participant[],
+//   page: number,
+//   rowsPerPage: number
+// ): Participant[] {
+//   return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+// }
