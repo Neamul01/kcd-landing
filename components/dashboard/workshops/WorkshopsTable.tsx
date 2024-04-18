@@ -196,17 +196,17 @@ export function WorkshopsTable({
         </Table>
       </Box>
       <Divider />
-      {/* <TablePagination
+      <TablePagination
         component="div"
         count={count}
         onPageChange={(e, newPage) => setPage(newPage)}
         onRowsPerPageChange={(event) =>
-          setRowsPerPage(parseInt(event.target.value, 10))
+          setRowsPerPage(parseInt(event.target.value))
         }
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      /> */}
+        rowsPerPageOptions={[5, 10, 25, 35, 45, 55]}
+      />
 
       {/* ------------------update modal------------- */}
       <Dialog
