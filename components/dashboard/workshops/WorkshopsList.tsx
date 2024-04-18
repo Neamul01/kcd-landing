@@ -23,7 +23,7 @@ export default function WorkshopsList() {
   const [selectedRole, setSelectedRole] = React.useState<string>();
   const [loading, setLoading] = React.useState(false);
 
-  const paginatedCustomers = applyPagination(participants, page, rowsPerPage);
+  // const paginatedCustomers = applyPagination(participants, page, rowsPerPage);
 
   const fetchParticipants = async (
     role?: string,
@@ -33,7 +33,7 @@ export default function WorkshopsList() {
     try {
       setLoading(true);
 
-      let url = `/workshops?limit=20`;
+      let url = `/workshops?limit=${rowsPerPage}&page${page + 1}`;
 
       if (role) {
         url += `&role=${role}`;
@@ -46,7 +46,7 @@ export default function WorkshopsList() {
       );
 
       setCount(response.data.pagination.total);
-      console.log("participants", response.data.pagination.total);
+      // console.log("participants", response.data.pagination.total);
       // console.log("formattedData", formattedData);
       setParticipants(formattedData);
     } catch (error) {
@@ -82,10 +82,10 @@ export default function WorkshopsList() {
 
   return (
     <Stack spacing={3}>
-      {/* <CustomersFilters
+      <CustomersFilters
         setSelectedRole={setSelectedRole}
         selectedRole={selectedRole}
-      /> */}
+      />
       {loading ? (
         <div className="w-full flex items-center justify-center">
           <Loader />
@@ -96,7 +96,7 @@ export default function WorkshopsList() {
           count={count}
           page={page}
           setPage={setPage}
-          rows={paginatedCustomers}
+          rows={participants}
           rowsPerPage={rowsPerPage}
           setRowsPerPage={setRowsPerPage}
         />
@@ -104,10 +104,10 @@ export default function WorkshopsList() {
     </Stack>
   );
 }
-function applyPagination(
-  rows: Workshop[],
-  page: number,
-  rowsPerPage: number
-): Workshop[] {
-  return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-}
+// function applyPagination(
+//   rows: Workshop[],
+//   page: number,
+//   rowsPerPage: number
+// ): Workshop[] {
+//   return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+// }
