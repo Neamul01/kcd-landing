@@ -1,14 +1,35 @@
 import React from "react";
 
-export default function ListItem() {
+interface Schedule {
+  scheduleTime: string;
+  title: string;
+  description: string;
+  scheduleTrack: string;
+  speaker: {
+    _id: string;
+    designation: string;
+    name: string;
+    organization: string;
+    title: string;
+  };
+  _id: string;
+  createdAt: string;
+}
+interface ListItemProps {
+  item: Schedule;
+}
+
+export default function ListItem({item}: ListItemProps) {
+  const {scheduleTime, title, description} = item;
+console.log(item);
   return (
     <div className="px-4 py-3 border-b grid grid-cols-6">
       <div className=" col-span-2 flex items-center">
-        <span className="">8:00 am IST</span>{" "}
+        <span className="">{scheduleTime}</span>{" "}
       </div>
       <div className=" col-span-4  flex flex-col gap-2 font-semibold">
         <p className="font-semibold">
-          Welcome Note/Short Introduction to KCD Kerala
+          {title} {description}
         </p>
         <p className="text-sm tracking-wide">
           <span className="text-primary font-semibold">
