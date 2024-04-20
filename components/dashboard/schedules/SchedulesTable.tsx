@@ -146,7 +146,7 @@ export function SchedulesTable({
               <TableCell>Description</TableCell>
               <TableCell>Schedule Time</TableCell>
               <TableCell>Schedule Track</TableCell>
-              <TableCell>Speaker</TableCell>
+              <TableCell>Speakers</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -178,7 +178,11 @@ export function SchedulesTable({
                   <TableCell>
                     {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
                     {row.speakers?.map((speaker) => (
-                      <span key={speaker._id}>{speaker.name}</span>
+                      <div key={speaker._id} className="flex flex-col">
+                        <span>
+                          {speaker.name} - {speaker.designation}
+                        </span>
+                      </div>
                     ))}
                   </TableCell>
                   <TableCell>
