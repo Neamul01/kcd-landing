@@ -440,7 +440,7 @@ export default function BuyTicketDetails({
           </div>
 
           {/* Track selection */}
-          <FormControl error={Boolean(errors.track)}>
+          {/* <FormControl error={Boolean(errors.track)}>
             <p>Choose your preferred track to make the most of your day!</p>
             <RadioGroup
               aria-label="track"
@@ -454,16 +454,16 @@ export default function BuyTicketDetails({
                 checked
                 label={<p className="text-sm">Presentation</p>}
               />
-              {/* <FormControlLabel
+              <FormControlLabel
                 value="workshop"
                 control={<Radio size="small" className="py-0" />}
                 label={<p className="text-sm">Workshop </p>}
-              /> */}
+              />
             </RadioGroup>
             {errors.track && (
               <FormHelperText>{errors.track.message}</FormHelperText>
             )}
-          </FormControl>
+          </FormControl> */}
 
           {/* Workshop selection */}
           {workshopLoading && (
@@ -521,7 +521,7 @@ export default function BuyTicketDetails({
               </RadioGroup>
             </FormControl>
           )} */}
-          <Controller
+          {/* <Controller
             control={control}
             name="promotion"
             render={({ field }) => (
@@ -544,7 +544,7 @@ export default function BuyTicketDetails({
                 ) : null}
               </div>
             )}
-          />
+          /> */}
 
           <Controller
             control={control}
