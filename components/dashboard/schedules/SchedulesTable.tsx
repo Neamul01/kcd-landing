@@ -34,6 +34,7 @@ import { TfiReload } from "react-icons/tfi";
 import axiosInstance from "@/lib/Axios";
 import { toast } from "react-toastify";
 import ScheduleDetailsForm from "./ScheduleDetailsForm";
+import { GetParticipants } from "../speakers/ParticipantsTable";
 
 function noop(): void {
   // do nothing
@@ -44,13 +45,7 @@ export interface Schedule {
   title: string;
   description: string;
   scheduleTrack: string;
-  speaker: {
-    _id: string;
-    designation: string;
-    name: string;
-    organization: string;
-    title: string;
-  };
+  speakers: GetParticipants[];
   _id: string;
   createdAt: string;
 }
@@ -182,7 +177,9 @@ export function SchedulesTable({
                   </TableCell>
                   <TableCell>
                     {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
-                    {row.speaker?.name}
+                    {row.speakers?.map((speaker) => (
+                      <span key={speaker._id}>{speaker.name}</span>
+                    ))}
                   </TableCell>
                   <TableCell>
                     <Button onClick={() => handleEdit(row)}>
