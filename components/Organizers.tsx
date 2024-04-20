@@ -46,7 +46,7 @@ export default function Organizers() {
                   className="bg-transparent w-[300px] h-[354px] px-4 flex items-center justify-between flex-col"
                   key={sponsor._id}
                 >
-                  <div className="h-[170px] w-[170px] overflow-hidden rounded-full">
+                  <div className="h-[170px] w-[170px] overflow-hidden rounded-full border-8 border-primary">
                     <Image
                       alt="Organizer"
                       src={
@@ -56,7 +56,7 @@ export default function Organizers() {
                       }
                       height={170}
                       width={170}
-                      className="rounded-full border-8 border-primary"
+                      className=""
                     />
                   </div>
                   <div className="flex flex-col items-center justify-center gap-2">
