@@ -26,10 +26,11 @@ import { Workshop } from "./WorkshopsTable";
 const schema = zod.object({
   title: zod.string().min(1, { message: "Title is required" }),
   description: zod.string().min(1, { message: "Description is required" }),
-  limit: zod.number().min(1, { message: "Limit is required" }),
+  limit: zod.number().min(1, { message: "Give a valid limitation" }),
   schedule: zod.string().min(1, { message: "Schedule is required" }),
   level: zod.string().min(1, { message: "Level is required" }),
   sessionTime: zod.string().min(1, { message: "Session Time is required" }),
+  speakers: zod.array(zod.string()).min(1, { message: "Speaker is required" }),
 });
 
 type Values = zod.infer<typeof schema>;
@@ -53,10 +54,11 @@ const WorkshopsDetailsForm = ({
     defaultValues: {
       title: selectedWorkshops?.title || "",
       description: selectedWorkshops?.description || "",
-      limit: selectedWorkshops?.limit || 1,
+      limit: selectedWorkshops?.limit || 0,
       schedule: selectedWorkshops?.schedule || "",
       level: selectedWorkshops?.level || "",
       sessionTime: selectedWorkshops?.sessionTime || "",
+      speakers: selectedWorkshops?.speakers || [],
     },
     resolver: zodResolver(schema),
   });
@@ -130,49 +132,52 @@ const WorkshopsDetailsForm = ({
   }, [selectedWorkshops, reset]);
 
   // -------------speaker autocomplete ---------------------------
-  //   const handleOptionSelect = (value: Participant | null) => {
-  //     if (value) {
-  //       console.log("selected value", value._id);
-  //       setValue("speaker", value._id);
-  //       clearErrors("speaker");
-  //     } else {
-  //       setValue("speaker", "");
-  //     }
-  //   };
-  //   const fetchAllParticipants = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const response = await axiosInstance.get(`/participants?role=speaker`);
-  //       const data: Participant[] = response.data.data.map(
-  //         (participant: Participant) => participant
-  //       );
-  //       setFetchedData(data);
-  //       setOptions(data);
-  //     } catch (error) {
-  //       console.error("Error fetching participants:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  const handleOptionSelect = (values: Participant[] | null) => {
+    if (values) {
+      console.log("selected value", values);
+      const productIds = values ? values.map((value) => value._id) : [];
+      setValue("speakers", productIds);
+      clearErrors("speakers");
+    } else {
+      setValue("speakers", []);
+    }
+  };
+  const fetchAllParticipants = async () => {
+    try {
+      setLoading(true);
+      const response = await axiosInstance.get(
+        `/participants?limit=10&role[in]=key-note-speaker&role[in]=event-speaker`
+      );
+      const data: Participant[] = response.data.data.map(
+        (participant: Participant) => participant
+      );
+      setFetchedData(data);
+      setOptions(data);
+    } catch (error) {
+      console.error("Error fetching participants:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  //   React.useEffect(() => {
-  //     if (open) {
-  //       fetchAllParticipants();
-  //     }
-  //   }, [open]);
+  React.useEffect(() => {
+    if (open) {
+      fetchAllParticipants();
+    }
+  }, [open]);
 
-  //   const handleInputChange = (
-  //     event: React.SyntheticEvent<Element, Event>,
-  //     value: string,
-  //     reason: AutocompleteInputChangeReason
-  //   ) => {
-  //     const inputValue = value;
-  //     setInputValue(inputValue);
-  //     const filteredOptions = fetchedData.filter((participant) =>
-  //       participant.name.toLowerCase().includes(inputValue.toLowerCase())
-  //     );
-  //     setOptions(filteredOptions);
-  //   };
+  const handleInputChange = (
+    event: React.SyntheticEvent<Element, Event>,
+    value: string,
+    reason: AutocompleteInputChangeReason
+  ) => {
+    const inputValue = value;
+    setInputValue(inputValue);
+    const filteredOptions = fetchedData.filter((participant) =>
+      participant.name.toLowerCase().includes(inputValue.toLowerCase())
+    );
+    setOptions(filteredOptions);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -205,8 +210,32 @@ const WorkshopsDetailsForm = ({
               </FormControl>
             )}
           />
-
           <Controller
+            control={control}
+            name="sessionTime"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.sessionTime)}>
+                <InputLabel size="small" id="demo-simple-select-label">
+                  SessionTime
+                </InputLabel>
+                <Select
+                  {...field}
+                  size="small"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="SessionTime"
+                >
+                  <MenuItem value={"morning"}>Morning</MenuItem>
+                  <MenuItem value={"afternoon"}>Afternoon</MenuItem>
+                </Select>
+                {errors.sessionTime ? (
+                  <FormHelperText>{errors.sessionTime.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+
+          {/* <Controller
             control={control}
             name="sessionTime"
             render={({ field }) => (
@@ -218,13 +247,16 @@ const WorkshopsDetailsForm = ({
                 ) : null}
               </FormControl>
             )}
-          />
+          /> */}
 
           {/* -------------speaker autocomplete------------ */}
-          {/* <div className="">
+          {/* ------------------- */}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          <div className="">
             <Autocomplete
+              multiple
               id="asynchronous-demo"
-              // sx={{ width: 300 }}
               open={open}
               onOpen={() => {
                 setOpen(true);
@@ -232,6 +264,7 @@ const WorkshopsDetailsForm = ({
               onClose={() => {
                 setOpen(false);
               }}
+              // defaultValue={selectedWorkshops?.speakers || []}
               options={options}
               loading={loading}
               inputValue={inputValue}
@@ -239,12 +272,12 @@ const WorkshopsDetailsForm = ({
                 handleInputChange(event, value, reason)
               }
               onChange={(event, value) => handleOptionSelect(value)}
+              isOptionEqualToValue={(option, value) => option._id === value._id}
               getOptionLabel={(option) => {
                 const name = option.name || "";
                 const designation = option.designation || "";
                 return `${name} - ${designation}`;
               }}
-              // defaultValue={selectedSchedule?.name}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -264,13 +297,10 @@ const WorkshopsDetailsForm = ({
                 />
               )}
             />
-            {errors.speaker ? (
-              <FormHelperText error>{errors.speaker.message}</FormHelperText>
+            {errors.speakers ? (
+              <FormHelperText error>{errors.speakers.message}</FormHelperText>
             ) : null}
-          </div> */}
-          {/* ------------------- */}
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          </div>
           {/*  ['beginner', 'intermediate', 'advanced'] */}
           <Controller
             control={control}
