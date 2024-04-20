@@ -21,7 +21,7 @@ export default function BuyTicketCards({
         {tickets.map((ticket) => (
           <div
             key={ticket._id}
-            className="w-full h-24 rounded-xl px-5 py-3 shadow-xl flex justify-between border-[1px] border-gray-200"
+            className="w-full h-24 rounded-xl px-5 py-3 shadow-xl flex justify-between border-[1px] border-gray-200 relative"
           >
             <div className="flex flex-col justify-between h-full">
               <p className="">{ticket.title}</p>
@@ -64,6 +64,11 @@ export default function BuyTicketCards({
               Add
             </button>
             {/* )} */}
+            {!ticket.isAvailable && (
+              <div className="absolute right-0 top-0 text-white bg-accent/50 rounded-bl-lg px-3 py-1">
+                <p className="capitalize font-medium text-sm">Closed</p>
+              </div>
+            )}
           </div>
         ))}
       </div>
