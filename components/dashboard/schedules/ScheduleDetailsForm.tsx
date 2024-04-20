@@ -21,14 +21,16 @@ import { z as zod } from "zod";
 import axiosInstance from "@/lib/Axios";
 import { toast } from "react-toastify";
 import { Schedule } from "./SchedulesTable";
-import { Participant } from "../speakers/ParticipantsTable";
+import { GetParticipants } from "../speakers/ParticipantsTable";
 
 const schema = zod.object({
   scheduleTime: zod.string().min(1, { message: "scheduleTime is required" }),
   title: zod.string().min(1, { message: "Designation is required" }),
   description: zod.string().min(1, { message: "Organization is required" }),
   scheduleTrack: zod.string().min(1, { message: "Role is required" }),
-  speaker: zod.string().min(1, { message: "Organization is required" }),
+  speakers: zod
+    .array(zod.string())
+    .min(1, { message: "At least one speaker is required" }),
 });
 
 type Values = zod.infer<typeof schema>;
@@ -53,16 +55,16 @@ const ScheduleDetailsForm = ({
       title: selectedSchedule?.title || "",
       description: selectedSchedule?.description || "",
       scheduleTrack: selectedSchedule?.scheduleTrack || "",
-      speaker: selectedSchedule?.speaker._id || "",
+      speakers: [] as string[],
       scheduleTime: selectedSchedule?.scheduleTrack || "",
     },
     resolver: zodResolver(schema),
   });
 
   const [open, setOpen] = React.useState(false);
-  const [options, setOptions] = React.useState<Participant[]>([]);
+  const [options, setOptions] = React.useState<GetParticipants[]>([]);
   const [loading, setLoading] = React.useState(false);
-  const [fetchedData, setFetchedData] = React.useState<Participant[]>([]);
+  const [fetchedData, setFetchedData] = React.useState<GetParticipants[]>([]);
   const [inputValue, setInputValue] = React.useState("");
 
   const onSubmit = async (values: Values): Promise<void> => {
@@ -116,24 +118,28 @@ const ScheduleDetailsForm = ({
 
   React.useEffect(() => {
     if (selectedSchedule) {
+      const speakerIds = selectedSchedule.speakers.map((speaker) =>
+        speaker._id.toString()
+      );
       reset({
         title: selectedSchedule.title,
         description: selectedSchedule.description,
         scheduleTrack: selectedSchedule.scheduleTrack,
         scheduleTime: selectedSchedule.scheduleTime,
-        speaker: selectedSchedule.speaker._id,
+        speakers: speakerIds,
       });
     }
   }, [selectedSchedule, reset]);
 
   // -------------speaker autocomplete ---------------------------
-  const handleOptionSelect = (value: Participant | null) => {
-    if (value) {
-      console.log("selected value", value._id);
-      setValue("speaker", value._id);
-      clearErrors("speaker");
+  const handleOptionSelect = (values: GetParticipants[] | null) => {
+    if (values) {
+      // console.log("selected value", speakerIds);
+      const speakerIds = values ? values.map((value) => value._id) : [];
+      setValue("speakers", speakerIds);
+      clearErrors("speakers");
     } else {
-      setValue("speaker", "");
+      setValue("speakers", []);
     }
   };
   const fetchAllParticipants = async () => {
@@ -142,8 +148,8 @@ const ScheduleDetailsForm = ({
       const response = await axiosInstance.get(
         `/participants?limit=10&role[in]=key-note-speaker&role[in]=event-speaker`
       );
-      const data: Participant[] = response.data.data.map(
-        (participant: Participant) => participant
+      const data: GetParticipants[] = response.data.data.map(
+        (participant: GetParticipants) => participant
       );
       setFetchedData(data);
       setOptions(data);
@@ -226,6 +232,7 @@ const ScheduleDetailsForm = ({
           {/* -------------speaker autocomplete------------ */}
           <div className="">
             <Autocomplete
+              multiple
               id="asynchronous-demo"
               // sx={{ width: 300 }}
               open={open}
@@ -235,6 +242,8 @@ const ScheduleDetailsForm = ({
               onClose={() => {
                 setOpen(false);
               }}
+              // getOptionSelected={(option, value) => option._id === value._id}
+              defaultValue={selectedSchedule?.speakers || []}
               options={options}
               loading={loading}
               inputValue={inputValue}
@@ -242,12 +251,12 @@ const ScheduleDetailsForm = ({
                 handleInputChange(event, value, reason)
               }
               onChange={(event, value) => handleOptionSelect(value)}
+              isOptionEqualToValue={(option, value) => option._id === value._id}
               getOptionLabel={(option) => {
                 const name = option.name || "";
                 const designation = option.designation || "";
                 return `${name} - ${designation}`;
               }}
-              // defaultValue={selectedSchedule?.name}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -267,8 +276,8 @@ const ScheduleDetailsForm = ({
                 />
               )}
             />
-            {errors.speaker ? (
-              <FormHelperText error>{errors.speaker.message}</FormHelperText>
+            {errors.speakers ? (
+              <FormHelperText error>{errors.speakers.message}</FormHelperText>
             ) : null}
           </div>
           {/* ------------------- */}
