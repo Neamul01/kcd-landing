@@ -84,7 +84,7 @@ export default function BuyTicketDetails({
         tShirt: "",
         terms: false,
         promotion: false,
-        track: "",
+        track: "presentation-deck",
         studentId: "",
         organization: "",
         designation: "",
@@ -451,13 +451,14 @@ export default function BuyTicketDetails({
               <FormControlLabel
                 value="presentation-deck"
                 control={<Radio size="small" />}
+                checked
                 label={<p className="text-sm">Presentation</p>}
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 value="workshop"
                 control={<Radio size="small" className="py-0" />}
                 label={<p className="text-sm">Workshop </p>}
-              />
+              /> */}
             </RadioGroup>
             {errors.track && (
               <FormHelperText>{errors.track.message}</FormHelperText>
@@ -468,7 +469,7 @@ export default function BuyTicketDetails({
           {workshopLoading && (
             <p className="text-xs text-primary">Loading...</p>
           )}
-          {workshops && workshops?.length > 0 && (
+          {/* {workshops && workshops?.length > 0 && (
             <FormControl className="pl-2 md:pl-5 !mt-0">
               <RadioGroup
                 aria-label="workshop"
@@ -519,10 +520,7 @@ export default function BuyTicketDetails({
                 </FormHelperText>
               </RadioGroup>
             </FormControl>
-            // {/* {errors.workshop && (
-            //   <FormHelperText>{errors.workshop.message}</FormHelperText>
-            // )} */}
-          )}
+          )} */}
           <Controller
             control={control}
             name="promotion"
