@@ -50,6 +50,7 @@ export interface Workshop {
   availability: boolean;
   _id: string;
   createdAt: string;
+  speakers: string[];
 }
 
 interface WorkshopsTableProps {
