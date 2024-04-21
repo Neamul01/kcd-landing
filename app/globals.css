@@ -27,3 +27,8 @@ body {
     text-wrap: balance;
   }
 }
+
+/* CSS for hiding scrollbar */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
