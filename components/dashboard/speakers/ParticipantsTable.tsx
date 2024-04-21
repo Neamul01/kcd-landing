@@ -52,6 +52,16 @@ export interface Participant {
   _id: string;
 }
 
+export type GetParticipants = Omit<
+  Participant,
+  | "createdAt"
+  | "photo"
+  | "role"
+  | "sponsor_link"
+  | "sponsor_status"
+  | "speaking_topic"
+>;
+
 interface CustomersTableProps {
   handleReload: () => void;
   count?: number;

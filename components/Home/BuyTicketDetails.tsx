@@ -84,7 +84,7 @@ export default function BuyTicketDetails({
         tShirt: "",
         terms: false,
         promotion: false,
-        track: "",
+        track: "presentation-deck",
         studentId: "",
         organization: "",
         designation: "",
@@ -440,7 +440,7 @@ export default function BuyTicketDetails({
           </div>
 
           {/* Track selection */}
-          <FormControl error={Boolean(errors.track)}>
+          {/* <FormControl error={Boolean(errors.track)}>
             <p>Choose your preferred track to make the most of your day!</p>
             <RadioGroup
               aria-label="track"
@@ -451,6 +451,7 @@ export default function BuyTicketDetails({
               <FormControlLabel
                 value="presentation-deck"
                 control={<Radio size="small" />}
+                checked
                 label={<p className="text-sm">Presentation</p>}
               />
               <FormControlLabel
@@ -462,13 +463,13 @@ export default function BuyTicketDetails({
             {errors.track && (
               <FormHelperText>{errors.track.message}</FormHelperText>
             )}
-          </FormControl>
+          </FormControl> */}
 
           {/* Workshop selection */}
           {workshopLoading && (
             <p className="text-xs text-primary">Loading...</p>
           )}
-          {workshops && workshops?.length > 0 && (
+          {/* {workshops && workshops?.length > 0 && (
             <FormControl className="pl-2 md:pl-5 !mt-0">
               <RadioGroup
                 aria-label="workshop"
@@ -519,11 +520,8 @@ export default function BuyTicketDetails({
                 </FormHelperText>
               </RadioGroup>
             </FormControl>
-            // {/* {errors.workshop && (
-            //   <FormHelperText>{errors.workshop.message}</FormHelperText>
-            // )} */}
-          )}
-          <Controller
+          )} */}
+          {/* <Controller
             control={control}
             name="promotion"
             render={({ field }) => (
@@ -546,7 +544,7 @@ export default function BuyTicketDetails({
                 ) : null}
               </div>
             )}
-          />
+          /> */}
 
           <Controller
             control={control}

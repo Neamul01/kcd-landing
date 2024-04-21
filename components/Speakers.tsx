@@ -52,7 +52,8 @@ export default function Speakers() {
     <div id="speakers">
       <SectionLayout title={"Keynote Speakers"} className="">
         {keynoteSpeakers.length ? (
-          <div className="flex flex-wrap self-stretch items-stretch justify-center gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
+          // <div className="flex flex-wrap items-stretch justify-center gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
+          <div className="grid auto-rows-fr grid-cols-1 lg:grid-cols-3 gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
             {keynoteSpeakers.map((speaker) => (
               <SpeakerCard key={speaker._id} speaker={speaker} />
             ))}
