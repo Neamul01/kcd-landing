@@ -273,6 +273,7 @@ const SpeakersDetailsForm = ({
                   <MenuItem value={"organizer"}>Organizer</MenuItem>
                   <MenuItem value={"sponsor"}>Sponsor</MenuItem>
                   <MenuItem value={"volunteer"}>Volunteer</MenuItem>
+                  <MenuItem value={"fellow-ship"}>Fellowship</MenuItem>
                 </Select>
                 {errors.role ? (
                   <FormHelperText>{errors.role.message}</FormHelperText>
