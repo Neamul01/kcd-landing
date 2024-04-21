@@ -10,8 +10,6 @@ export default function Speakers() {
   const [keynoteSpeakers, setKeyNoteSpeakers] = useState<Participant[]>([]);
   const [eventSpeakers, setEventSpeakers] = useState<Participant[]>([]);
 
-  console.log(eventSpeakers);
-
   const getKeynoteSpeakers = async () => {
     try {
       const response = await axiosInstance.get(

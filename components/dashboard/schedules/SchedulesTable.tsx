@@ -71,8 +71,7 @@ export function SchedulesTable({
 }: CustomersTableProps): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
-  const [deleteParticipant, setDeleteParticipant] =
-    React.useState<Schedule | null>();
+  const [deleteSchedule, setDeleteSchedule] = React.useState<Schedule | null>();
   const [selectedRow, setSelectedRow] = React.useState<Schedule>();
 
   const rowIds = React.useMemo(() => {
@@ -86,32 +85,35 @@ export function SchedulesTable({
     (selected?.size ?? 0) > 0 && (selected?.size ?? 0) < rows.length;
   const selectedAll = rows.length > 0 && selected?.size === rows.length;
 
-  const handleEdit = (participant: Schedule) => {
+  const handleEdit = (schedule: Schedule) => {
     setOpen(true);
-    setSelectedRow(participant);
+    setSelectedRow(schedule);
   };
 
   const closeModal = () => {
     setOpen(false);
   };
 
-  const handleDeleteClick = (participant: Schedule) => {
-    setDeleteParticipant(participant);
+  const handleDeleteClick = (schedule: Schedule) => {
+    setDeleteSchedule(schedule);
     setOpenDelete(true);
   };
 
   const handleDelete = async () => {
-    if (deleteParticipant) {
+    if (deleteSchedule) {
       await axiosInstance
-        .delete(`/participants/${deleteParticipant._id}`)
+        .delete(`/schedules/${deleteSchedule._id}`)
         .then(() => {
           setOpenDelete(false);
-          toast.success("Successfully deleted participant");
+          toast.success("Successfully deleted Schedule");
         })
         .catch(() => toast.error("Something went wrong please try again."))
-        .finally(() => setDeleteParticipant(null));
+        .finally(() => {
+          setDeleteSchedule(null);
+          setOpenDelete(false);
+        });
     } else {
-      toast.error("Please select a participant to delete.");
+      toast.error("Please select a Schedule to delete.");
     }
   };
 
@@ -219,7 +221,7 @@ export function SchedulesTable({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle>Edit Participant</DialogTitle>
+        <DialogTitle>Edit Schedule</DialogTitle>
         <DialogContent>
           <div className="py-2">
             <ScheduleDetailsForm
@@ -238,11 +240,11 @@ export function SchedulesTable({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Want to delete: {deleteParticipant?.title}
+          Want to delete: {deleteSchedule?.title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            If you delete {deleteParticipant?.title}. his/her all data will be
+            If you delete {deleteSchedule?.title}. his/her all data will be
             removed from database.
           </DialogContentText>
         </DialogContent>
