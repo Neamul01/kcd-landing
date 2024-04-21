@@ -1,7 +1,9 @@
 import { Box, Modal, Typography } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
 import { relative } from "path";
 import React from "react";
+import { FaLinkedinIn } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 
 interface Speaker {
@@ -66,36 +68,43 @@ export default function ListItem({ item }: ListItemProps) {
               aria-describedby="modal-modal-description"
             >
               <Box>
-                <div className="max-w-screen-md overflow-y-scroll mx-auto p-5 absolute top-10 bottom-10 left-2 right-2 md:left-20 md:right-20 bg-gray-100">
+                <div className="max-w-screen-md block overflow-y-scroll hide-scrollbar mx-auto py-14 px-10 absolute top-10 bottom-10 left-2 right-2 md:left-20 md:right-20 bg-gray-100 rounded-lg">
                   <div className="relative">
-                    <button onClick={handleClose} className="text-xl font-semibold absolute -top-2 -right-3 border px-1">
-                      <FaX />
+                    <button
+                      onClick={handleClose}
+                      className="text-xl font-semibold absolute -top-10 -right-6 border px-1"
+                    >
+                      <FaX size={18} />
                     </button>
                   </div>
                   <Typography
                     className="text-primary pb-4"
                     id="modal-modal-title"
-                    variant="h4"
+                    variant="h5"
                     component="h2"
                   >
                     {title}
                   </Typography>
-                  <p className="text-xl font-medium text-secondary">
+                  <p className="text-lg font-medium text-secondary">
                     Speaker Details
                   </p>
-                  <p className="text-gray-700">{description}</p>
-                  <p className="text-xl font-medium text-secondary py-3">
+                  <p className="text-gray-700 text-sm tracking-wide leading-6">
+                    {description}
+                  </p>
+                  <p className="text-lg font-medium text-secondary py-3">
                     Speaker Bio
                   </p>
                   <div className="md:flex gap-3">
-                    <div className="text-center">
-                      <img
+                    <div className="text-center rounded-lg overflow-hidden border border-primary/60 p-1">
+                      <Image
                         src={speaker.photo || "/download.jpeg"}
+                        height={220}
+                        width={150}
                         alt="Photo Not Found!"
                       />
                     </div>
                     <div className="col-span-2">
-                      <p className="font-semibold text-xl">{speaker.name}</p>
+                      <p className="font-semibold text-lg">{speaker.name}</p>
                       <p className="text-sm py-2">
                         {speaker.designation} At{" "}
                         <span className="text-accent">
@@ -103,11 +112,11 @@ export default function ListItem({ item }: ListItemProps) {
                         </span>
                       </p>
                       <Link
-                        className="text-blue-500 underline"
+                        className="text-primary underline"
                         target="_blank"
                         href={speaker.sponsor_link}
                       >
-                        Sponsor Link
+                        <FaLinkedinIn size={25} />
                       </Link>
                     </div>
                   </div>
