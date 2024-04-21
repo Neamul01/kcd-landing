@@ -6,11 +6,32 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ListItem from "@/components/Shared/ListItem";
 import { styled } from "@mui/material";
+import axiosInstance from "@/lib/Axios";
+import Loader from "@/components/Shared/Loader";
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+}
+interface Speaker {
+  _id: string;
+  designation: string;
+  name: string;
+  organization: string;
+  title: string;
+  photo: string;
+  sponsor_link: string;
+}
+
+interface Schedule {
+  scheduleTime: string;
+  title: string;
+  description: string;
+  scheduleTrack: string;
+  speakers: Speaker[];
+  _id: string;
+  createdAt: string;
 }
 
 function CustomTabPanel(props: TabPanelProps) {
@@ -81,11 +102,34 @@ function a11yProps(index: number) {
 
 export default function ScheduleTab() {
   const [value, setValue] = React.useState(0);
+  const [allSchedule, setAllSchedule] = React.useState<Schedule[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  
+  // fetch all schedule here
+  const fetchAllSchedule = async () => {
+    try {
+      setLoading(true);
+      let url = "/schedules";
+
+      const response = await axiosInstance.get(url);
+      const formattedData: Schedule[] = response.data.data.map(
+        (participant: Schedule) => participant
+      );
+      setAllSchedule(formattedData);
+    } catch (error) {
+      console.error("Error fetching schedule data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  React.useEffect(() => {
+    fetchAllSchedule();
+  }, []);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
+  // console.log(allSchedule);
   return (
     <Box sx={{ width: "100%" }}>
       <Box className="mb-6 max-w-[350px] md:max-w-full mx-auto lg:w-sectionLayout ">
@@ -120,36 +164,66 @@ export default function ScheduleTab() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <div className="border rounded-lg">
-          {/* {[1, 2, 3, 4, 5].map((i) => (
-            <ListItem key={i} />
-          ))} */}
-          <h2 className="text-center text-2xl">Coming soon..</h2>
-        </div>
+        {loading ? (
+          <div className="w-full flex items-center justify-center">
+            <Loader />
+          </div>
+        ) : (
+          <div className="border rounded-lg">
+            {allSchedule
+              .filter((schedule) => schedule.scheduleTrack === "keynote-track")
+              .map((scheduleItem) => (
+                <ListItem key={scheduleItem._id} item={scheduleItem} />
+              ))}
+          </div>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <div className="border rounded-lg">
-          {/* {[1, 2, 3, 4, 5].map((i) => (
-            <ListItem key={i} />
-          ))} */}
-          <h2 className="text-center text-2xl">Coming soon..</h2>
-        </div>
+        {loading ? (
+          <div className="w-full flex items-center justify-center">
+            <Loader />
+          </div>
+        ) : (
+          <div className="border rounded-lg">
+            {allSchedule
+              .filter((schedule) => schedule.scheduleTrack === "devops-track")
+              .map((scheduleItem) => (
+                <ListItem key={scheduleItem._id} item={scheduleItem} />
+              ))}
+          </div>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <div className="border rounded-lg">
-          {/* {[1, 2, 3, 4, 5].map((i) => (
-            <ListItem key={i} />
-          ))} */}
-          <h2 className="text-center text-2xl">Coming soon..</h2>
-        </div>
+        {loading ? (
+          <div className="w-full flex items-center justify-center">
+            <Loader />
+          </div>
+        ) : (
+          <div className="border rounded-lg">
+            {allSchedule
+              .filter((schedule) => schedule.scheduleTrack === "security-track")
+              .map((scheduleItem) => (
+                <ListItem key={scheduleItem._id} item={scheduleItem} />
+              ))}
+          </div>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <div className="border rounded-lg">
-          {/* {[1, 2, 3, 4, 5].map((i) => (
-            <ListItem key={i} />
-          ))} */}
-          <h2 className="text-center text-2xl">Coming soon..</h2>
-        </div>
+        {loading ? (
+          <div className="w-full flex items-center justify-center">
+            <Loader />
+          </div>
+        ) : (
+          <div className="border rounded-lg">
+            {allSchedule
+              .filter(
+                (schedule) => schedule.scheduleTrack === "startup-community-hub"
+              )
+              .map((scheduleItem) => (
+                <ListItem key={scheduleItem._id} item={scheduleItem} />
+              ))}
+          </div>
+        )}
       </CustomTabPanel>
     </Box>
   );
