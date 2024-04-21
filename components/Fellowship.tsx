@@ -36,7 +36,7 @@ export default function Fellowship() {
   }, []);
   return (
     <div id="fellowship">
-      <SectionLayout paddingBottom title={"Fellowship & Scholarships"}>
+      <SectionLayout paddingBottom title={"Website Developers"}>
         <div className="max-w-sectionLayout mx-auto mt-6 md:mt-12">
           <div className="flex flex-wrap items-center justify-center gap-y-10 md:gap-y-10">
             {fellowships ? (
