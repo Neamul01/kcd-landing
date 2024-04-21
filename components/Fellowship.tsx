@@ -19,7 +19,7 @@ export default function Fellowship() {
       await axiosInstance
         .get("/participants?role=fellow-ship")
         .then((response) => {
-          console.log("fellowships", response.data.data);
+          // console.log("fellowships", response.data.data);
           setFellowships(response.data.data);
         })
         .catch((err) => setError(err));

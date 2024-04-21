@@ -18,7 +18,7 @@ export default function Volunteers() {
       await axiosInstance
         .get("/participants?role=volunteer")
         .then((response) => {
-          console.log("fellowships", response.data.data);
+          // console.log("fellowships", response.data.data);
           setVolunteer(response.data.data);
         })
         .catch((err) => setError(err));
