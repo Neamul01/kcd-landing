@@ -104,7 +104,7 @@ export default function ScheduleTab() {
   const [value, setValue] = React.useState(0);
   const [allSchedule, setAllSchedule] = React.useState<Schedule[]>([]);
   const [loading, setLoading] = React.useState(false);
-  
+
   // fetch all schedule here
   const fetchAllSchedule = async () => {
     try {
@@ -169,13 +169,13 @@ export default function ScheduleTab() {
             <Loader />
           </div>
         ) : (
-          <div className="border rounded-lg">
-            {allSchedule
-              .filter((schedule) => schedule.scheduleTrack === "keynote-track")
-              .map((scheduleItem) => (
-                <ListItem key={scheduleItem._id} item={scheduleItem} />
-              ))}
-          </div>
+          allSchedule
+            .filter((schedule) => schedule.scheduleTrack === "keynote-track")
+            .map((scheduleItem) => (
+              <div key={scheduleItem._id} className="border rounded-lg">
+                <ListItem item={scheduleItem} />
+              </div>
+            ))
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
@@ -184,13 +184,13 @@ export default function ScheduleTab() {
             <Loader />
           </div>
         ) : (
-          <div className="border rounded-lg">
-            {allSchedule
-              .filter((schedule) => schedule.scheduleTrack === "devops-track")
-              .map((scheduleItem) => (
-                <ListItem key={scheduleItem._id} item={scheduleItem} />
-              ))}
-          </div>
+          allSchedule
+            .filter((schedule) => schedule.scheduleTrack === "devops-track")
+            .map((scheduleItem) => (
+              <div key={scheduleItem._id} className="border rounded-lg">
+                <ListItem item={scheduleItem} />
+              </div>
+            ))
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
@@ -199,13 +199,13 @@ export default function ScheduleTab() {
             <Loader />
           </div>
         ) : (
-          <div className="border rounded-lg">
-            {allSchedule
-              .filter((schedule) => schedule.scheduleTrack === "security-track")
-              .map((scheduleItem) => (
-                <ListItem key={scheduleItem._id} item={scheduleItem} />
-              ))}
-          </div>
+          allSchedule
+            .filter((schedule) => schedule.scheduleTrack === "security-track")
+            .map((scheduleItem) => (
+              <div key={scheduleItem._id} className="border rounded-lg">
+                <ListItem item={scheduleItem} />
+              </div>
+            ))
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
@@ -214,15 +214,15 @@ export default function ScheduleTab() {
             <Loader />
           </div>
         ) : (
-          <div className="border rounded-lg">
-            {allSchedule
-              .filter(
-                (schedule) => schedule.scheduleTrack === "startup-community-hub"
-              )
-              .map((scheduleItem) => (
-                <ListItem key={scheduleItem._id} item={scheduleItem} />
-              ))}
-          </div>
+          allSchedule
+            .filter(
+              (schedule) => schedule.scheduleTrack === "startup-community-hub"
+            )
+            .map((scheduleItem) => (
+              <div key={scheduleItem._id} className="border rounded-lg">
+                <ListItem item={scheduleItem} />
+              </div>
+            ))
         )}
       </CustomTabPanel>
     </Box>
