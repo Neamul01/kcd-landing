@@ -14,18 +14,22 @@ interface TabPanelProps {
   index: number;
   value: number;
 }
+interface Speaker {
+  _id: string;
+  designation: string;
+  name: string;
+  organization: string;
+  title: string;
+  photo: string;
+  sponsor_link: string;
+}
+
 interface Schedule {
   scheduleTime: string;
   title: string;
   description: string;
   scheduleTrack: string;
-  speaker: {
-    _id: string;
-    designation: string;
-    name: string;
-    organization: string;
-    title: string;
-  };
+  speakers: Speaker[];
   _id: string;
   createdAt: string;
 }
@@ -100,7 +104,7 @@ export default function ScheduleTab() {
   const [value, setValue] = React.useState(0);
   const [allSchedule, setAllSchedule] = React.useState<Schedule[]>([]);
   const [loading, setLoading] = React.useState(false);
-
+  
   // fetch all schedule here
   const fetchAllSchedule = async () => {
     try {
