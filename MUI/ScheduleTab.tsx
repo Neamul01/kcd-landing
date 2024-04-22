@@ -169,13 +169,18 @@ export default function ScheduleTab() {
             <Loader />
           </div>
         ) : (
-          allSchedule
-            .filter((schedule) => schedule.scheduleTrack === "keynote-track")
-            .map((scheduleItem) => (
-              <div key={scheduleItem._id} className="border rounded-lg">
-                <ListItem item={scheduleItem} />
-              </div>
-            ))
+          <div className="border rounded-lg">
+            {allSchedule
+              .filter((schedule) => schedule.scheduleTrack === "keynote-track")
+              .map((scheduleItem) => (
+                <ListItem key={scheduleItem._id} item={scheduleItem} />
+              ))}
+            {allSchedule.filter(
+              (schedule) => schedule.scheduleTrack === "keynote-track"
+            ).length === 0 && (
+              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+            )}
+          </div>
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
@@ -184,13 +189,18 @@ export default function ScheduleTab() {
             <Loader />
           </div>
         ) : (
-          allSchedule
-            .filter((schedule) => schedule.scheduleTrack === "devops-track")
-            .map((scheduleItem) => (
-              <div key={scheduleItem._id} className="border rounded-lg">
-                <ListItem item={scheduleItem} />
-              </div>
-            ))
+          <div className="border rounded-lg">
+            {allSchedule
+              .filter((schedule) => schedule.scheduleTrack === "devops-track")
+              .map((scheduleItem) => (
+                <ListItem key={scheduleItem._id} item={scheduleItem} />
+              ))}
+            {allSchedule.filter(
+              (schedule) => schedule.scheduleTrack === "devops-track"
+            ).length === 0 && (
+              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+            )}
+          </div>
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
@@ -199,13 +209,18 @@ export default function ScheduleTab() {
             <Loader />
           </div>
         ) : (
-          allSchedule
-            .filter((schedule) => schedule.scheduleTrack === "security-track")
-            .map((scheduleItem) => (
-              <div key={scheduleItem._id} className="border rounded-lg">
-                <ListItem item={scheduleItem} />
-              </div>
-            ))
+          <div className="border rounded-lg">
+            {allSchedule
+              .filter((schedule) => schedule.scheduleTrack === "security-track")
+              .map((scheduleItem) => (
+                <ListItem key={scheduleItem._id} item={scheduleItem} />
+              ))}
+            {allSchedule.filter(
+              (schedule) => schedule.scheduleTrack === "security-track"
+            ).length === 0 && (
+              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+            )}
+          </div>
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
@@ -214,15 +229,20 @@ export default function ScheduleTab() {
             <Loader />
           </div>
         ) : (
-          allSchedule
-            .filter(
+          <div className="border rounded-lg">
+            {allSchedule
+              .filter(
+                (schedule) => schedule.scheduleTrack === "startup-community-hub"
+              )
+              .map((scheduleItem) => (
+                <ListItem key={scheduleItem._id} item={scheduleItem} />
+              ))}
+            {allSchedule.filter(
               (schedule) => schedule.scheduleTrack === "startup-community-hub"
-            )
-            .map((scheduleItem) => (
-              <div key={scheduleItem._id} className="border rounded-lg">
-                <ListItem item={scheduleItem} />
-              </div>
-            ))
+            ).length === 0 && (
+              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+            )}
+          </div>
         )}
       </CustomTabPanel>
     </Box>
