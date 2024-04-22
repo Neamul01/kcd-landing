@@ -70,7 +70,7 @@ export default function ListItem({ item }: ListItemProps) {
               aria-describedby="modal-modal-description"
             >
               <Box>
-                <div className="max-w-screen-md block overflow-y-scroll hide-scrollbar mx-auto py-14 px-10 absolute top-10 bottom-10 left-2 right-2 md:left-20 md:right-20 bg-gray-100 rounded-lg">
+                <div className="max-w-screen-md block overflow-y-scroll hide-scrollbar mx-auto py-14 px-10 absolute top-10 bottom-10 left-2 right-2 md:left-20 md:right-20 bg-gray-100 rounded-lg max-h-svh ">
                   <div className="relative">
                     <button
                       onClick={handleClose}
