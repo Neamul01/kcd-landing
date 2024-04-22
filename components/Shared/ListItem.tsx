@@ -74,7 +74,7 @@ export default function ListItem({ item }: ListItemProps) {
                   <div className="relative">
                     <button
                       onClick={handleClose}
-                      className="text-xl font-semibold absolute -top-10 -right-6 border px-1"
+                      className="text-xl font-semibold absolute top-0 right-0 border px-1"
                     >
                       <FaX size={18} />
                     </button>
