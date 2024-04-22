@@ -44,12 +44,14 @@ export default function ListItem({ item }: ListItemProps) {
       <div className="col-span-4 flex flex-col gap-2 font-semibold">
         <p className="font-semibold">
           {title}{" "}
-          <span
-            onClick={handleOpen}
-            className="text-red-500 cursor-pointer underline"
-          >
-            View More
-          </span>
+          {speakers.length > 0 && (
+            <span
+              onClick={handleOpen}
+              className="text-red-500 cursor-pointer underline"
+            >
+              View More
+            </span>
+          )}
         </p>
         {speakers.map((speaker: Speaker) => (
           <>
