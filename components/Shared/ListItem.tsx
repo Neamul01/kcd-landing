@@ -99,7 +99,11 @@ export default function ListItem({ item }: ListItemProps) {
                   <div className="md:flex gap-3">
                     <div className="text-center rounded-lg overflow-hidden border border-primary/60 p-1">
                       <Image
-                        src={speaker.photo || "/download.jpeg"}
+                        src={
+                          speaker.photo
+                            ? `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${speaker.photo}`
+                            : "/download.jpeg"
+                        }
                         height={220}
                         width={150}
                         alt="Photo Not Found!"
