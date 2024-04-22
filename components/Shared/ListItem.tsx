@@ -2,7 +2,7 @@ import { Box, Modal, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { relative } from "path";
-import React from "react";
+import React, { useState } from "react";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 
@@ -70,11 +70,11 @@ export default function ListItem({ item }: ListItemProps) {
               aria-describedby="modal-modal-description"
             >
               <Box>
-                <div className="max-w-screen-md block overflow-y-scroll hide-scrollbar mx-auto py-14 px-10 absolute top-10 bottom-10 left-2 right-2 md:left-20 md:right-20 bg-gray-100 rounded-lg max-h-svh ">
+                <div className="max-w-screen-md max-h-svh overflow-y-scroll hide-scrollbar mx-auto absolute md:top-8 top-0 left-10 right-10 bg-slate-100 p-4 rounded-lg">
                   <div className="relative">
                     <button
                       onClick={handleClose}
-                      className="text-xl font-semibold absolute -top-10 -right-6 border px-1"
+                      className="text-xl font-semibold absolute top-0 right-0 border px-1"
                     >
                       <FaX size={18} />
                     </button>
@@ -96,36 +96,38 @@ export default function ListItem({ item }: ListItemProps) {
                   <p className="text-lg font-medium text-secondary py-3">
                     Speaker Bio
                   </p>
-                  <div className="md:flex gap-3">
-                    <div className="text-center rounded-lg overflow-hidden border border-primary/60 p-1">
-                      <Image
-                        src={
-                          speaker.photo
-                            ? `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${speaker.photo}`
-                            : "/download.jpeg"
-                        }
-                        height={220}
-                        width={150}
-                        alt="Photo Not Found!"
-                      />
+                  {speakers.map((profile) => (
+                    <div className="md:flex gap-3 py-3">
+                      <div className="text-center rounded-lg overflow-hidden border border-primary/60 p-1">
+                        <Image
+                          src={
+                            profile.photo
+                              ? `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${profile.photo}`
+                              : "/download.jpeg"
+                          }
+                          height={220}
+                          width={150}
+                          alt="Photo Not Found!"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <p className="font-semibold text-lg">{profile.name}</p>
+                        <p className="text-sm py-2">
+                          {profile.designation} At{" "}
+                          <span className="text-accent">
+                            {profile.organization}
+                          </span>
+                        </p>
+                        <Link
+                          className="text-primary underline"
+                          target="_blank"
+                          href={profile.sponsor_link}
+                        >
+                          <FaLinkedinIn size={25} />
+                        </Link>
+                      </div>
                     </div>
-                    <div className="col-span-2">
-                      <p className="font-semibold text-lg">{speaker.name}</p>
-                      <p className="text-sm py-2">
-                        {speaker.designation} At{" "}
-                        <span className="text-accent">
-                          {speaker.organization}
-                        </span>
-                      </p>
-                      <Link
-                        className="text-primary underline"
-                        target="_blank"
-                        href={speaker.sponsor_link}
-                      >
-                        <FaLinkedinIn size={25} />
-                      </Link>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </Box>
             </Modal>
