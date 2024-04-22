@@ -44,12 +44,14 @@ export default function ListItem({ item }: ListItemProps) {
       <div className="col-span-4 flex flex-col gap-2 font-semibold">
         <p className="font-semibold">
           {title}{" "}
-          <span
-            onClick={handleOpen}
-            className="text-red-500 cursor-pointer underline"
-          >
-            View More
-          </span>
+          {speakers.length > 0 && (
+            <span
+              onClick={handleOpen}
+              className="text-red-500 cursor-pointer underline"
+            >
+              View More
+            </span>
+          )}
         </p>
         {speakers.map((speaker: Speaker) => (
           <>
@@ -68,7 +70,7 @@ export default function ListItem({ item }: ListItemProps) {
               aria-describedby="modal-modal-description"
             >
               <Box>
-                <div className="max-w-screen-md block overflow-y-scroll hide-scrollbar mx-auto py-14 px-10 absolute top-10 bottom-10 left-2 right-2 md:left-20 md:right-20 bg-gray-100 rounded-lg">
+                <div className="max-w-screen-md block overflow-y-scroll hide-scrollbar mx-auto py-14 px-10 absolute top-10 bottom-10 left-2 right-2 md:left-20 md:right-20 bg-gray-100 rounded-lg max-h-svh ">
                   <div className="relative">
                     <button
                       onClick={handleClose}
