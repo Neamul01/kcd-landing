@@ -175,11 +175,7 @@ function Navbar() {
                       <Link
                         href={page.link}
                         key={page.link}
-                        className={`${
-                          !showNavbar || !isScrolled || !isHomePage
-                            ? `!text-white `
-                            : "text-black "
-                        } capitalize text-center transition-all duration-500`}
+                        className={`text-black capitalize text-center transition-all duration-500`}
                       >
                         {page.name}
                       </Link>
