@@ -70,7 +70,7 @@ export default function ListItem({ item }: ListItemProps) {
               aria-describedby="modal-modal-description"
             >
               <Box>
-                <div className="max-w-screen-md max-h-svh mx-auto overflow-y-scroll absolute md:top-8 top-0 left-10 right-10 bg-slate-100 p-4 hide-scrollbar rounded-lg">
+                <div className="max-w-screen-md max-h-svh mx-auto overflow-y-scroll absolute md:top-8 top-0 left-10 right-10 bg-slate-100 hide-scrollbar rounded-lg px-8 py-6">
                   <div className="relative">
                     <button
                       onClick={handleClose}
@@ -82,16 +82,16 @@ export default function ListItem({ item }: ListItemProps) {
                   <Typography
                     className="text-primary pb-4"
                     id="modal-modal-title"
-                    variant="h4"
+                    variant="h5"
                     component="h2"
                   >
                     {title}
                   </Typography>
-                  <p className="text-xl font-medium text-secondary">
+                  <p className="text-lg font-medium text-secondary">
                     Speaker Details
                   </p>
-                  <p className="text-gray-700">{description}</p>
-                  <p className="text-xl font-medium text-secondary py-3">
+                  <p className="text-gray-700 text-sm">{description}</p>
+                  <p className="text-lg font-medium text-secondary py-3">
                     Speaker Bio
                   </p>
                   {speakers.map((profile, i) => (
@@ -109,7 +109,7 @@ export default function ListItem({ item }: ListItemProps) {
                         />
                       </div>
                       <div className="col-span-2">
-                        <p className="font-semibold text-lg">{profile.name}</p>
+                        <p className="font-medium text-lg">{profile.name}</p>
                         <p className="text-sm py-2">
                           {profile.designation} At{" "}
                           <span className="text-accent">
