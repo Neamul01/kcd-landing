@@ -146,7 +146,7 @@ const ScheduleDetailsForm = ({
     try {
       setLoading(true);
       const response = await axiosInstance.get(
-        `/participants?limit=10&role[in]=key-note-speaker&role[in]=event-speaker`
+        `/participants?limit=200&role[in]=key-note-speaker&role[in]=event-speaker`
       );
       const data: GetParticipants[] = response.data.data.map(
         (participant: GetParticipants) => participant

@@ -30,6 +30,7 @@ const schema = zod.object({
   sponsor_status: zod.string().optional(),
   sponsor_link: zod.string().min(1, { message: "Sponsor Link is required" }),
   speaking_topic: zod.string().optional(),
+  displayId: zod.string().optional(),
 });
 
 type Values = zod.infer<typeof schema>;
@@ -72,6 +73,7 @@ const SpeakersDetailsForm = ({
       sponsor_status: selectedParticipant?.sponsor_status || "",
       sponsor_link: selectedParticipant?.sponsor_link || "",
       speaking_topic: selectedParticipant?.speaking_topic || "",
+      displayId: selectedParticipant?.displayId || "",
     },
     resolver: zodResolver(schema),
   });
@@ -86,7 +88,7 @@ const SpeakersDetailsForm = ({
 
       // Append other form fields to FormData
       Object.entries(values).forEach(([key, value]) => {
-        formData.append(key, value);
+        formData.append(key, String(value));
       });
 
       // Append the selected image to FormData if available
@@ -356,6 +358,30 @@ const SpeakersDetailsForm = ({
               </FormControl>
             )}
           />
+        </div>
+        <div>
+          {(selectedRole === "event-speaker" ||
+            selectedRole === "key-note-speaker" ||
+            selectedRole === "organizer") && (
+            <Controller
+              control={control}
+              name="displayId"
+              render={({ field }) => (
+                <FormControl error={Boolean(errors.displayId)}>
+                  <InputLabel size="small">displayId</InputLabel>
+                  <OutlinedInput
+                    type="number"
+                    size="small"
+                    {...field}
+                    label="displayId"
+                  />
+                  {errors.displayId ? (
+                    <FormHelperText>{errors.displayId.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+          )}
         </div>
         <div className="flex items-center gap-2">
           <Button

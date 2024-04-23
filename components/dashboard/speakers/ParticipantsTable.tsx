@@ -41,6 +41,7 @@ function noop(): void {
 
 export interface Participant {
   createdAt: string;
+  displayId: string;
   designation: string;
   name: string;
   organization: string;
@@ -158,6 +159,7 @@ export function ParticipantsTable({
               <TableCell>Designation</TableCell>
               <TableCell>Organization</TableCell>
               <TableCell>Topic</TableCell>
+              <TableCell>DisplayId</TableCell>
               <TableCell>Role</TableCell>
               <TableCell>Created At</TableCell>
               <TableCell></TableCell>
@@ -204,6 +206,7 @@ export function ParticipantsTable({
                   <TableCell>{row.designation}</TableCell>
                   <TableCell>{row.organization}</TableCell>
                   <TableCell>{row.speaking_topic}</TableCell>
+                  <TableCell>{row.displayId}</TableCell>
                   <TableCell>{row.role}</TableCell>
                   <TableCell>
                     {dayjs(row.createdAt).format("MMM D, YYYY")}
