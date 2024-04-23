@@ -70,34 +70,32 @@ export default function ListItem({ item }: ListItemProps) {
               aria-describedby="modal-modal-description"
             >
               <Box>
-                <div className="max-w-screen-md max-h-svh overflow-y-scroll hide-scrollbar mx-auto absolute md:top-8 top-0 left-10 right-10 bg-slate-100 p-4 rounded-lg">
+                <div className="max-w-screen-md max-h-svh mx-auto overflow-y-scroll absolute md:top-8 top-0 left-10 right-10 bg-slate-100 p-4 hide-scrollbar rounded-lg">
                   <div className="relative">
                     <button
                       onClick={handleClose}
-                      className="text-xl font-semibold absolute top-0 right-0 border px-1"
+                      className="text-xl font-semibold absolute -top-2 -right-3 border px-1"
                     >
-                      <FaX size={18} />
+                      <FaX />
                     </button>
                   </div>
                   <Typography
                     className="text-primary pb-4"
                     id="modal-modal-title"
-                    variant="h5"
+                    variant="h4"
                     component="h2"
                   >
                     {title}
                   </Typography>
-                  <p className="text-lg font-medium text-secondary">
+                  <p className="text-xl font-medium text-secondary">
                     Speaker Details
                   </p>
-                  <p className="text-gray-700 text-sm tracking-wide leading-6">
-                    {description}
-                  </p>
-                  <p className="text-lg font-medium text-secondary py-3">
+                  <p className="text-gray-700">{description}</p>
+                  <p className="text-xl font-medium text-secondary py-3">
                     Speaker Bio
                   </p>
-                  {speakers.map((profile) => (
-                    <div className="md:flex gap-3 py-3">
+                  {speakers.map((profile, i) => (
+                    <div key={profile._id + i} className="md:flex gap-3 py-3">
                       <div className="text-center rounded-lg overflow-hidden border border-primary/60 p-1">
                         <Image
                           src={
