@@ -42,7 +42,7 @@ export default function Fellowship() {
             {fellowships ? (
               fellowships.map((sponsor) => (
                 <div
-                  className="bg-transparent w-[300px] h-[354px] px-4 flex items-center justify-between flex-col"
+                  className="bg-transparent w-[300px] h-auto px-4 flex items-center justify-between flex-col gap-2"
                   key={sponsor._id}
                 >
                   <div className="h-[170px] w-[170px] overflow-hidden rounded-full border-8 border-primary">
@@ -58,15 +58,12 @@ export default function Fellowship() {
                       className=""
                     />
                   </div>
-                  <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="flex flex-col items-center justify-center gap-1 pt-3">
                     <p className="font-medium text-lg text-center">
                       {sponsor.name}
                     </p>
                     <p className="text-base text-center">
                       {sponsor.designation}
-                    </p>
-                    <p className="text-sm text-center">
-                      {sponsor.organization}
                     </p>
                   </div>
                   <Link
@@ -74,7 +71,6 @@ export default function Fellowship() {
                     target="_blank"
                     className="text-blue-600 flex items-center justify-center gap-2 mt-2"
                   >
-                    {/* <FaTwitter size={25} /> */}
                     <FaLinkedinIn size={25} />
                   </Link>
                 </div>
