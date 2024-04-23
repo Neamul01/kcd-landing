@@ -2,7 +2,8 @@ import { Box, Modal, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { relative } from "path";
-import React from "react";
+import React, { useState } from "react";
+import { FaLinkedinIn } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 
 interface Speaker {
@@ -69,7 +70,7 @@ export default function ListItem({ item }: ListItemProps) {
               aria-describedby="modal-modal-description"
             >
               <Box>
-                <div className="max-w-screen-md max-h-svh mx-auto overflow-y-scroll absolute md:top-8 top-0 left-10 right-10 bg-slate-200 p-4 hide-scrollbar">
+                <div className="max-w-screen-md max-h-svh mx-auto overflow-y-scroll absolute md:top-8 top-0 left-10 right-10 bg-slate-100 hide-scrollbar rounded-lg px-8 py-6">
                   <div className="relative">
                     <button
                       onClick={handleClose}
@@ -81,48 +82,50 @@ export default function ListItem({ item }: ListItemProps) {
                   <Typography
                     className="text-primary pb-4"
                     id="modal-modal-title"
-                    variant="h4"
+                    variant="h5"
                     component="h2"
                   >
                     {title}
                   </Typography>
-                  <p className="text-xl font-medium text-secondary">
+                  <p className="text-lg font-medium text-secondary">
                     Speaker Details
                   </p>
-                  <p className="text-gray-700">{description}</p>
-                  <p className="text-xl font-medium text-secondary py-3">
+                  <p className="text-gray-700 text-sm">{description}</p>
+                  <p className="text-lg font-medium text-secondary py-3">
                     Speaker Bio
                   </p>
-                  <div className="md:flex gap-3">
-                    <div className="text-center">
-                      <Image
-                        src={
-                          speaker.photo
-                            ? `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${speaker.photo}`
-                            : "/download.jpeg"
-                        }
-                        height={220}
-                        width={150}
-                        alt="Photo Not Found!"
-                      />
+                  {speakers.map((profile, i) => (
+                    <div key={profile._id + i} className="md:flex gap-3 py-3">
+                      <div className="text-center rounded-lg overflow-hidden border border-primary/60 p-1">
+                        <Image
+                          src={
+                            profile.photo
+                              ? `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${profile.photo}`
+                              : "/download.jpeg"
+                          }
+                          height={220}
+                          width={150}
+                          alt="Photo Not Found!"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <p className="font-medium text-lg">{profile.name}</p>
+                        <p className="text-sm py-2">
+                          {profile.designation} At{" "}
+                          <span className="text-accent">
+                            {profile.organization}
+                          </span>
+                        </p>
+                        <Link
+                          className="text-primary underline"
+                          target="_blank"
+                          href={profile.sponsor_link}
+                        >
+                          <FaLinkedinIn size={25} />
+                        </Link>
+                      </div>
                     </div>
-                    <div className="col-span-2">
-                      <p className="font-semibold text-xl">{speaker.name}</p>
-                      <p className="text-sm py-2">
-                        {speaker.designation} At{" "}
-                        <span className="text-accent">
-                          {speaker.organization}
-                        </span>
-                      </p>
-                      <Link
-                        className="text-blue-500 underline"
-                        target="_blank"
-                        href={speaker.sponsor_link}
-                      >
-                        Sponsor Link
-                      </Link>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </Box>
             </Modal>
