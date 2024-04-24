@@ -13,7 +13,7 @@ export default function Speakers() {
   const getKeynoteSpeakers = async () => {
     try {
       const response = await axiosInstance.get(
-        "/participants?role=key-note-speaker"
+        "/participants?role=key-note-speaker&sort=displayId"
       );
 
       // Handle the response data here
@@ -31,7 +31,7 @@ export default function Speakers() {
   const getEventSpeakers = async () => {
     try {
       const response = await axiosInstance.get(
-        "/participants?role=event-speaker"
+        "/participants?role=event-speaker&sort=displayId"
       );
 
       // Handle the response data here
@@ -51,7 +51,7 @@ export default function Speakers() {
       <SectionLayout title={"Keynote Speakers"} className="">
         {keynoteSpeakers.length ? (
           // <div className="flex flex-wrap items-stretch justify-center gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
-          <div className="grid auto-rows-fr grid-cols-1 lg:grid-cols-3 gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
+          <div className="grid auto-rows-fr grid-cols-1 items-center lg:grid-cols-3 gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
             {keynoteSpeakers.map((speaker) => (
               <SpeakerCard key={speaker._id} speaker={speaker} />
             ))}
