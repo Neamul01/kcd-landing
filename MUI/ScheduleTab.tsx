@@ -8,6 +8,8 @@ import ListItem from "@/components/Shared/ListItem";
 import { styled } from "@mui/material";
 import axiosInstance from "@/lib/Axios";
 import Loader from "@/components/Shared/Loader";
+import { Workshop } from "@/types/types";
+import ListItemWorkshop from "@/components/Shared/ListItemWorkshop";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -104,6 +106,8 @@ export default function ScheduleTab() {
   const [value, setValue] = React.useState(0);
   const [allSchedule, setAllSchedule] = React.useState<Schedule[]>([]);
   const [loading, setLoading] = React.useState(false);
+  const [workshops, setWorkshops] = React.useState<Workshop[]>([]);
+  const [workshopIsLoading, setWorkshopIsLoading] = React.useState(false);
 
   // fetch all schedule here
   const fetchAllSchedule = async () => {
@@ -122,7 +126,27 @@ export default function ScheduleTab() {
       setLoading(false);
     }
   };
+
+  const fetchAllWorkshops = async () => {
+    try {
+      setWorkshopIsLoading(true);
+      let url = "/workshops";
+
+      const response = await axiosInstance.get(url);
+      const formattedData: Workshop[] = response.data.data.map(
+        (participant: Workshop) => participant
+      );
+      setWorkshops(formattedData);
+      console.log("workshops", formattedData);
+    } catch (error) {
+      console.error("Error fetching schedule data:", error);
+    } finally {
+      setWorkshopIsLoading(false);
+    }
+  };
+
   React.useEffect(() => {
+    fetchAllWorkshops();
     fetchAllSchedule();
   }, []);
 
@@ -161,6 +185,11 @@ export default function ScheduleTab() {
             label="Startup/Community Hub"
             {...a11yProps(3)}
           />
+          <AntTab
+            className="text-sm md:text-base"
+            label="Workshops"
+            {...a11yProps(3)}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -178,7 +207,9 @@ export default function ScheduleTab() {
             {allSchedule.filter(
               (schedule) => schedule.scheduleTrack === "keynote-track"
             ).length === 0 && (
-              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+              <p className="text-secondary text-center p-4">
+                Currently, No schedule here!
+              </p>
             )}
           </div>
         )}
@@ -198,7 +229,9 @@ export default function ScheduleTab() {
             {allSchedule.filter(
               (schedule) => schedule.scheduleTrack === "devops-track"
             ).length === 0 && (
-              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+              <p className="text-secondary text-center p-4">
+                Currently, No schedule here!
+              </p>
             )}
           </div>
         )}
@@ -218,7 +251,9 @@ export default function ScheduleTab() {
             {allSchedule.filter(
               (schedule) => schedule.scheduleTrack === "security-track"
             ).length === 0 && (
-              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+              <p className="text-secondary text-center p-4">
+                Currently, No schedule here!
+              </p>
             )}
           </div>
         )}
@@ -240,7 +275,28 @@ export default function ScheduleTab() {
             {allSchedule.filter(
               (schedule) => schedule.scheduleTrack === "startup-community-hub"
             ).length === 0 && (
-              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+              <p className="text-secondary text-center p-4">
+                Currently, No schedule here!
+              </p>
+            )}
+          </div>
+        )}
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={4}>
+        {loading ? (
+          <div className="w-full flex items-center justify-center">
+            <Loader />
+          </div>
+        ) : (
+          <div className="border rounded-lg">
+            {workshops.length ? (
+              workshops.map((scheduleItem) => (
+                <ListItemWorkshop key={scheduleItem._id} item={scheduleItem} />
+              ))
+            ) : (
+              <p className="text-secondary text-center p-4">
+                Currently, No workshop here!
+              </p>
             )}
           </div>
         )}
