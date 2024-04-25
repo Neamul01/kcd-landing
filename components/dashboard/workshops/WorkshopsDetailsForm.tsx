@@ -87,8 +87,11 @@ const WorkshopsDetailsForm = ({
             reset();
           })
           .catch((err) => {
-            console.log("err", err);
-            toast.error("Something went wrong please try again.");
+            console.log("err", err.response.data.error);
+            toast.error(
+              err.response.data.error ||
+                "Something went wrong please try again."
+            );
           })
           .finally(() => {
             setIsPending(false);
@@ -105,8 +108,10 @@ const WorkshopsDetailsForm = ({
           reset();
         })
         .catch((err) => {
-          console.log("err", err);
-          toast.error("Something went wrong please try again.");
+          console.log("err", err.response.data.error);
+          toast.error(
+            err.response.data.error || "Something went wrong please try again."
+          );
         })
         .finally(() => {
           setIsPending(false);
