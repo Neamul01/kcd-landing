@@ -30,6 +30,9 @@ const schema = zod.object({
   schedule: zod.string().min(1, { message: "Schedule is required" }),
   level: zod.string().min(1, { message: "Level is required" }),
   sessionTime: zod.string().min(1, { message: "Session Time is required" }),
+  speakers: zod
+    .array(zod.string())
+    .min(1, { message: "At least one speaker is required" }),
 });
 
 type Values = zod.infer<typeof schema>;
@@ -57,6 +60,7 @@ const WorkshopsDetailsForm = ({
       schedule: selectedWorkshops?.schedule || "",
       level: selectedWorkshops?.level || "",
       sessionTime: selectedWorkshops?.sessionTime || "",
+      speakers: [] as string[],
     },
     resolver: zodResolver(schema),
   });
@@ -118,6 +122,10 @@ const WorkshopsDetailsForm = ({
 
   React.useEffect(() => {
     if (selectedWorkshops) {
+      const speakerIds = selectedWorkshops.speakers.map((speaker) =>
+        speaker._id.toString()
+      );
+
       reset({
         title: selectedWorkshops.title,
         description: selectedWorkshops.description,
@@ -125,54 +133,58 @@ const WorkshopsDetailsForm = ({
         schedule: selectedWorkshops.schedule,
         level: selectedWorkshops.level,
         sessionTime: selectedWorkshops.sessionTime,
+        speakers: speakerIds,
       });
     }
   }, [selectedWorkshops, reset]);
 
   // -------------speaker autocomplete ---------------------------
-  //   const handleOptionSelect = (value: Participant | null) => {
-  //     if (value) {
-  //       console.log("selected value", value._id);
-  //       setValue("speaker", value._id);
-  //       clearErrors("speaker");
-  //     } else {
-  //       setValue("speaker", "");
-  //     }
-  //   };
-  //   const fetchAllParticipants = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const response = await axiosInstance.get(`/participants?role=speaker`);
-  //       const data: Participant[] = response.data.data.map(
-  //         (participant: Participant) => participant
-  //       );
-  //       setFetchedData(data);
-  //       setOptions(data);
-  //     } catch (error) {
-  //       console.error("Error fetching participants:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  const handleOptionSelect = (values: Participant[] | null) => {
+    if (values) {
+      const speakerIds = values ? values.map((value) => value._id) : [];
+      // console.log("selected value", value._id);
+      setValue("speakers", speakerIds);
+      clearErrors("speakers");
+    } else {
+      setValue("speakers", []);
+    }
+  };
+  const fetchAllParticipants = async () => {
+    try {
+      setLoading(true);
+      const response = await axiosInstance.get(
+        `/participants?limit=200&role[in]=key-note-speaker&role[in]=event-speaker`
+      );
+      const data: Participant[] = response.data.data.map(
+        (participant: Participant) => participant
+      );
+      setFetchedData(data);
+      setOptions(data);
+    } catch (error) {
+      console.error("Error fetching participants:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  //   React.useEffect(() => {
-  //     if (open) {
-  //       fetchAllParticipants();
-  //     }
-  //   }, [open]);
+  React.useEffect(() => {
+    if (open) {
+      fetchAllParticipants();
+    }
+  }, [open]);
 
-  //   const handleInputChange = (
-  //     event: React.SyntheticEvent<Element, Event>,
-  //     value: string,
-  //     reason: AutocompleteInputChangeReason
-  //   ) => {
-  //     const inputValue = value;
-  //     setInputValue(inputValue);
-  //     const filteredOptions = fetchedData.filter((participant) =>
-  //       participant.name.toLowerCase().includes(inputValue.toLowerCase())
-  //     );
-  //     setOptions(filteredOptions);
-  //   };
+  const handleInputChange = (
+    event: React.SyntheticEvent<Element, Event>,
+    value: string,
+    reason: AutocompleteInputChangeReason
+  ) => {
+    const inputValue = value;
+    setInputValue(inputValue);
+    const filteredOptions = fetchedData.filter((participant) =>
+      participant.name.toLowerCase().includes(inputValue.toLowerCase())
+    );
+    setOptions(filteredOptions);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -221,8 +233,10 @@ const WorkshopsDetailsForm = ({
           />
 
           {/* -------------speaker autocomplete------------ */}
-          {/* <div className="">
+          <div className="grid-cols-1">
             <Autocomplete
+              className="w-full"
+              multiple
               id="asynchronous-demo"
               // sx={{ width: 300 }}
               open={open}
@@ -264,13 +278,12 @@ const WorkshopsDetailsForm = ({
                 />
               )}
             />
-            {errors.speaker ? (
-              <FormHelperText error>{errors.speaker.message}</FormHelperText>
+            {errors.speakers ? (
+              <FormHelperText error>{errors.speakers.message}</FormHelperText>
             ) : null}
-          </div> */}
+          </div>
           {/* ------------------- */}
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+
           {/*  ['beginner', 'intermediate', 'advanced'] */}
           <Controller
             control={control}
