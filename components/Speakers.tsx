@@ -13,7 +13,7 @@ export default function Speakers() {
   const getKeynoteSpeakers = async () => {
     try {
       const response = await axiosInstance.get(
-        "/participants?role=key-note-speaker&sort=displayId"
+        "/participants?sort=displayId&role=key-note-speaker"
       );
 
       // Handle the response data here
@@ -31,7 +31,7 @@ export default function Speakers() {
   const getEventSpeakers = async () => {
     try {
       const response = await axiosInstance.get(
-        "/participants?role=event-speaker&sort=displayId"
+        "/participants?sort=displayId&role=event-speaker"
       );
 
       // Handle the response data here

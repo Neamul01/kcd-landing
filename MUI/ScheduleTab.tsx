@@ -125,7 +125,7 @@ export default function ScheduleTab() {
   const fetchAllSchedule = async () => {
     try {
       setLoading(true);
-      let url = "/schedules";
+      let url = "/schedules?sort=displayId";
 
       const response = await axiosInstance.get(url);
       const formattedData: Schedule[] = response.data.data.map(
