@@ -146,7 +146,7 @@ const ScheduleDetailsForm = ({
     try {
       setLoading(true);
       const response = await axiosInstance.get(
-        `/participants?limit=200&role[in]=key-note-speaker&role[in]=event-speaker`
+        `/participants?limit=200&role[in]=key-note-speaker&role[in]=event-speaker&role[in]=volunteer&role[in]=fellow-ship`
       );
       const data: GetParticipants[] = response.data.data.map(
         (participant: GetParticipants) => participant
@@ -261,7 +261,7 @@ const ScheduleDetailsForm = ({
                 <TextField
                   {...params}
                   size="small"
-                  label="Select speakers"
+                  label="Select speakers/Volunteers"
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (

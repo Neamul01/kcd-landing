@@ -36,6 +36,18 @@ interface Schedule {
   createdAt: string;
 }
 
+const AntTabs = styled(Tabs)(({ theme }) => ({
+  borderBottom: "0px",
+  "& .MuiTabs-indicator": {
+    display: "none",
+  },
+  [theme.breakpoints.up("md")]: {
+    "& div": {
+      justifyContent: "center",
+    },
+  },
+}));
+
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -130,7 +142,7 @@ export default function ScheduleTab() {
   const fetchAllWorkshops = async () => {
     try {
       setWorkshopIsLoading(true);
-      let url = "/workshops";
+      let url = "/workshops?sort=displayId";
 
       const response = await axiosInstance.get(url);
       const formattedData: Workshop[] = response.data.data.map(
@@ -157,13 +169,15 @@ export default function ScheduleTab() {
   return (
     <Box sx={{ width: "100%" }}>
       <Box className="mb-6 max-w-[350px] md:max-w-full mx-auto lg:w-sectionLayout ">
-        <Tabs
+        <AntTabs
           value={value}
           onChange={handleChange}
+          // className="items-center justify-center !flex-col"
           variant="scrollable"
           scrollButtons="auto"
           aria-label="scrollable auto tabs example"
           // aria-label="basic tabs example"
+          // centered
         >
           <AntTab
             className="text-sm md:text-base"
@@ -182,7 +196,7 @@ export default function ScheduleTab() {
           />
           <AntTab
             className="text-sm md:text-base"
-            label="Startup/Community Hub"
+            label="Startup/Community Track"
             {...a11yProps(3)}
           />
           <AntTab
@@ -190,7 +204,7 @@ export default function ScheduleTab() {
             label="Workshops"
             {...a11yProps(3)}
           />
-        </Tabs>
+        </AntTabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         {loading ? (
