@@ -33,7 +33,7 @@ export default function ScheduleList() {
     try {
       setLoading(true);
 
-      let url = `/schedules?limit=${rowsPerPage}&page=${page + 1}`;
+      let url = `/schedules?sort=displayId&limit=${rowsPerPage}&page=${page + 1}`;
 
       if (role) {
         url += `&role=${role}`;

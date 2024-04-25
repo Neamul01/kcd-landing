@@ -31,6 +31,7 @@ const schema = zod.object({
   speakers: zod
     .array(zod.string())
     .min(1, { message: "At least one speaker is required" }),
+  displayId: zod.number().optional(),
 });
 
 type Values = zod.infer<typeof schema>;
@@ -57,6 +58,7 @@ const ScheduleDetailsForm = ({
       scheduleTrack: selectedSchedule?.scheduleTrack || "",
       speakers: [] as string[],
       scheduleTime: selectedSchedule?.scheduleTrack || "",
+      displayId: selectedSchedule?.displayId || 0,
     },
     resolver: zodResolver(schema),
   });
@@ -146,7 +148,7 @@ const ScheduleDetailsForm = ({
     try {
       setLoading(true);
       const response = await axiosInstance.get(
-        `/participants?limit=200&role[in]=key-note-speaker&role[in]=event-speaker`
+        `/participants?limit=200&role[in]=key-note-speaker&role[in]=event-speaker&role[in]=volunteer&role[in]=fellow-ship`
       );
       const data: GetParticipants[] = response.data.data.map(
         (participant: GetParticipants) => participant
@@ -261,7 +263,7 @@ const ScheduleDetailsForm = ({
                 <TextField
                   {...params}
                   size="small"
-                  label="Select speakers"
+                  label="Select speakers/Volunteers"
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (
@@ -290,6 +292,26 @@ const ScheduleDetailsForm = ({
                 <OutlinedInput size="small" {...field} label="scheduleTime" />
                 {errors.scheduleTime ? (
                   <FormHelperText>{errors.scheduleTime.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="displayId"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.displayId)}>
+                <InputLabel size="small">displayId</InputLabel>
+                <OutlinedInput
+                  type="number"
+                  size="small"
+                  {...field}
+                  label="displayId"
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
+                {errors.displayId ? (
+                  <FormHelperText>{errors.displayId.message}</FormHelperText>
                 ) : null}
               </FormControl>
             )}

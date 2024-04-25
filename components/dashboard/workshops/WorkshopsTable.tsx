@@ -34,6 +34,7 @@ import { TfiReload } from "react-icons/tfi";
 import axiosInstance from "@/lib/Axios";
 import { toast } from "react-toastify";
 import WorkshopsDetailsForm from "./WorkshopsDetailsForm";
+import { Participant } from "../speakers/ParticipantsTable";
 
 function noop(): void {
   // do nothing
@@ -50,6 +51,7 @@ export interface Workshop {
   availability: boolean;
   _id: string;
   createdAt: string;
+  speakers: Participant[];
 }
 
 interface WorkshopsTableProps {
@@ -149,6 +151,7 @@ export function WorkshopsTable({
               <TableCell>Schedule Time</TableCell>
               <TableCell>Limit</TableCell>
               <TableCell>SessionTime</TableCell>
+              <TableCell>Speakers</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -180,6 +183,16 @@ export function WorkshopsTable({
                   <TableCell>
                     {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
                     {row.sessionTime}
+                  </TableCell>
+                  <TableCell>
+                    {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
+                    {row.speakers?.map((speaker) => (
+                      <div key={speaker._id} className="flex flex-col">
+                        <span>
+                          {speaker.name} - {speaker.designation}
+                        </span>
+                      </div>
+                    ))}
                   </TableCell>
                   <TableCell>
                     <Button onClick={() => handleEdit(row)}>

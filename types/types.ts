@@ -1,3 +1,5 @@
+import { Participant } from "@/components/dashboard/speakers/ParticipantsTable";
+
 export type Ticket = {
   _id: string;
   bookCount: number;
@@ -50,6 +52,8 @@ export type Workshop = {
   user: string;
   createdAt: string;
   schedule: string;
+  speakers: Participant[];
+  level: string;
 };
 
 export type TicketSummery = {
