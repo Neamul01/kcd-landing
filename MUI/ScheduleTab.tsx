@@ -8,6 +8,8 @@ import ListItem from "@/components/Shared/ListItem";
 import { styled } from "@mui/material";
 import axiosInstance from "@/lib/Axios";
 import Loader from "@/components/Shared/Loader";
+import { Workshop } from "@/types/types";
+import ListItemWorkshop from "@/components/Shared/ListItemWorkshop";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -33,6 +35,18 @@ interface Schedule {
   _id: string;
   createdAt: string;
 }
+
+const AntTabs = styled(Tabs)(({ theme }) => ({
+  borderBottom: "0px",
+  "& .MuiTabs-indicator": {
+    display: "none",
+  },
+  [theme.breakpoints.up("md")]: {
+    "& div": {
+      justifyContent: "center",
+    },
+  },
+}));
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -104,12 +118,14 @@ export default function ScheduleTab() {
   const [value, setValue] = React.useState(0);
   const [allSchedule, setAllSchedule] = React.useState<Schedule[]>([]);
   const [loading, setLoading] = React.useState(false);
+  const [workshops, setWorkshops] = React.useState<Workshop[]>([]);
+  const [workshopIsLoading, setWorkshopIsLoading] = React.useState(false);
 
   // fetch all schedule here
   const fetchAllSchedule = async () => {
     try {
       setLoading(true);
-      let url = "/schedules";
+      let url = "/schedules?sort=displayId";
 
       const response = await axiosInstance.get(url);
       const formattedData: Schedule[] = response.data.data.map(
@@ -122,7 +138,27 @@ export default function ScheduleTab() {
       setLoading(false);
     }
   };
+
+  const fetchAllWorkshops = async () => {
+    try {
+      setWorkshopIsLoading(true);
+      let url = "/workshops?sort=displayId";
+
+      const response = await axiosInstance.get(url);
+      const formattedData: Workshop[] = response.data.data.map(
+        (participant: Workshop) => participant
+      );
+      setWorkshops(formattedData);
+      console.log("workshops", formattedData);
+    } catch (error) {
+      console.error("Error fetching schedule data:", error);
+    } finally {
+      setWorkshopIsLoading(false);
+    }
+  };
+
   React.useEffect(() => {
+    fetchAllWorkshops();
     fetchAllSchedule();
   }, []);
 
@@ -133,13 +169,15 @@ export default function ScheduleTab() {
   return (
     <Box sx={{ width: "100%" }}>
       <Box className="mb-6 max-w-[350px] md:max-w-full mx-auto lg:w-sectionLayout ">
-        <Tabs
+        <AntTabs
           value={value}
           onChange={handleChange}
+          // className="items-center justify-center !flex-col"
           variant="scrollable"
           scrollButtons="auto"
           aria-label="scrollable auto tabs example"
           // aria-label="basic tabs example"
+          // centered
         >
           <AntTab
             className="text-sm md:text-base"
@@ -158,10 +196,15 @@ export default function ScheduleTab() {
           />
           <AntTab
             className="text-sm md:text-base"
-            label="Startup/Community Hub"
+            label="Startup/Community Track"
             {...a11yProps(3)}
           />
-        </Tabs>
+          <AntTab
+            className="text-sm md:text-base"
+            label="Workshops"
+            {...a11yProps(3)}
+          />
+        </AntTabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         {loading ? (
@@ -178,7 +221,9 @@ export default function ScheduleTab() {
             {allSchedule.filter(
               (schedule) => schedule.scheduleTrack === "keynote-track"
             ).length === 0 && (
-              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+              <p className="text-secondary text-center p-4">
+                Currently, No schedule here!
+              </p>
             )}
           </div>
         )}
@@ -198,7 +243,9 @@ export default function ScheduleTab() {
             {allSchedule.filter(
               (schedule) => schedule.scheduleTrack === "devops-track"
             ).length === 0 && (
-              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+              <p className="text-secondary text-center p-4">
+                Currently, No schedule here!
+              </p>
             )}
           </div>
         )}
@@ -218,7 +265,9 @@ export default function ScheduleTab() {
             {allSchedule.filter(
               (schedule) => schedule.scheduleTrack === "security-track"
             ).length === 0 && (
-              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+              <p className="text-secondary text-center p-4">
+                Currently, No schedule here!
+              </p>
             )}
           </div>
         )}
@@ -240,7 +289,28 @@ export default function ScheduleTab() {
             {allSchedule.filter(
               (schedule) => schedule.scheduleTrack === "startup-community-hub"
             ).length === 0 && (
-              <p className="text-secondary text-center p-4">Currently, No schedule here!</p>
+              <p className="text-secondary text-center p-4">
+                Currently, No schedule here!
+              </p>
+            )}
+          </div>
+        )}
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={4}>
+        {loading ? (
+          <div className="w-full flex items-center justify-center">
+            <Loader />
+          </div>
+        ) : (
+          <div className="border rounded-lg">
+            {workshops.length ? (
+              workshops.map((scheduleItem) => (
+                <ListItemWorkshop key={scheduleItem._id} item={scheduleItem} />
+              ))
+            ) : (
+              <p className="text-secondary text-center p-4">
+                Currently, No workshop here!
+              </p>
             )}
           </div>
         )}

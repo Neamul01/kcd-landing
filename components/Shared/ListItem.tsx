@@ -87,12 +87,10 @@ export default function ListItem({ item }: ListItemProps) {
                   >
                     {title}
                   </Typography>
-                  <p className="text-lg font-medium text-secondary">
-                    Speaker Details
-                  </p>
+                  <p className="text-lg font-medium text-secondary">Details</p>
                   <p className="text-gray-700 text-sm">{description}</p>
                   <p className="text-lg font-medium text-secondary py-3">
-                    Speaker Bio
+                    Speakers
                   </p>
                   {speakers.map((profile, i) => (
                     <div key={profile._id + i} className="md:flex gap-3 py-3">

@@ -18,7 +18,7 @@ export default function Organizers() {
     try {
       setError("");
       await axiosInstance
-        .get("/participants?role=organizer")
+        .get("/participants?sort=displayId&role=organizer")
         .then((response) => {
           console.log("organizers", response.data.data);
           setOrganizers(response.data.data);
