@@ -48,6 +48,7 @@ export interface Schedule {
   speakers: GetParticipants[];
   _id: string;
   createdAt: string;
+  displayId: number;
 }
 
 interface CustomersTableProps {
@@ -148,6 +149,7 @@ export function SchedulesTable({
               <TableCell>Description</TableCell>
               <TableCell>Schedule Time</TableCell>
               <TableCell>Schedule Track</TableCell>
+              <TableCell>DisplayId</TableCell>
               <TableCell>Speakers</TableCell>
               <TableCell></TableCell>
             </TableRow>
@@ -177,6 +179,7 @@ export function SchedulesTable({
                     {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
                     {row.scheduleTrack}
                   </TableCell>
+                  <TableCell>{row?.displayId}</TableCell>
                   <TableCell>
                     {/* {dayjs(row.createdAt).format("MMM D, YYYY")} */}
                     {row.speakers?.map((speaker) => (
