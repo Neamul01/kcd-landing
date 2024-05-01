@@ -28,9 +28,8 @@ const schema = zod.object({
   title: zod.string().min(1, { message: "Designation is required" }),
   description: zod.string().min(1, { message: "Organization is required" }),
   scheduleTrack: zod.string().min(1, { message: "Role is required" }),
-  speakers: zod
-    .array(zod.string())
-    .min(1, { message: "At least one speaker is required" }),
+
+  speakers: zod.array(zod.string()).optional(),
   displayId: zod.number().optional(),
 });
 
@@ -50,6 +49,7 @@ const ScheduleDetailsForm = ({
     reset,
     setValue,
     clearErrors,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -63,11 +63,15 @@ const ScheduleDetailsForm = ({
     resolver: zodResolver(schema),
   });
 
+  console.log("errors", errors);
+
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState<GetParticipants[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [fetchedData, setFetchedData] = React.useState<GetParticipants[]>([]);
   const [inputValue, setInputValue] = React.useState("");
+
+  const watchedScheduleTrack = watch("scheduleTrack");
 
   const onSubmit = async (values: Values): Promise<void> => {
     try {
@@ -232,56 +236,60 @@ const ScheduleDetailsForm = ({
           />
 
           {/* -------------speaker autocomplete------------ */}
-          <div className="">
-            <Autocomplete
-              multiple
-              id="asynchronous-demo"
-              // sx={{ width: 300 }}
-              open={open}
-              onOpen={() => {
-                setOpen(true);
-              }}
-              onClose={() => {
-                setOpen(false);
-              }}
-              // getOptionSelected={(option, value) => option._id === value._id}
-              defaultValue={selectedSchedule?.speakers || []}
-              options={options}
-              loading={loading}
-              inputValue={inputValue}
-              onInputChange={(event, value, reason) =>
-                handleInputChange(event, value, reason)
-              }
-              onChange={(event, value) => handleOptionSelect(value)}
-              isOptionEqualToValue={(option, value) => option._id === value._id}
-              getOptionLabel={(option) => {
-                const name = option.name || "";
-                const designation = option.designation || "";
-                return `${name} - ${designation}`;
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  size="small"
-                  label="Select speakers/Volunteers"
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                      <React.Fragment>
-                        {loading ? (
-                          <CircularProgress color="inherit" size={20} />
-                        ) : null}
-                        {params.InputProps.endAdornment}
-                      </React.Fragment>
-                    ),
-                  }}
-                />
-              )}
-            />
-            {errors.speakers ? (
-              <FormHelperText error>{errors.speakers.message}</FormHelperText>
-            ) : null}
-          </div>
+          {watchedScheduleTrack !== "startup-community-hub" && (
+            <div className="">
+              <Autocomplete
+                multiple
+                id="asynchronous-demo"
+                // sx={{ width: 300 }}
+                open={open}
+                onOpen={() => {
+                  setOpen(true);
+                }}
+                onClose={() => {
+                  setOpen(false);
+                }}
+                // getOptionSelected={(option, value) => option._id === value._id}
+                defaultValue={selectedSchedule?.speakers || []}
+                options={options}
+                loading={loading}
+                inputValue={inputValue}
+                onInputChange={(event, value, reason) =>
+                  handleInputChange(event, value, reason)
+                }
+                onChange={(event, value) => handleOptionSelect(value)}
+                isOptionEqualToValue={(option, value) =>
+                  option._id === value._id
+                }
+                getOptionLabel={(option) => {
+                  const name = option.name || "";
+                  const designation = option.designation || "";
+                  return `${name} - ${designation}`;
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size="small"
+                    label="Select speakers/Volunteers"
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <React.Fragment>
+                          {loading ? (
+                            <CircularProgress color="inherit" size={20} />
+                          ) : null}
+                          {params.InputProps.endAdornment}
+                        </React.Fragment>
+                      ),
+                    }}
+                  />
+                )}
+              />
+              {errors.speakers ? (
+                <FormHelperText error>{errors.speakers.message}</FormHelperText>
+              ) : null}
+            </div>
+          )}
           {/* ------------------- */}
           <Controller
             control={control}
