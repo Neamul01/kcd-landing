@@ -5,10 +5,12 @@ import { useEffect, useState } from "react";
 import Loader from "./Shared/Loader";
 import SectionLayout from "./layout/SectionLayout";
 import { Participant } from "./dashboard/speakers/ParticipantsTable";
+import { participantsEnums } from "@/constants/participants";
 
 export default function Speakers() {
   const [keynoteSpeakers, setKeyNoteSpeakers] = useState<Participant[]>([]);
   const [eventSpeakers, setEventSpeakers] = useState<Participant[]>([]);
+  const [panelSpeakers, setPanelSpeakers] = useState<Participant[]>([]);
 
   const getKeynoteSpeakers = async () => {
     try {
@@ -42,8 +44,23 @@ export default function Speakers() {
     }
   };
 
+  const getPanelSpeakers = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/participants?sort=displayId&role=${participantsEnums.panelSpeaker}`
+      );
+
+      // Handle the response data here
+      setPanelSpeakers(response.data.data);
+    } catch (error) {
+      // Handle the error here
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getEventSpeakers();
+    getPanelSpeakers();
   }, []);
 
   return (
@@ -68,6 +85,21 @@ export default function Speakers() {
         {eventSpeakers.length ? (
           <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
             {eventSpeakers.map((speaker) => (
+              <SpeakerCard key={speaker._id} speaker={speaker} />
+            ))}
+          </div>
+        ) : (
+          <Loader />
+        )}
+      </SectionLayout>
+      <SectionLayout
+        paddingBottom
+        title={"Panel Speakers"}
+        className="max-w-sectionLayout mx-auto mt-6 md:mt-12"
+      >
+        {panelSpeakers.length ? (
+          <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
+            {panelSpeakers.map((speaker) => (
               <SpeakerCard key={speaker._id} speaker={speaker} />
             ))}
           </div>
