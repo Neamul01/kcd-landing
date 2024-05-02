@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import { z as zod } from "zod";
 import { Participant } from "./ParticipantsTable";
 import Image from "next/image";
+import { participantsEnums } from "@/constants/participants";
 
 const schema = zod.object({
   name: zod.string().min(1, { message: "Name is required" }),
@@ -269,13 +270,24 @@ const SpeakersDetailsForm = ({
                   onChange={handleRoleSelection}
                 >
                   <MenuItem value={"key-note-speaker"}>
-                    Keynote Speakers
+                    Keynote Speaker
                   </MenuItem>
-                  <MenuItem value={"event-speaker"}>Event Speakers</MenuItem>
-                  <MenuItem value={"organizer"}>Organizer</MenuItem>
-                  <MenuItem value={"sponsor"}>Sponsor</MenuItem>
-                  <MenuItem value={"volunteer"}>Volunteer</MenuItem>
-                  <MenuItem value={"fellow-ship"}>Fellowship</MenuItem>
+                  <MenuItem value={participantsEnums.eventSpeaker}>
+                    Event Speaker
+                  </MenuItem>
+                  <MenuItem value={participantsEnums.panelSpeaker}>
+                    Panel Speaker
+                  </MenuItem>
+                  <MenuItem value={participantsEnums.organizer}>
+                    Organizer
+                  </MenuItem>
+                  <MenuItem value={participantsEnums.sponsor}>Sponsor</MenuItem>
+                  <MenuItem value={participantsEnums.volunteer}>
+                    Volunteer
+                  </MenuItem>
+                  <MenuItem value={participantsEnums.fellowShip}>
+                    Fellowship
+                  </MenuItem>
                 </Select>
                 {errors.role ? (
                   <FormHelperText>{errors.role.message}</FormHelperText>
@@ -362,6 +374,7 @@ const SpeakersDetailsForm = ({
         <div>
           {(selectedRole === "event-speaker" ||
             selectedRole === "key-note-speaker" ||
+            selectedRole === participantsEnums.panelSpeaker ||
             selectedRole === "organizer") && (
             <Controller
               control={control}
