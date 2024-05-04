@@ -53,9 +53,9 @@ export default function ListItem({ item }: ListItemProps) {
             </span>
           )}
         </p>
-        {speakers.map((speaker: Speaker) => (
+        {speakers.map((speaker: Speaker, i) => (
           <>
-            <p key={speaker._id} className="text-sm tracking-wide">
+            <p key={speaker._id + i} className="text-sm tracking-wide">
               <span className="text-primary font-semibold">{speaker.name}</span>
               <span className="text-orange-500 font-semibold">
                 {" "}
@@ -64,6 +64,7 @@ export default function ListItem({ item }: ListItemProps) {
               <span className="text-gray-600"> at {speaker.organization}</span>
             </p>
             <Modal
+              key={speaker._id + i}
               open={open}
               onClose={handleClose}
               aria-labelledby="modal-modal-title"
