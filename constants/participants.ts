@@ -5,4 +5,5 @@ export const participantsEnums = {
   volunteer: "volunteer",
   fellowShip: "fellow-ship",
   panelSpeaker: "panel-speaker",
+  workshopSpeaker: "workshop-speaker",
 };

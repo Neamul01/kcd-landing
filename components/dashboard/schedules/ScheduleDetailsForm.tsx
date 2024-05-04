@@ -22,6 +22,7 @@ import axiosInstance from "@/lib/Axios";
 import { toast } from "react-toastify";
 import { Schedule } from "./SchedulesTable";
 import { GetParticipants } from "../speakers/ParticipantsTable";
+import { participantsEnums } from "@/constants/participants";
 
 const schema = zod.object({
   scheduleTime: zod.string().min(1, { message: "scheduleTime is required" }),
@@ -152,7 +153,7 @@ const ScheduleDetailsForm = ({
     try {
       setLoading(true);
       const response = await axiosInstance.get(
-        `/participants?limit=200&role[in]=key-note-speaker&role[in]=event-speaker&role[in]=volunteer&role[in]=fellow-ship`
+        `/participants?limit=200&role[in]=key-note-speaker&role[in]=event-speaker&role[in]=volunteer&role[in]=fellow-ship&role[in]=${participantsEnums.workshopSpeaker}`
       );
       const data: GetParticipants[] = response.data.data.map(
         (participant: GetParticipants) => participant
