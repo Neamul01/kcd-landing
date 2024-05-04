@@ -11,6 +11,9 @@ export default function Speakers() {
   const [keynoteSpeakers, setKeyNoteSpeakers] = useState<Participant[]>([]);
   const [eventSpeakers, setEventSpeakers] = useState<Participant[]>([]);
   const [panelSpeakers, setPanelSpeakers] = useState<Participant[]>([]);
+  const [workshopSpeakers, setWorkshopSpeakers] = useState<Participant[]>([]);
+  const [error, setError] = useState<string>();
+  // TODO: handle errors here
 
   const getKeynoteSpeakers = async () => {
     try {
@@ -22,6 +25,7 @@ export default function Speakers() {
       setKeyNoteSpeakers(response.data.data);
     } catch (error) {
       // Handle the error here
+      setError("Something went wrong.");
       console.error(error);
     }
   };
@@ -40,6 +44,7 @@ export default function Speakers() {
       setEventSpeakers(response.data.data);
     } catch (error) {
       // Handle the error here
+      setError("Something went wrong.");
       console.error(error);
     }
   };
@@ -54,6 +59,21 @@ export default function Speakers() {
       setPanelSpeakers(response.data.data);
     } catch (error) {
       // Handle the error here
+      setError("Something went wrong.");
+      console.error(error);
+    }
+  };
+  const getWorkshopSpeakers = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/participants?sort=displayId&role=${participantsEnums.workshopSpeaker}`
+      );
+
+      // Handle the response data here
+      setWorkshopSpeakers(response.data.data);
+    } catch (error) {
+      // Handle the error here
+      setError("Something went wrong.");
       console.error(error);
     }
   };
@@ -61,20 +81,26 @@ export default function Speakers() {
   useEffect(() => {
     getEventSpeakers();
     getPanelSpeakers();
+    getWorkshopSpeakers();
   }, []);
 
   return (
     <div id="speakers">
       <SectionLayout title={"Keynote Speakers"} className="">
-        {keynoteSpeakers.length ? (
-          // <div className="flex flex-wrap items-stretch justify-center gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
+        {keynoteSpeakers ? (
           <div className="grid auto-rows-fr grid-cols-1 items-center lg:grid-cols-3 gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
             {keynoteSpeakers.map((speaker) => (
               <SpeakerCard key={speaker._id} speaker={speaker} />
             ))}
           </div>
+        ) : error ? (
+          <p className="text-sm flex items-center justify-center">
+            Something went wrong.
+          </p>
         ) : (
-          <Loader />
+          <div className="flex items-center justify-center">
+            <Loader />
+          </div>
         )}
       </SectionLayout>
       <SectionLayout
@@ -82,12 +108,16 @@ export default function Speakers() {
         title={"Event Speakers"}
         className="max-w-sectionLayout mx-auto mt-6 md:mt-12"
       >
-        {eventSpeakers.length ? (
+        {eventSpeakers ? (
           <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
             {eventSpeakers.map((speaker) => (
               <SpeakerCard key={speaker._id} speaker={speaker} />
             ))}
           </div>
+        ) : error ? (
+          <p className="text-sm flex items-center justify-center">
+            Something went wrong.
+          </p>
         ) : (
           <Loader />
         )}
@@ -103,6 +133,25 @@ export default function Speakers() {
               <SpeakerCard key={speaker._id} speaker={speaker} />
             ))}
           </div>
+        ) : error ? (
+          <p className="text-red-500 text-xs text-center">{error}</p>
+        ) : (
+          <Loader />
+        )}
+      </SectionLayout>
+      <SectionLayout
+        paddingBottom
+        title={"Workshop Speaker"}
+        className="max-w-sectionLayout mx-auto mt-6 md:mt-12"
+      >
+        {workshopSpeakers.length ? (
+          <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
+            {panelSpeakers.map((speaker) => (
+              <SpeakerCard key={speaker._id} speaker={speaker} />
+            ))}
+          </div>
+        ) : error ? (
+          <p className="text-red-500 text-xs text-center">{error}</p>
         ) : (
           <Loader />
         )}
