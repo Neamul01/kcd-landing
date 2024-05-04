@@ -13,10 +13,12 @@ export default function Speakers() {
   const [panelSpeakers, setPanelSpeakers] = useState<Participant[]>([]);
   const [workshopSpeakers, setWorkshopSpeakers] = useState<Participant[]>([]);
   const [error, setError] = useState<string>();
+  const [loading, setLoading] = useState(false);
   // TODO: handle errors here
 
   const getKeynoteSpeakers = async () => {
     try {
+      setLoading(true);
       const response = await axiosInstance.get(
         "/participants?sort=displayId&role=key-note-speaker"
       );
@@ -27,6 +29,8 @@ export default function Speakers() {
       // Handle the error here
       setError("Something went wrong.");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,6 +40,7 @@ export default function Speakers() {
 
   const getEventSpeakers = async () => {
     try {
+      setLoading(true);
       const response = await axiosInstance.get(
         "/participants?sort=displayId&role=event-speaker"
       );
@@ -46,11 +51,14 @@ export default function Speakers() {
       // Handle the error here
       setError("Something went wrong.");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const getPanelSpeakers = async () => {
     try {
+      setLoading(true);
       const response = await axiosInstance.get(
         `/participants?sort=displayId&role=${participantsEnums.panelSpeaker}`
       );
@@ -61,10 +69,13 @@ export default function Speakers() {
       // Handle the error here
       setError("Something went wrong.");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
   const getWorkshopSpeakers = async () => {
     try {
+      setLoading(true);
       const response = await axiosInstance.get(
         `/participants?sort=displayId&role=${participantsEnums.workshopSpeaker}`
       );
@@ -75,6 +86,8 @@ export default function Speakers() {
       // Handle the error here
       setError("Something went wrong.");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,24 +100,18 @@ export default function Speakers() {
   return (
     <div id="speakers">
       <SectionLayout title={"Keynote Speakers"} className="">
-        {keynoteSpeakers ? (
-          keynoteSpeakers.length ? (
-            <div className="grid auto-rows-fr grid-cols-1 items-center lg:grid-cols-3 gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
-              {keynoteSpeakers.map((speaker) => (
-                <SpeakerCard key={speaker._id} speaker={speaker} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-sm ">Coming soon...</p>
-          )
+        {loading ? (
+          <Loader />
         ) : error ? (
-          <p className="text-sm flex items-center justify-center">
-            Something went wrong.
-          </p>
-        ) : (
-          <div className="flex items-center justify-center">
-            <Loader />
+          <p className="text-center text-sm">{error}</p>
+        ) : keynoteSpeakers.length ? (
+          <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
+            {keynoteSpeakers.map((speaker) => (
+              <SpeakerCard key={speaker._id} speaker={speaker} />
+            ))}
           </div>
+        ) : (
+          <p className="text-center text-sm ">Coming soon...</p>
         )}
       </SectionLayout>
       <SectionLayout
@@ -112,7 +119,20 @@ export default function Speakers() {
         title={"Event Speakers"}
         className="max-w-sectionLayout mx-auto mt-6 md:mt-12"
       >
-        {eventSpeakers ? (
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <p className="text-center text-sm">{error}</p>
+        ) : eventSpeakers.length ? (
+          <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
+            {eventSpeakers.map((speaker) => (
+              <SpeakerCard key={speaker._id} speaker={speaker} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-sm ">Coming soon...</p>
+        )}
+        {/* {eventSpeakers ? (
           eventSpeakers.length ? (
             <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
               {eventSpeakers.map((speaker) => (
@@ -128,27 +148,25 @@ export default function Speakers() {
           </p>
         ) : (
           <Loader />
-        )}
+        )} */}
       </SectionLayout>
       <SectionLayout
         paddingBottom
         title={"Panel Speakers"}
         className="max-w-sectionLayout mx-auto mt-6 md:mt-12"
       >
-        {panelSpeakers ? (
-          panelSpeakers.length ? (
-            <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
-              {panelSpeakers.map((speaker) => (
-                <SpeakerCard key={speaker._id} speaker={speaker} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-sm ">Coming soon...</p>
-          )
-        ) : error ? (
-          <p className="text-red-500 text-xs text-center">{error}</p>
-        ) : (
+        {loading ? (
           <Loader />
+        ) : error ? (
+          <p className="text-center text-sm">{error}</p>
+        ) : panelSpeakers.length ? (
+          <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
+            {panelSpeakers.map((speaker) => (
+              <SpeakerCard key={speaker._id} speaker={speaker} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-sm ">Coming soon...</p>
         )}
       </SectionLayout>
       <SectionLayout
@@ -156,20 +174,18 @@ export default function Speakers() {
         title={"Workshop Speaker"}
         className="max-w-sectionLayout mx-auto mt-6 md:mt-12"
       >
-        {workshopSpeakers ? (
-          workshopSpeakers.length ? (
-            <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
-              {workshopSpeakers.map((speaker) => (
-                <SpeakerCard key={speaker._id} speaker={speaker} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-sm ">Coming soon...</p>
-          )
-        ) : error ? (
-          <p className="text-red-500 text-xs text-center">{error}</p>
-        ) : (
+        {loading ? (
           <Loader />
+        ) : error ? (
+          <p className="text-center text-sm">{error}</p>
+        ) : workshopSpeakers.length ? (
+          <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
+            {workshopSpeakers.map((speaker) => (
+              <SpeakerCard key={speaker._id} speaker={speaker} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-sm ">Coming soon...</p>
         )}
       </SectionLayout>
     </div>
