@@ -11,7 +11,7 @@ export default function SpeakerCard({ speaker }: { speaker: Participant }) {
     <Card
       key={speaker._id}
       sx={{ maxWidth: 355 }}
-      className="bg-transparent shadow-none hover:bg-transparent h-full mx-auto"
+      className="bg-transparent shadow-none hover:bg-transparent h-full mx-auto md:ml-0 md:mr-0"
     >
       <CardActionArea className="hover:bg-transparent py-4 bg-transparent w-[300px] h-full min-h-[394px] px-4 flex items-center justify-start flex-col ">
         <div className="">

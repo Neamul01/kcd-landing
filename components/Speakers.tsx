@@ -88,11 +88,15 @@ export default function Speakers() {
     <div id="speakers">
       <SectionLayout title={"Keynote Speakers"} className="">
         {keynoteSpeakers ? (
-          <div className="grid auto-rows-fr grid-cols-1 items-center lg:grid-cols-3 gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
-            {keynoteSpeakers.map((speaker) => (
-              <SpeakerCard key={speaker._id} speaker={speaker} />
-            ))}
-          </div>
+          keynoteSpeakers.length ? (
+            <div className="grid auto-rows-fr grid-cols-1 items-center lg:grid-cols-3 gap-y-20 md:gap-y-20 max-w-sectionLayout mx-auto mt-6 md:mt-12">
+              {keynoteSpeakers.map((speaker) => (
+                <SpeakerCard key={speaker._id} speaker={speaker} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-sm ">Coming soon...</p>
+          )
         ) : error ? (
           <p className="text-sm flex items-center justify-center">
             Something went wrong.
@@ -109,11 +113,15 @@ export default function Speakers() {
         className="max-w-sectionLayout mx-auto mt-6 md:mt-12"
       >
         {eventSpeakers ? (
-          <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
-            {eventSpeakers.map((speaker) => (
-              <SpeakerCard key={speaker._id} speaker={speaker} />
-            ))}
-          </div>
+          eventSpeakers.length ? (
+            <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
+              {eventSpeakers.map((speaker) => (
+                <SpeakerCard key={speaker._id} speaker={speaker} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-sm ">Coming soon...</p>
+          )
         ) : error ? (
           <p className="text-sm flex items-center justify-center">
             Something went wrong.
@@ -127,12 +135,16 @@ export default function Speakers() {
         title={"Panel Speakers"}
         className="max-w-sectionLayout mx-auto mt-6 md:mt-12"
       >
-        {panelSpeakers.length ? (
-          <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
-            {panelSpeakers.map((speaker) => (
-              <SpeakerCard key={speaker._id} speaker={speaker} />
-            ))}
-          </div>
+        {panelSpeakers ? (
+          panelSpeakers.length ? (
+            <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
+              {panelSpeakers.map((speaker) => (
+                <SpeakerCard key={speaker._id} speaker={speaker} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-sm ">Coming soon...</p>
+          )
         ) : error ? (
           <p className="text-red-500 text-xs text-center">{error}</p>
         ) : (
@@ -144,12 +156,16 @@ export default function Speakers() {
         title={"Workshop Speaker"}
         className="max-w-sectionLayout mx-auto mt-6 md:mt-12"
       >
-        {workshopSpeakers.length ? (
-          <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
-            {panelSpeakers.map((speaker) => (
-              <SpeakerCard key={speaker._id} speaker={speaker} />
-            ))}
-          </div>
+        {workshopSpeakers ? (
+          workshopSpeakers.length ? (
+            <div className="flex flex-wrap items-center justify-center gap-y-20 md:gap-y-20">
+              {workshopSpeakers.map((speaker) => (
+                <SpeakerCard key={speaker._id} speaker={speaker} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-sm ">Coming soon...</p>
+          )
         ) : error ? (
           <p className="text-red-500 text-xs text-center">{error}</p>
         ) : (
