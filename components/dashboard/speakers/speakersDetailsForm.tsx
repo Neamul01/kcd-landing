@@ -288,6 +288,9 @@ const SpeakersDetailsForm = ({
                   <MenuItem value={participantsEnums.fellowShip}>
                     Fellowship
                   </MenuItem>
+                  <MenuItem value={participantsEnums.workshopSpeaker}>
+                    Workshop Speaker
+                  </MenuItem>
                 </Select>
                 {errors.role ? (
                   <FormHelperText>{errors.role.message}</FormHelperText>
@@ -375,6 +378,7 @@ const SpeakersDetailsForm = ({
           {(selectedRole === "event-speaker" ||
             selectedRole === "key-note-speaker" ||
             selectedRole === participantsEnums.panelSpeaker ||
+            selectedRole === participantsEnums.workshopSpeaker ||
             selectedRole === "organizer") && (
             <Controller
               control={control}
