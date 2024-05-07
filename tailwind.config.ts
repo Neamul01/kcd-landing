@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        playfair: ["var(--font-playfair)"],
+      },
       color: {
         primary: "#0086ff",
         secondary: "#ff9900",
