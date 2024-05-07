@@ -2,10 +2,10 @@
 
 import { Button } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
-import { Participant } from "../speakers/ParticipantsTable";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "@/lib/Axios";
 import { toast } from "react-toastify";
+import ReactConfetti from "react-confetti";
 
 type RaffleWinner = {
   _id: string;
@@ -17,9 +17,41 @@ type RaffleWinner = {
 
 export default function RaffleDraw() {
   const [raffleWinner, setRaffleWinner] = useState<RaffleWinner>();
+  const [dimension, setDimension] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  const [success, setSuccess] = useState(false);
+
+  const detectSize = () => {
+    setDimension({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", detectSize);
+    return () => {
+      window.removeEventListener("resize", detectSize);
+    };
+  }, [dimension]);
 
   const handleRaffleDraw = async () => {
+    let timeoutId: any;
+
     try {
+      setSuccess(true);
+      // Clear previous timeout if exists
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+
+      // Reset success after 5 seconds
+      timeoutId = setTimeout(() => {
+        setSuccess(false);
+      }, 4000);
+
       await axiosInstance
         .get("/orders/raffle-draw")
         .then((response) => {
@@ -27,12 +59,13 @@ export default function RaffleDraw() {
           setRaffleWinner(response.data.data);
           console.log("winner", response.data.data);
         })
-        .catch((err) => toast.error("Error Raffle Draw, Please try again."));
-
-      // Handle the response data here
+        .catch((err) => {
+          toast.error("Error Raffle Draw, Please try again.");
+          //   clearTimeout(timeoutId);
+        });
     } catch (error) {
-      // Handle the error here
       console.error(error);
+      //   clearTimeout(timeoutId);
     }
   };
 
@@ -64,6 +97,14 @@ export default function RaffleDraw() {
             <p className="text-center text-sm">{raffleWinner?.email}</p>
           </div>
         </div>
+      )}
+
+      {success && (
+        <ReactConfetti
+          width={dimension.width}
+          height={dimension.height}
+          //   tweenDuration={1000}
+        />
       )}
     </div>
   );
