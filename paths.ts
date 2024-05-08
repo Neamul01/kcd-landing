@@ -17,6 +17,7 @@ export const paths = {
     customers: "/dashboard/customers",
     integrations: "/dashboard/integrations",
     settings: "/dashboard/settings",
+    raffleDraw: "/dashboard/raffle-draw",
   },
   errors: { notFound: "/errors/not-found" },
 } as const;

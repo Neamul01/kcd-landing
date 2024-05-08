@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Lora, PT_Serif } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/MUI/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -8,6 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
+const playfair = PT_Serif({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  weight: ["400", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Kubernetes Community Day (KCD) Dhaka",
@@ -21,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${playfair.variable}`}>
         <Navbar />
         {children}
         <ToastContainer />
