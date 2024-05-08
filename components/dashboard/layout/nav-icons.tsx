@@ -8,6 +8,9 @@ import { User as UserIcon } from "@phosphor-icons/react/dist/ssr/User";
 import { Record as OrderIcon } from "@phosphor-icons/react/dist/ssr/Record";
 import { Users as UsersIcon } from "@phosphor-icons/react/dist/ssr/Users";
 import { XSquare } from "@phosphor-icons/react/dist/ssr/XSquare";
+import { Gift } from "@phosphor-icons/react/dist/ssr/Gift";
+import { CalendarCheck } from "@phosphor-icons/react/dist/ssr/CalendarCheck";
+import { Lightbulb } from "@phosphor-icons/react/dist/ssr/Lightbulb";
 
 export const navIcons = {
   "chart-pie": ChartPieIcon,
@@ -19,4 +22,7 @@ export const navIcons = {
   ticket: TicketIcon,
   coupon: TagIcon,
   orders: OrderIcon,
+  raffleDraw: Gift,
+  schedule: CalendarCheck,
+  workshops: Lightbulb,
 } as Record<string, Icon>;
