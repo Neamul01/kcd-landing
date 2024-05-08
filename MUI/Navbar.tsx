@@ -14,41 +14,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@mui/material";
 import { useUser } from "@/hooks/use-user";
 
-const pages = [
-  {
-    name: "About us",
-    link: "#about-us",
-  },
-  {
-    name: "Speakers",
-    link: "#speakers",
-  },
-  {
-    name: "Schedule",
-    link: "#schedule",
-  },
-  {
-    name: "Venue",
-    link: "#venue",
-  },
-  {
-    name: "Sponsors & Partners",
-    link: "#sponsors",
-  },
-  {
-    name: "Organizers & Volunteers",
-    link: "#organizers",
-  },
-  {
-    name: "Buy Ticket",
-    link: "#buy-ticket",
-  },
-  {
-    name: "FAQ",
-    link: "#faq",
-  },
-];
-
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -105,8 +70,11 @@ function Navbar() {
             transition:
               "transform 0.5s ease-in-out, background-color 0.5s ease, color 0.5s ease,padding-y 0.5s ease",
             transform: showNavbar ? "translateY(0)" : "translateY(-100%)",
-            backgroundColor:
-              isScrolled || !isHomePage ? "#ffffff" : "transparent",
+            backgroundColor: isScrolled
+              ? "#ffffff"
+              : !isHomePage
+                ? "#687378"
+                : "transparent",
             color: isScrolled || !isHomePage ? "#000000" : "#ffffff",
             py: 1,
           }}
@@ -218,7 +186,7 @@ function Navbar() {
                     // onClick={handleCloseNavMenu}
                     // sx={{ my: 2, display: "block" }}
                     className={`${
-                      !showNavbar || !isScrolled || !isHomePage
+                      !showNavbar || !isScrolled
                         ? `!text-white  transition-all duration-500`
                         : "text-black  transition-all duration-500"
                     } capitalize my-1 px-3`}
@@ -278,3 +246,38 @@ function Navbar() {
   );
 }
 export default Navbar;
+
+const pages = [
+  {
+    name: "About us",
+    link: "#about-us",
+  },
+  {
+    name: "Speakers",
+    link: "#speakers",
+  },
+  {
+    name: "Schedule",
+    link: "#schedule",
+  },
+  {
+    name: "Venue",
+    link: "#venue",
+  },
+  {
+    name: "Sponsors & Partners",
+    link: "#sponsors",
+  },
+  {
+    name: "Organizers & Volunteers",
+    link: "#organizers",
+  },
+  {
+    name: "Buy Ticket",
+    link: "#buy-ticket",
+  },
+  {
+    name: "FAQ",
+    link: "#faq",
+  },
+];
