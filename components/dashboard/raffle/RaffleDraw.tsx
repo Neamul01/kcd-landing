@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "@/lib/Axios";
 import { toast } from "react-toastify";
 import ReactConfetti from "react-confetti";
+import Loader from "@/components/Shared/Loader";
 
 type RaffleWinner = {
   _id: string;
@@ -17,6 +18,7 @@ type RaffleWinner = {
 
 export default function RaffleDraw() {
   const [raffleWinner, setRaffleWinner] = useState<RaffleWinner>();
+  const [isLoading, setIsLoading] = useState(false);
   const [dimension, setDimension] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -41,6 +43,7 @@ export default function RaffleDraw() {
     let timeoutId: any;
 
     try {
+      setIsLoading(true);
       setSuccess(true);
       // Clear previous timeout if exists
       if (timeoutId) {
@@ -50,7 +53,7 @@ export default function RaffleDraw() {
       // Reset success after 5 seconds
       timeoutId = setTimeout(() => {
         setSuccess(false);
-      }, 4000);
+      }, 7000);
 
       await axiosInstance
         .get("/orders/raffle-draw")
@@ -61,11 +64,13 @@ export default function RaffleDraw() {
         })
         .catch((err) => {
           toast.error("Error Raffle Draw, Please try again.");
-          //   clearTimeout(timeoutId);
+          clearTimeout(timeoutId);
         });
     } catch (error) {
       console.error(error);
-      //   clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -73,29 +78,42 @@ export default function RaffleDraw() {
     <div className="w-full h-[60vh] flex items-center justify-center flex-col">
       <Button variant="contained" size="large">
         <span className="capitalize" onClick={handleRaffleDraw}>
-          Draw
+          {isLoading ? "loading..." : "Draw"}
         </span>
       </Button>
       {raffleWinner && (
         <div className="border-[1px] rounded-lg p-3 mt-2 font-playfair">
-          <div className="border-2 py-5 pt-14 w-[500px] px-5 border-black/90 rounded-lg relative">
-            <div className="absolute left-2 top-1">
-              <Image src={"/KCDLogoB.png"} height={100} width={80} alt="logo" />
-            </div>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <>
+              <div className="border-2 py-5 pt-14 w-[500px] px-5 border-black/90 rounded-lg relative">
+                <div className="absolute left-2 top-1">
+                  <Image
+                    src={"/KCDLogoB.png"}
+                    height={100}
+                    width={80}
+                    alt="logo"
+                  />
+                </div>
 
-            <h3 className="uppercase text-center text-4xl font-semibold tracking-wider font-playfair ">
-              Raffle Ticket
-            </h3>
-            <p className="text-center font-medium text-xl text-accent">
-              {raffleWinner?._id}
-            </p>
-            <p className="flex gap-2 items-center justify-center">
-              <span>{raffleWinner?.name}</span> -{" "}
-              <span>{raffleWinner?.designation}</span>
-            </p>
-            <p className="text-center text-sm">{raffleWinner?.organization}</p>
-            <p className="text-center text-sm">{raffleWinner?.email}</p>
-          </div>
+                <h3 className="uppercase text-center text-4xl font-semibold tracking-wider font-playfair ">
+                  Raffle Ticket
+                </h3>
+                <p className="text-center font-medium text-xl text-accent">
+                  {raffleWinner?._id}
+                </p>
+                <p className="flex gap-2 items-center justify-center">
+                  <span>{raffleWinner?.name}</span> -{" "}
+                  <span>{raffleWinner?.designation}</span>
+                </p>
+                <p className="text-center text-sm">
+                  {raffleWinner?.organization}
+                </p>
+                <p className="text-center text-sm">{raffleWinner?.email}</p>
+              </div>
+            </>
+          )}
         </div>
       )}
 
