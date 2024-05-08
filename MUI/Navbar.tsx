@@ -21,6 +21,7 @@ function Navbar() {
   const [showNavbar, setShowNavbar] = React.useState(true);
   const [prevScrollPos, setPrevScrollPos] = React.useState(0);
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const [currentDomain, setCurrentDomain] = React.useState("");
   // const { data: user } = useUser();
   const pathname = usePathname();
   const isHomePage = pathname === "/";
@@ -57,6 +58,23 @@ function Navbar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [prevScrollPos]);
+
+  React.useEffect(() => {
+    // Determine if it's the home page based on your logic
+
+    // Get the protocol and hostname from window.location
+    const protocol = window.location.protocol;
+    const hostname = window.location.hostname;
+
+    // Check if port is specified and include it in the URL if needed
+    const port = window.location.port ? ":" + window.location.port : "";
+
+    // Construct the domain name
+    const currentUrl = `${protocol}//${hostname}${port}`;
+
+    setCurrentDomain(currentUrl);
+    console.log("current url", currentUrl);
+  }, []);
 
   return (
     <>
@@ -141,7 +159,7 @@ function Navbar() {
                   {pages.map((page) => (
                     <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                       <Link
-                        href={page.link}
+                        href={`${isHomePage ? page.link : `${currentDomain}/${page.link}`}`}
                         key={page.link}
                         className={`text-black capitalize text-center transition-all duration-500`}
                       >
