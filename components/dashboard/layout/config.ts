@@ -30,7 +30,7 @@ export const navItems = [
     key: "schedules",
     title: "Schedules",
     href: paths.dashboard.schedules,
-    icon: "user",
+    icon: "schedule",
   },
   {
     key: "Coupon",
@@ -42,13 +42,20 @@ export const navItems = [
     key: "workshops",
     title: "Workshops",
     href: paths.dashboard.workshops,
-    icon: "user",
+    icon: "workshops",
   },
   {
     key: "Orders",
     title: "Orders",
     href: paths.dashboard.orders,
     icon: "orders",
+  },
+
+  {
+    key: "RaffleDraw",
+    title: "Raffle Draw",
+    href: paths.dashboard.raffleDraw,
+    icon: "raffleDraw",
   },
   // {
   //   key: "customers",
